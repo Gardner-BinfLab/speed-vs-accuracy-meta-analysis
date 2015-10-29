@@ -19,5 +19,6 @@ NEGATIVE TERMS:
 
 https://github.com/UCanCompBio/speed-vs-accuracy-meta-analysis.git
 git add XXXX
+git reset data/pubmed_result-*.xml
 git commit -a -v -m "Comment."
 git push -u origin master

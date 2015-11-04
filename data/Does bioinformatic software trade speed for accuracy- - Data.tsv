@@ -454,14 +454,6 @@ pubmedID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	spe
 					One Codex	3	2			
 					QIIME	9	1			
 					Taxator-tk	13	11			
-26475308	Improving RNA-Seq expression estimation by modeling isoform- and exon-specific read sequencing rate.	Figure 6	correlation-with-ground-truth(isoform expression)	Table 5	Cufflinks	3	4	4		
-					MMSEQ	4	3			
-					NLDMseq	1	1			
-					RSEM	2	2			
-		Figure 6	correlation-with-ground-truth(gene expression)	Table 5	Cufflinks	3	4			
-					MMSEQ	4	3			
-					NLDMseq	1	1			
-					RSEM	2	2			
 25521762	Assessment of de novo assemblers for draft genomes: a case study with fungal genomes.	Table 5	sum quality rows 1-4	Table 3 (mean rank)	ABySS	3	5	7		
 					IDBA-UD	1	6			
 					Minia	7	1			
@@ -601,7 +593,7 @@ pubmedID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	spe
 					RNAduplex	7	7			
 					RNAcofold	8	4			
 					Pairfold	9	9			
-23758764	Benchmarking short sequence mapping tools.	Table 2.	Sensitivity	Figure 14	Bowtie	2	1	9		
+23758764	Benchmarking short sequence mapping tools.	Table 2. (reported correct)	Sensitivity	Figure 14 (C. elegans)	Bowtie	2	1	9		
 					Bowtie2	8	3			
 					BWA	6	8			
 					SOAP2	7	2			
@@ -610,3 +602,54 @@ pubmedID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	spe
 					GSNAP	4	4			
 					Novoalign	1	6			
 					mrsFAST	3	7			
+22172045	Performance analysis of novel methods for detecting epistasis.	Figure 7 (Sim4)	Sensitivity at 0.01 FPR	Table 2 (Sim 4)	AntEpiSeeker	2	4	5		
+					BOOST	1	1			
+					EpiMODE	4.5	5			
+					SNPRuler	3	2			
+					TEAM	4.5	3			
+25574120	Evaluating the accuracy and efficiency of multiple sequence alignment methods.	Figure 1	Alignment accuracy (SPS)	Figure 6	Clustal Omega	8	5	10		
+					Dialign-TX	7	7			
+					Kalign	4	4			
+					MAFFT(FFT-NS-2)	9.5	2			
+					MAFFT(L-INS-i)	3	8			
+					Multalin	6	3			
+					MUSCLE	5	1			
+					ProbCons	1	10			
+					SATe	2	6			
+					T-Coffee	9.5	9			
+22506536	Mapping reads on a genomic sequence: an algorithmic overview and a practical comparative analysis.	Table 5. 	number of mapped reads whose original position has been retrieved in the complete list of hits.	Table 5. (Indexing + Mapping time)	BFAST	6	4	7		
+					Bowtie	1.5	2			
+					BWA	1.5	3			
+					GASSST	4	5			
+					Novoalign	5	6			
+					PerM	3	1			
+					SSAHA2	7	7			
+21856737	Comparative analysis of algorithms for next-generation sequencing read alignment.	Fig. 1. (a)	Accuracy @ 0.100	Fig. 5. (b)	Bowtie	6	2	6		
+					BWA	4	4			
+					mrFAST	5	5			
+					mrsFAST	3	3			
+					Novoalign	2	6			
+					SOAP2	1	1			
+21113338	Multiple sequence alignment: a major challenge to large-scale phylogenetics.	Table 2	 Missing branch rate (%) - Avg error	Table 3 - sum all times	SATé	1	8	8		
+					ML(MAFFT)	2	4			
+					ML(MAFFT-PartTree)	3	2			
+					ML(Prank+GT)	4	7			
+					ML(Muscle)	5	5			
+					ML(ClustalW)	6	3			
+					ML(ClustalW-quicktree)	7	1			
+					ML(Opal)	8	6			
+23842808	Naive binning improves phylogenomic analyses.	Fig. 5 (50 genes)	Average FN rate	Section: 3.1 Computational issues	CA-ML	1	1.5			
+					*BEAST	2	5			
+					BUCKy-con	4	3.5			
+					BUCKy-pop	3	3.5			
+					MP-EST	5	1.5			
+15840834	All are not equal: a benchmark of different homology modeling programs.	Table 2	No. of RMSD >3 Å from backbone	Table 2	3D-JIGSAW	3	10	10		
+					Builder	7	5			
+					Modeller6v2–10	5	9			
+					Modeller6v2	9	6			
+					Modeller7v7	10	7			
+					nest	4	4			
+					SCWRL3	1.5	1.5			
+					SCWRL-CONS	1.5	1.5			
+					SegMod/ENCAD	6	3			
+					SWISS-MODEL	8	8			

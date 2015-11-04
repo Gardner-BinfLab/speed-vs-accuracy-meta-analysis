@@ -1,94 +1,112 @@
-% Flowchart
-% Author: Qrrbrbirlbel
-\documentclass[tikz,border=10pt]{standalone}
+\documentclass{article}
+
+\usepackage[latin1]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+
 %%%<
 \usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
 %%%>
+
 \begin{comment}
-:Title: Flowchart
-:Tags: Diagrams;Flowcharts;Node positioning;Nodes and shapes
-:Author: Qrrbrbirlbel
-:Slug: flowchart
+:Title: Simple flow chart
+:Tags: Diagrams
 
-This example flowchart uses the positioning-plus library and the
-node-families library by the same author. The fit library is implicitly loaded
-by positioning-plus, the backgrounds library is used to draw stuff behind
-other stuff, the calc library for some coordinate calculations and the
-shapes.geometric library for the ellipse shape.
+With PGF/TikZ you can draw flow charts with relative ease. This flow chart from [1]_
+outlines an algorithm for identifying the parameters of an autonomous underwater vehicle model. 
 
-This example was written by Qrrbrbirlbel answering a question on TeX.SE.
+Note that relative node
+placement has been used to avoid placing nodes explicitly. This feature was
+introduced in PGF/TikZ >= 1.09.
+
+.. [1] Bossley, K.; Brown, M. & Harris, C. Neurofuzzy identification of an autonomous underwater vehicle `International Journal of Systems Science`, 1999, 30, 901-913 
+
+
 \end{comment}
-\usetikzlibrary{shapes.geometric,backgrounds,
-  positioning-plus,node-families,calc}
-\tikzset{
-  basic box/.style = {
-    shape = rectangle,
-    align = center,
-    draw  = #1,
-    fill  = #1!25,
-    rounded corners},
-  header node/.style = {
-    Minimum Width = header nodes,
-    font          = \strut\Large\ttfamily,
-    text depth    = +0pt,
-    fill          = white,
-    draw},
-  header/.style = {%
-    inner ysep = +1.5em,
-    append after command = {
-      \pgfextra{\let\TikZlastnode\tikzlastnode}
-      node [header node] (header-\TikZlastnode) at (\TikZlastnode.north) {#1}
-      node [span = (\TikZlastnode)(header-\TikZlastnode)]
-        at (fit bounding box) (h-\TikZlastnode) {}
-    }
-  },
-  hv/.style = {to path = {-|(\tikztotarget)\tikztonodes}},
-  vh/.style = {to path = {|-(\tikztotarget)\tikztonodes}},
-  fat blue line/.style = {ultra thick, blue}
-}
+
+
 \begin{document}
-\begin{tikzpicture}[node distance = 1.2cm, thick, nodes = {align = center},
-    >=latex]
-  \node[Minimum Width = loop, shape = ellipse, fill = red] (imp-sol)
-    {ellipsoid box};
-  \node[Minimum Width = loop, fill = yellow, below = of imp-sol] (rec-box)
-    {rectangular box, and very wiiiiiiiiiiiiiiide\\2nd line};
-  \node[shift = (left:.5*x_node_dist)] at
-    ($(imp-sol.west|-imp-sol.south)!.5!(rec-box.north west)$) (for-1)
-    {formula 1};
-  \node[shift = (right:.5*x_node_dist)] at
-    ($(imp-sol.east|-imp-sol.south)!.5!(rec-box.north east)$) (for-2)
-    {formula 2};
-  \begin{scope}[on background layer]
-    \node[fit = (for-1)(for-2)(imp-sol)(rec-box), basic box = blue,
-      header = DMFT loop] (dmft-l) {};
-  \end{scope}
-  \path[very thick, blue, hv] (rec-box) edge[->] (for-1) edge[<-] (for-2)
-                              (imp-sol) edge[->] (for-2) edge[<-] (for-1);
+% Define the layers to draw the diagram
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+\pagestyle{empty}
+\renewcommand{\arraystretch}{0.75}
 
-  \node[east above = of dmft-l, basic box = green, header = DMFT prelude]
-    (dmft-p) {Math and text math and text math and text\\
-              math and text math and text math and text};
-  \node[north left = of dmft-l, basic box = green, header = $\rho$ update,
-     shift = (down:y_node_dist)] (rho)
-    {Much more text much more text\\much more text much more text};
-  \node[basic box = blue, header = DFT part, anchor = north] at
-    (dmft-p.north-|rho) (dft) {So much text so much text so much text\\
-    I think I need \texttt{tikz-lipsum}\\or something like that.};
-  \node[basic box = green, anchor = north] at
-    ($(dft.north east)!.5!(dmft-p.north west)$) (upd) {update\\$math$};
-  \path[fat blue line, <-, dashed, vh] (rho) edge
-    ({$(rho.south)!.5!(dmft-l.south)$}-|dmft-l.south west);
-  \path[fat blue line, ->]
-    ({$(upd.south)!.5!(dmft-p.south)$}-|dmft-p.south west)
-    coordinate (@) edge[<-, solid] coordinate[pos=.15] (@s)
-    coordinate[pos=.9] (@e) (@-|dft.east)
-    {[every edge/.append style=dashed, vh] (@s) edge[<-] (upd) (@e) edge (upd)}
-    (h-rho) edge[dashed] (dft)
-    ($(dmft-p.south)!.5!(dmft-p.south east)$)
-    coordinate (@) edge (@|-dmft-l.north);
+%POSITIVE TERMS:
+%egrep 'befit|winner|encourag|metric|noisy|algorithms$|kernel$|methods$|procedure$|programs$|software$|technologies$|accuracy$|analysis$|benchmark|comparing$|comparison$|comprehensive$|estimation$|evaluation$|effectiveness$|metrics$|efficiency$|performance$|perspective$|quality$|rated$|suitable$|suitability$|superior$|survey$|cputime$|speed$|time$|duration$|fast$|slow$' wordScores.tsv | sort -nr | egrep -v 'mrsfast|mrfast|alignmentmethods' | head -n 5  | perl -lane 'print "{\\tiny $F[0]} & {\\tiny $F[1]} & {\\tiny $F[2]} & {\\tiny $F[3]}\\\\"'
+
+%NEGATIVE TERMS:
+%egrep 'mirnas$|associated$|disease$|genes$|human$|proteins$|genetic$|pathways$|mrna$|cdna$|functional$|clinical$|regulation$|predicted$|interaction$|review$|network' 
+%cat wordScores.tsv | sort -nr | egrep -v 'xxxxxx' | tail -n 5  | perl -lane 'print "{\\tiny $F[0]} & {\\tiny $F[1]} & {\\tiny $F[2]} & {\\tiny $F[3]}\\\\"'
+
+
+% Define block styles
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+    text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, line width=1mm, -latex']
+\tikzstyle{cloud} = [draw, rectangle,fill=red!20, 
+       text width=14em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+    
+\begin{tikzpicture}[->,node distance = 6cm, auto,thick,main node/.style={font=\sffamily\Large\bfseries}]
+    % Place nodes
+    \node [align=center]                              (dummy)  {}; 
+%    \node [block]                  (dummy)  {}; 
+    \node [block, left of=dummy,   node distance=4.5cm] (init1)  {Training articles};
+    \node [block, right of=dummy,  node distance=4.5cm] (init2)  {Background articles};
+    \node [cloud, below of=dummy,  node distance=1cm] (remove) {Remove high freq. words};
+    \node [cloud, below of=remove, node distance=2.5cm] (freqs)  {Compute word \& di-word freqs};
+    \node [cloud, below of=freqs,  node distance=4cm] (lods)   {Compute word scores: $s(word)=\log_2\left(\frac{f_{training}(word)+\delta}{f_{background}(word)+\delta}\right)$\\
+\begin{tabular}{llll}
+{\tiny logOdds} & {\tiny tnFreq} & {\tiny bgFreq} & {\tiny word}\\
+{\tiny 5.28}    & {\tiny 0.0019} & {\tiny 0.0000} & {\tiny benchmarking}\\
+{\tiny 5.21}    & {\tiny 0.0061} & {\tiny 0.0002} & {\tiny benchmark}\\
+{\tiny 4.91}    & {\tiny 0.0011} & {\tiny 0.0000} & {\tiny noisy}\\
+{\tiny 4.85}    & {\tiny 0.0022} & {\tiny 0.0001} & {\tiny metrics}\\
+{\tiny 4.85}    & {\tiny 0.0003} & {\tiny 0.0000} & {\tiny encouragingly}\\
+...\\
+{\tiny -7.90}   & {\tiny 0.0000} & {\tiny 0.0024} & {\tiny disease}\\
+{\tiny -8.02}   & {\tiny 0.0000} & {\tiny 0.0026} & {\tiny associated}\\
+{\tiny -8.09}   & {\tiny 0.0000} & {\tiny 0.0027} & {\tiny mirnas}\\
+\end{tabular}
+};
+    \node [cloud, below of=lods, node distance=4cm]     (score)  {Score \& rank candidate articles: $\sum_{word\in article} s(word)$};
+    \node [block, left  of=score, node distance=4.5cm]    (cand)   {Candidate articles};
+    \node [decision, below of=score, node distance=3.5cm] (decide) {Manually evaluate high scoring articles};
+
+    % Draw edges
+    \path [line] (init1)  -- (remove);
+    \path [line] (init2)  -- (remove);
+    \path [line] (remove) -- (freqs);
+    \path [line] (freqs)  -- (lods);
+    \path [line] (lods)  -- (score);
+    \path [line] (cand)  -- (score);
+    \path [line] (score)  -- (decide);
+    \path (decide) edge[bend right=90, line width=1mm] node[anchor=init2,right]{no }(init2);
+    \path (decide) edge[bend  left=90, line width=1mm] node[anchor=init1,right]{yes}(init1);
+
+
+               
+%    \path (remove.north) +(0,-2.3) node (clouds) {Build model};
+    \path (remove.north) +(-1.5,-2.0) node (clouds) {Build model};
+  
+    \begin{pgfonlayer}{background}
+        \path (remove.west |- remove.north)+(-0.5,0.3) node (a) {};
+        \path (lods.south -| lods.east)+(+0.5,-0.3)    node (b) {};
+        \path (clouds.east |- clouds.east)+(+3.5,-7.8)   node (c) {};
+          
+        \path[fill=yellow!20,rounded corners, draw=black!50, dashed]
+            (a) rectangle (c);           
+        \path (remove.north west)+(-0.2,0.2) node (a) {};
+            
+    \end{pgfonlayer}
+
 \end{tikzpicture}
+
+
 \end{document}
-
-
-

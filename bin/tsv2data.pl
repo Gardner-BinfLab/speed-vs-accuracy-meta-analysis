@@ -33,6 +33,7 @@ my ($testId,$pmid,$accuracySource,$accuracyMetric,$speedSource)=("","","","","")
 
 while(my $in = <IN>){
     chomp($in);
+    next if $in =~ /^pubmedID/; 
     $in =~  s/\r//g;
     my @in = split(/\t/, $in); 
     if (isNumeric($in[8])){
@@ -101,7 +102,7 @@ foreach my $meth (keys %ranks){
 close(UT);
 close(UT0);
 
-system("R CMD BATCH --no-save prettyPlot.R");
+system("R CMD BATCH --no-save ../bin/prettyPlot.R");
 
 exit(0);
 

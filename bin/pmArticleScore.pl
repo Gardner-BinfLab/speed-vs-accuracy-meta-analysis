@@ -10,7 +10,11 @@
 #      Basic approach: 
 #                      TRAINING
 #                      1. build a dictionary for each training article (hash?)
-#                      2. exclude high frequency words (possibly use the further background/non-scientific text for this e.g. Alice in Wonderland)
+#                      2. exclude high frequency words (possibly use the further background/non-scientific text for this e.g. Alice in Wonderland & The Hobbit)
+#                                 --add a list of words to ignore e.g. methods, sub-disciplines of bioinformatics
+#                                 --echo -e "assemblers\nmappers\nmapper\nassembler\ngabenchtob\nclustal\nenme\nsimprot\ncuresim\ncoffee\nseal\nsmidgen\nmsbi\nbrat\nidba\nfirefly\nsoapv\nreas\nhartigan\nhalle\ngsas\ncaap" | sort -d  > ignore.tsv
+#                                 --cat meanRankSpeedData | cut -f 4 | grep -v method >>ignore.tsv
+#
 #                      3. score each remaining word based upon how frequently it is used in the training data relative to the background set 
 #                         (e.g. log2( [f(t.word)/t.size + d]/[f(b.word)/b.size + d] ) ...  )
 #                      
@@ -22,7 +26,7 @@
 #PUBMED SEARCHES:
 #                      TRAINING
 #                      less Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ Data.tsv | perl -lane '@F=split(/\t/); print "$F[0]\[uid\] OR " if $F[0]>0' | tr -d "\n"
-#                      17151342[uid] OR 20047664[uid] OR 25198770[uid] OR 21483869[uid] OR 24526711[uid] OR 24839440[uid] OR 17062146[uid] OR 21423806[uid] OR 25511303[uid] OR 20617200[uid] OR 26475308[uid] OR 25521762[uid] OR 20375457[uid] OR 23593445[uid] OR 21525877[uid] OR 24708189[uid] OR 18287116[uid] OR 24602402[uid] OR 24086547[uid] OR 18793413[uid] OR 23393030[uid] OR 22132132[uid] OR 15701525[uid] OR 22152123[uid] OR 19046431[uid] OR 25760244[uid] OR 23758764[uid]
+#                      17151342[uid] OR 20047664[uid] OR 25198770[uid] OR 21483869[uid] OR 24526711[uid] OR 24839440[uid] OR 17062146[uid] OR 21423806[uid] OR 25511303[uid] OR 20617200[uid] OR 99999999[uid] OR 25521762[uid] OR 20375457[uid] OR 23593445[uid] OR 21525877[uid] OR 24708189[uid] OR 18287116[uid] OR 24602402[uid] OR 24086547[uid] OR 18793413[uid] OR 23393030[uid] OR 22132132[uid] OR 15701525[uid] OR 22152123[uid] OR 19046431[uid] OR 25760244[uid] OR 23758764[uid] OR 22172045[uid] OR 25574120[uid] OR 22506536[uid] OR 21856737[uid]
 #                      
 #                      BACKGROUND
 #                      cat checked-pmids.tsv | perl -lane 'print "$F[0]\[uid\] OR " if $F[0]>0' | tr -d "\n"
@@ -30,10 +34,10 @@
 #                      cat pubmed_result-checked.xml pubmed_result-background1.xml > pubmed_result-background.xml
 #
 #                      CANDIDATE
-#                      ((bioinformatics) AND (algorithms OR biotechnologies OR kernel OR methods OR procedure OR programs OR software OR technologies)) AND (accuracy OR analysis OR benchmark OR benchmarking OR comparing OR comparison OR comprehensive OR estimation OR evaluation OR effectiveness OR metrics OR efficiency OR performance OR perspective OR quality OR rated OR suitable OR suitability OR superior OR survey) AND (cputime OR speed OR time OR duration OR fast OR slow)
-#                      
-#                      
-#../bin/pmArticleScore.pl  -t pubmed_result-training.xml -b pubmed_result-background.xml -c pubmed_result-candidate.xml -f the-hobbit.txt -d checked-pmids.tsv
+#                      ((bioinformatics) AND (algorithmic OR algorithms OR biotechnologies OR computational OR kernel OR methods OR procedure OR programs OR software OR technologies)) AND (accuracy OR analysis OR assessment OR benchmark OR benchmarking OR biases OR comparing OR comparison OR comparisons OR comprehensive OR effectiveness OR estimation OR evaluation OR metrics OR efficiency OR performance OR perspective OR quality OR rated OR robust OR strengths OR suitable OR suitability OR superior OR survey OR weaknesses) AND (benchmark OR competing OR complexity OR cputime OR duration OR fast OR faster OR perform OR performance OR slow OR speed OR time)
+#
+#                      cat the-hobbit.txt alice-in-wonderland.txt > background.txt
+#../bin/pmArticleScore.pl  -t pubmed_result-training.xml -b pubmed_result-background.xml -c pubmed_result-candidate.xml -f background.txt -d checked-pmids.tsv -i ignore.tsv
 
 use warnings;
 use strict;
@@ -45,6 +49,7 @@ my(
     $doneFile,
     $fictionFile,
     $trainingFile,
+    $ignoreFile,
     $verbose,
     $help
     );
@@ -54,6 +59,7 @@ my(
     "c|candidate=s"    => \$candidateFile,
     "d|done=s"         => \$doneFile,
     "f|fiction=s"      => \$fictionFile,
+    "i|ignore=s"       => \$ignoreFile,
     "t|training=s"     => \$trainingFile,
     "v|verbose"        => \$verbose,
     "h|help"           => \$help
@@ -65,7 +71,20 @@ if( $help ) {
 }
 
 my @commonWordDict=();
+if(defined($ignoreFile)){
+    open(IG, "< $ignoreFile"); 
+    while(my $ig = <IG>){
+	if($ig =~ /(\S+)/){
+	    $ig = $1; 
+	    next if ($ig =~ /\d/); 
+	    next if ($ig !~ /\w/); 
+	    $ig = lc($ig); 
+	    push(@commonWordDict, $ig); 
+	}
+    }
+}
 my $commonWordDict = \@commonWordDict;
+
 if(defined($fictionFile)){
 #read some plain text to serve as background for excluding common english words:
     open(BG, "< $fictionFile"); 
@@ -73,8 +92,9 @@ if(defined($fictionFile)){
     close(BG);
     my ($backgroundWordCounts, $backgroundDiWordCounts, $backgroundDiWordCountsTot) = arrayToDictionary(\@background);
 #filter words that are used less frequently than 1E-4
-    $commonWordDict = findCommonWords($backgroundWordCounts, "1E-4"); 
+    $commonWordDict = findCommonWords($backgroundWordCounts, $commonWordDict, "1E-4"); 
 }
+
 
 #read training data, exclude common words, compute word frequencies for the remainder: 
 open(TD, "< $trainingFile"); 
@@ -90,7 +110,7 @@ $training    = pubmedXML2hash(\@training,   5000);
 open(SBG, "< $backgroundFile"); 
 my @sbackground = <SBG>;
 close(SBG);
-my $sbackground = pubmedXML2array(\@sbackground, 20000); #limit to the first XXXX pubmed entries
+my $sbackground = pubmedXML2array(\@sbackground, 35000); #limit to the first XXXX pubmed entries
    #ptrToHash            #wordCount
 my ($sbackgroundWordCounts, $sbackgroundDiWordCounts, $sbackgroundDiWordCountsTot) = arrayToDictionary($sbackground);
 my ($sbackgroundWords) = filterCommonWords($sbackgroundWordCounts, $commonWordDict, $training); 
@@ -104,7 +124,7 @@ my $diScores = computeDiLODS($trainingDiWordCounts, $trainingDiWordCountsTot, $s
 open(CD, "< $candidateFile"); 
 my @candidates = <CD>;
 close(CD);
-my $candidates = pubmedXML2hash(\@candidates, 20000); #limit to the first XXXX pubmed entries
+my $candidates = pubmedXML2hash(\@candidates, 35000); #limit to the first XXXX pubmed entries
 
 #score the training articles
 unlink("articleScores.tsv");
@@ -196,7 +216,7 @@ sub arrayToDictionary {
     my ($wordCount,$diWordCount)=(0,0); 
     my $lastWord;
     foreach my $str (@strings){
-	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/]/, $str);
+	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/\_]/, $str);
 	foreach my $st (@str){
 	    next if ($st =~ /\d/); 
 	    next if ($st !~ /\w/); 
@@ -223,21 +243,29 @@ sub arrayToDictionary {
 #return: (hash{word} = freq);
 sub findCommonWords {
     #$backgroundWordCounts, $totalBackgroundWordCount, "1E-4"
-    my ($backgroundWordCounts, $freqThreshold) = @_;
+    my ($backgroundWordCounts, $commonWordDict, $freqThreshold) = @_;
     my %backgroundWordCounts = %{ $backgroundWordCounts };
     my %commonWords;
     my $tot=0;
     foreach my $word (keys %backgroundWordCounts){
 	$tot += $backgroundWordCounts{$word};
     }
-
+    
+    open(CM, "> common-words.tsv");
     foreach my $word (keys %backgroundWordCounts){
 	next if not defined($backgroundWordCounts{$word}); 
 	my $freq = $backgroundWordCounts{$word}/$tot;
 	if ($freq > $freqThreshold){
 	    $commonWords{$word} = $freq;
+	    printf CM "%0.4f\t$word\n", $freq;
 	}
     }
+    close(CM);
+    
+    foreach my $word (@{$commonWordDict}){
+	$commonWords{$word}=1.0;
+    }
+    
     return \%commonWords;
 }
 
@@ -303,7 +331,7 @@ sub computeLODS {
     printf WUT "logOdds\ttraingFreq\tbackgroundFreq\n";
     foreach my $word (keys %lods){
 	if( defined($word) && defined($lods{$word}) && defined($trainingWords{$word}) && defined($backgroundWords{$word}) ){
-	    printf WUT "%0.8f\t%0.8f\t%0.8f\t$word\n", $lods{$word}, $trainingWords{$word}, $backgroundWords{$word};
+	    printf WUT "%0.2f\t%0.4f\t%0.4f\t$word\n", $lods{$word}, $trainingWords{$word}, $backgroundWords{$word};
 	}
     }
     close(WUT);
@@ -342,7 +370,7 @@ sub computeDiLODS {
     printf WUT "logOdds\ttraingFreq\tbackgroundFreq\n";
     foreach my $word (keys %lods){
 	if( defined($word) && defined($lods{$word}) && defined($trainingDiWords{$word}) && defined($backgroundDiWords{$word}) ){
-	    printf WUT "%0.8f\t%0.8f\t%0.8f\t$word\n", $lods{$word}, $trainingDiWords{$word}/$trainingTot, $backgroundDiWords{$word}/$backgroundTot;
+	    printf WUT "%0.2f\t%0.4f\t%0.4f\t$word\n", $lods{$word}, $trainingDiWords{$word}/$trainingTot, $backgroundDiWords{$word}/$backgroundTot;
 	}
     }
     close(WUT);
@@ -368,19 +396,22 @@ sub scoreArticles {
     my ($sumScores,$sumDiScores) = (0.00000,0.00000);
     
     my %checked;
-    open(CH, "< $doneFile");
-    while ( my $ch = <CH> ){
-	if ($ch =~ /(\d+)/){
-	    $checked{$1}=1;
+    
+    if (defined($doneFile) && -s $doneFile){
+	open(CH, "< $doneFile");
+	while ( my $ch = <CH> ){
+	    if ($ch =~ /(\d+)/){
+		$checked{$1}=1;
+	    }
 	}
+	close(CH);
     }
-    close(CH);
     
     open(AUT, ">> articleScores.tsv");
     print AUT "articleScore(monoWord)\tarticleScore(diWord)\tPMID\tTitle\tAbstract\n";
     foreach my $pmid (keys %candidates){
 	next if (not defined($candidates{$pmid}));
- 	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/]/, $candidates{$pmid});
+ 	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/\_]/, $candidates{$pmid});
 	my $lastWord;
 	foreach my $word (@str){
 	    if( defined($scores{$word}) ){
@@ -423,7 +454,7 @@ $0: ranks a list of candidate pubmed articles based upon they match a set of tra
       
       output: a ranked list of candidate articles, based upon how well the terms in candidate articles match the training articles
 
-Usage: $0 -t pubmed_result-training.xml -b pubmed_result-background.xml -c pubmed_result-candidate.xml -f the-hobbit.txt
+Usage: $0 -t pubmed_result-training.xml -b pubmed_result-background.xml -c pubmed_result-candidate.xml -f background.txt
 
 Options:       --h                  show this help
 
@@ -435,7 +466,7 @@ Options:       --h                  show this help
                -v|--verbose         Print lots of stuff
 
 Examples:
-../bin/pmArticleScore.pl -t pubmed_result-training.xml -b pubmed_result-background.xml -c pubmed_result-candidate.xml -f the-hobbit.txt -d checked-pmids.tsv
+../bin/pmArticleScore.pl  -t pubmed_result-training.xml -b pubmed_result-background.xml -c pubmed_result-candidate.xml -f background.txt -d checked-pmids.tsv
 
 TODO:
 generalise the "order" of the model e.g. single word freqs, double word freqs, ... 

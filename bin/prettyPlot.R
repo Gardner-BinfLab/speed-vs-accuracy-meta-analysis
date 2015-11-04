@@ -83,6 +83,9 @@ text( 1.2,-0.2, "fast+inaccurate",pos=4, cex=0.5)
 lines(c(0,1),reg1c[1]+reg1c[2]*c(0,1), lwd=5)
 xr<-0.2; text(xr, reg1c[1]+reg1c[2]*xr, "regression",pos=3, cex=0.8)
 
+#lowess
+lines(lowess(d$accuracyRank, d$speedRank, f = .2), col = 2, lwd=5)
+
 #DIAGONALS
 #lines(c(0,1),c(0,1),lty=2)
 lines(c(0,1),c(1,0),lty=2, lwd=3)
@@ -96,11 +99,11 @@ lines(c(1,0),c(0,0),lty=1,lwd=2)#bottom
 }
 
 
-png(filename="../figures/Figure1.png", width = 720, height = 360)
+pdf(file=    "../figures/Figure1.pdf", width = 10, height = 5)
 plotMe()
 dev.off()
 
-pdf(file=    "../figures/Figure1.pdf", width = 10, height = 5)
+png(filename="../figures/Figure1.png", width = 720, height = 360)
 plotMe()
 dev.off()
 

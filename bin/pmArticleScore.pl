@@ -12,8 +12,8 @@
 #                      1. build a dictionary for each training article (hash?)
 #                      2. exclude high frequency words (possibly use the further background/non-scientific text for this e.g. Alice in Wonderland & The Hobbit)
 #                                 --add a list of words to ignore e.g. methods, sub-disciplines of bioinformatics
-#                                 --echo -e "assemblers\nmappers\nmapper\nassembler\ngabenchtob\nclustal\nenme\nsimprot\ncuresim\ncoffee\nseal\nsmidgen\nmsbi\nbrat\nidba\nfirefly\nsoapv\nreas\nhartigan\nhalle\ngsas\ncaap" | sort -d  > ignore.tsv
-#                                 --cat meanRankSpeedData | cut -f 4 | grep -v method >>ignore.tsv
+#                                 --echo -e "assemblers\nmappers\nmapper\nassembler\ngabenchtob\nclustal\nenme\nsimprot\ncuresim\ncoffee\nseal\nsmidgen\nmsbi\nbrat\nidba\nfirefly\nsoapv\nreas\nhartigan\nhalle\ngsas\ncaap\nsegmod\nencad" | sort -d  > ignore.tsv
+#                                 --cat meanRankSpeedData | cut -f 4 | grep -v method | perl -lane 's/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/\_\*]//g; print;' >>ignore.tsv
 #
 #                      3. score each remaining word based upon how frequently it is used in the training data relative to the background set 
 #                         (e.g. log2( [f(t.word)/t.size + d]/[f(b.word)/b.size + d] ) ...  )
@@ -26,7 +26,7 @@
 #PUBMED SEARCHES:
 #                      TRAINING
 #                      less Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ Data.tsv | perl -lane '@F=split(/\t/); print "$F[0]\[uid\] OR " if $F[0]>0' | tr -d "\n"
-#                      17151342[uid] OR 20047664[uid] OR 25198770[uid] OR 21483869[uid] OR 24526711[uid] OR 24839440[uid] OR 17062146[uid] OR 21423806[uid] OR 25511303[uid] OR 20617200[uid] OR 99999999[uid] OR 25521762[uid] OR 20375457[uid] OR 23593445[uid] OR 21525877[uid] OR 24708189[uid] OR 18287116[uid] OR 24602402[uid] OR 24086547[uid] OR 18793413[uid] OR 23393030[uid] OR 22132132[uid] OR 15701525[uid] OR 22152123[uid] OR 19046431[uid] OR 25760244[uid] OR 23758764[uid] OR 22172045[uid] OR 25574120[uid] OR 22506536[uid] OR 21856737[uid]
+#                      17151342[uid] OR 20047664[uid] OR 25198770[uid] OR 21483869[uid] OR 24526711[uid] OR 24839440[uid] OR 17062146[uid] OR 21423806[uid] OR 25511303[uid] OR 20617200[uid] OR 99999999[uid] OR 25521762[uid] OR 20375457[uid] OR 23593445[uid] OR 21525877[uid] OR 24708189[uid] OR 18287116[uid] OR 24602402[uid] OR 24086547[uid] OR 18793413[uid] OR 23393030[uid] OR 22132132[uid] OR 15701525[uid] OR 22152123[uid] OR 19046431[uid] OR 25760244[uid] OR 23758764[uid] OR 22172045[uid] OR 25574120[uid] OR 22506536[uid] OR 21856737[uid] OR 21113338[uid] OR 23842808[uid] OR 15840834[uid]
 #                      
 #                      BACKGROUND
 #                      cat checked-pmids.tsv | perl -lane 'print "$F[0]\[uid\] OR " if $F[0]>0' | tr -d "\n"
@@ -216,7 +216,7 @@ sub arrayToDictionary {
     my ($wordCount,$diWordCount)=(0,0); 
     my $lastWord;
     foreach my $str (@strings){
-	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/\_]/, $str);
+	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/\_\*]/, $str);
 	foreach my $st (@str){
 	    next if ($st =~ /\d/); 
 	    next if ($st !~ /\w/); 
@@ -411,7 +411,7 @@ sub scoreArticles {
     print AUT "articleScore(monoWord)\tarticleScore(diWord)\tPMID\tTitle\tAbstract\n";
     foreach my $pmid (keys %candidates){
 	next if (not defined($candidates{$pmid}));
- 	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/\_]/, $candidates{$pmid});
+ 	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/\_\*]/, $candidates{$pmid});
 	my $lastWord;
 	foreach my $word (@str){
 	    if( defined($scores{$word}) ){

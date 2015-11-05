@@ -1,15 +1,66 @@
-#R CMD BATCH prettyPlot.R
+#R CMD BATCH ../bin/prettyPlot.R
 library(MASS)  # in case it is not already loaded 
 library(RColorBrewer)
 library(fields)
 k <- 11
 my.cols <- rev(brewer.pal(k, "RdYlBu"))
-d<-read.table("meanRankSpeedData", header=T)
-reg1  <- lm(d$speedRank~d$accuracyRank)
-reg1c <- coefficients(reg1)
+d <-read.table("meanRankSpeedData.tsv", header=T)
+dr<-read.table( "rawRankSpeedData.tsv", header=T)
+#reg1  <- lm(d$speedRank~d$accuracyRank)
+#reg1c <- coefficients(reg1)
 
-dr<-read.table("rawRankSpeedData", header=T)
+plotMe <- function() {
+       
+op<-par(mfrow=c(1,2),cex=1.1)
 
+
+
+# plot(c(0,1),c(1,0), xlim=c(1,0),ylim=c(1,0),xlab="normalised accuracy rank", ylab="normalised speed rank",type="l",lty=2,lwd=3)
+
+# #DIAGONALS
+# #lines(c(0,1),c(0,1),lty=2)
+# #lines(c(0,1),c(1,0),lty=2, lwd=3)
+
+# #BOX
+# lines(c(0,0),c(0,1),lty=1,lwd=2)#left
+# lines(c(0,1),c(1,1),lty=1,lwd=2)#top
+# lines(c(1,1),c(1,0),lty=1,lwd=2)#right
+# lines(c(1,0),c(0,0),lty=1,lwd=2)#bottom
+
+# for(id in unique(dr$testId)){       
+#        regr1  <- lm(dr$normSpeedRank[ dr$testId == id]~dr$normAccuracyRank[ dr$testId == id])
+#        regr1c <- coefficients(regr1)
+#        if( regr1c[1]+regr1c[2] > 0 ){
+# 	   lines(c(0,1),regr1c[1]+regr1c[2]*c(0,1), lwd=5)
+#        }
+#        else{#y negative when x = 0
+#             #y = mx + c = 0
+# 	    #  =>     x = -c/m
+# 	   lines(c(0, -1*regr1c[1]/regr1c[2] ),  c(regr1c[1], 0), lwd=5)	
+# 	   cat("Y<0!: ",id, "\n")
+#        }
+# }
+
+smoothScatter(dr$accuracyRank, dr$speedRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), pch=19, cex=.8, xlab="normalised accuracy rank", ylab="normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2)) 
+lines(lowess(dr$accuracyRank, dr$speedRank, f = .2), col = 2, lwd=5)
+
+boxit()
+
+par(mar = c(5,4,4,5) + .1)
+smoothScatter(d$accuracyRank, d$speedRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.8, xlab="mean normalised accuracy rank", ylab="mean normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2)) #nrpoints=.3*length(d$speedRank)
+
+#abline(reg1, lwd=5)
+#regression
+#lines(c(0,1),reg1c[1]+reg1c[2]*c(0,1), lwd=5)
+#xr<-0.2; text(xr, reg1c[1]+reg1c[2]*xr, "regression",pos=3, cex=0.8)
+
+#lowess
+lines(lowess(d$accuracyRank, d$speedRank, f = .2), col = 2, lwd=5)
+text(0.2, 0.4, "lowess curve",pos=3, cex=0.8, col = 2)
+
+boxit()
+
+}
 
 fudgeit <- function(){
   xm <- get('xm', envir = parent.frame(1))
@@ -21,83 +72,22 @@ fudgeit <- function(){
   image.plot(xm,ym,z, col = my.cols, legend.only = T, add =F)
 }
 
+boxit <- function(){
 
-
-plotMe <- function() {
-       
-op<-par(mfrow=c(1,2),cex=1.1)
-
-
-op<-par(cex=1.1)
-plot(c(0,1),c(1,0), xlim=c(1,0),ylim=c(1,0),xlab="normalised accuracy rank", ylab="normalised speed rank",type="l",lty=2,lwd=3)
-
-#DIAGONALS
-#lines(c(0,1),c(0,1),lty=2)
-#lines(c(0,1),c(1,0),lty=2, lwd=3)
-
+#DIAGONAL
+lines(c(0,1),c(1,0),lty=2, lwd=3)
 #BOX
 lines(c(0,0),c(0,1),lty=1,lwd=2)#left
 lines(c(0,1),c(1,1),lty=1,lwd=2)#top
 lines(c(1,1),c(1,0),lty=1,lwd=2)#right
 lines(c(1,0),c(0,0),lty=1,lwd=2)#bottom
-
-for(id in unique(dr$testId)){       
-       regr1  <- lm(dr$normSpeedRank[ dr$testId == id]~dr$normAccuracyRank[ dr$testId == id])
-       regr1c <- coefficients(regr1)
-       if( regr1c[1]+regr1c[2] > 0 ){
-	   lines(c(0,1),regr1c[1]+regr1c[2]*c(0,1), lwd=5)
-       }
-       else{#y negative when x = 0
-            #y = mx + c = 0
-	    #  =>     x = -c/m
-	   lines(c(0, -1*regr1c[1]/regr1c[2] ),  c(regr1c[1], 0), lwd=5)	
-	   cat("Y<0!: ",id, "\n")
-       }
-}
-
-#smoothScatter(d$accuracyRank, d$speedRank, nbin=2, nrpoints=.3*length(d$speedRank), colramp=colorRampPalette(my.cols), pch=19, cex=.8, xlab="normalised accuracy rank", ylab="normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2))
-#lines(c(-0.2,1.2),reg1c[1]+reg1c[2]*c(-0.2,1.2), lwd=5)
-
-
-#smoothScatter(d$accuracyRank, d$speedRank, nbin=5, nrpoints=.3*length(d$speedRank), colramp=colorRampPalette(my.cols), pch=19, cex=.8, xlab="normalised accuracy rank", ylab="normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2))
-#lines(c(-0.2,1.2),reg1c[1]+reg1c[2]*c(-0.2,1.2), lwd=5)
-#smoothScatter(d$accuracyRank, d$speedRank, nbin=10, nrpoints=.3*length(d$speedRank), colramp=colorRampPalette(my.cols), pch=19, cex=.8, xlab="normalised accuracy rank", ylab="normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2))
-#lines(c(0,1),reg1c[1]+reg1c[2]*c(0,1), lwd=5)
-
-par(mar = c(5,4,4,5) + .1)
-smoothScatter(d$accuracyRank, d$speedRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.8, xlab="normalised accuracy rank", ylab="normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2)) #nrpoints=.3*length(d$speedRank)
-
-#pos text()
-# 1:below
-# 2:left
-# 3:above
-# 4:right
 
 text(-0.2,-0.2, "fast+accurate",  pos=2, cex=0.5)
 text(-0.2, 1.2, "slow+accurate",  pos=2, cex=0.5)
 text( 1.2, 1.2, "slow+inaccurate",pos=4, cex=0.5)
 text( 1.2,-0.2, "fast+inaccurate",pos=4, cex=0.5)
-#abline(reg1, lwd=5)
-
-#regression
-lines(c(0,1),reg1c[1]+reg1c[2]*c(0,1), lwd=5)
-xr<-0.2; text(xr, reg1c[1]+reg1c[2]*xr, "regression",pos=3, cex=0.8)
-
-#lowess
-lines(lowess(d$accuracyRank, d$speedRank, f = .2), col = 2, lwd=5)
-
-#DIAGONALS
-#lines(c(0,1),c(0,1),lty=2)
-lines(c(0,1),c(1,0),lty=2, lwd=3)
-
-#BOX
-lines(c(0,0),c(0,1),lty=1,lwd=2)#left
-lines(c(0,1),c(1,1),lty=1,lwd=2)#top
-lines(c(1,1),c(1,0),lty=1,lwd=2)#right
-lines(c(1,0),c(0,0),lty=1,lwd=2)#bottom
 
 }
-
 
 pdf(file=    "../figures/Figure1.pdf", width = 10, height = 5)
 plotMe()

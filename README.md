@@ -13,7 +13,7 @@ b) are any of journal impact, citation count, recency or PI-fame predictive of m
 
 
 
-#GIT WRANGLING:
+#GIT WRANGLING (don't judge me -- I can't remember this crap):
 https://github.com/UCanCompBio/speed-vs-accuracy-meta-analysis.git
 git add XXXX
 git reset data/pubmed_result-*.xml #REMOVE LARGE FILES

@@ -3,17 +3,92 @@
 use warnings;
 use strict;
 
-#Read 
-open(IN0, "< Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ methodInfo.tsv"); 
+#Read method info:
+my %methodInfo; 
+my @methodInfoKeys = qw(yearPublished IF H5 cites hindex mindex); 
+# head -n 1 Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ methodInfo.tsv | tr "\t" "\n" | nl
+#      1	method
+#      2	yearPublished
+#      3	journal
+#      4	impactFactor
+#      5	Journal H5-index
+#      6	totalCitations
+#      7	Corresponding author: H-index
+#      8	Corresponding author: M-index
+#      9	fullCite
+open(IN0, "< Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ methodInfo.tsv");
 while(my $in = <IN0>){
-    next if $in =~ /^pubmedID/; 
+    next if $in =~ /^method/; 
     chomp($in);
     $in =~  s/\r//g;
     my @in = split(/\t/, $in); 
+    
+    if(defined($in[0]) && length($in[0]) > 1){
+	
+	if(defined($in[1])){
+	    my @yrs = split(/;\s*/, $in[1]);
+	    $methodInfo{$in[0]}{'yearPublished'}='NA';
+	    $methodInfo{$in[0]}{'yearPublished'}=minA(@yrs) if ($in[1] !~ 'NA'); #using the first publication
+	}
+	
+	if(defined($in[3])){
+	    my @ifs = split(/;\s*/, $in[3]);	    
+	    $methodInfo{$in[0]}{'IF'}='NA';
+	    $methodInfo{$in[0]}{'IF'}=maxA(@ifs) if ($in[3] !~ 'NA'); #using the highest impact factor
+	}
+	
+	if(defined($in[4])){
+	    my @h5s = split(/;\s*/, $in[4]);
+	    $methodInfo{$in[0]}{'H5'}='NA';
+	    $methodInfo{$in[0]}{'H5'}=maxA(@h5s) if ($in[4] !~ 'NA'); #using the highest impact factor
+	}
+	
+	if(defined($in[5])){
+	    my @cites = split(/;\s*/, $in[5]);
+	    $methodInfo{$in[0]}{'cites'}='NA';
+	    $methodInfo{$in[0]}{'cites'}=sumA(@cites) if ($in[5] !~ 'NA'); #using the sum of cites (some cites counted twice due to multiple cites from 1 paper)
+	}
+	
+	if(defined($in[6])){
+	    $methodInfo{$in[0]}{'hindex'}='NA';
 
+	    if ($in[6] !~ 'NA'){
+		my @hs = split(/;\s*/, $in[6]);
+		for (my $i=0; $i<scalar(@hs); $i++){
+		    if($hs[$i] =~ /:(\d+)/){
+			$hs[$i] = $1;
+		    }
+		    else{
+			print "MALFORMED H-index cell for [$in[0]]\n";
+			$hs[$i] = 0;
+		    }
+		}
+		$methodInfo{$in[0]}{'hindex'}=maxA(@hs); #using the highest H-author
+	    }
+	}
 
+	if(defined($in[7])){
+	    $methodInfo{$in[0]}{'mindex'}='NA';
+	    if ($in[7] !~ 'NA'){
+		my @ms = split(/;\s*/, $in[7]);
+		for (my $i=0; $i<scalar(@ms); $i++){
+		    if($ms[$i] =~ /:(\d+)/){
+			$ms[$i] = $1;
+		    }
+		    else{
+			print "MALFORMED M-index cell for [$in[0]]\n";
+			$ms[$i] = 0;
+		    }
+		}
+		$methodInfo{$in[0]}{'mindex'}=maxA(@ms); #using the highest M-author
+	    }
+	}
+
+    }
+    
 }
 close(IN0);
+
 ######################################################################
 #echo -ne "accuracyRank\tspeedRank\tnumMethods\n" > data && cut -f 7,8,9 Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ Data.tsv | grep -v N | tr -d "=" | perl -lane 'if(/^acc|^N/ or $F[0] !~ /\d+/ or $F[1] !~ /\d+/){next}elsif(defined($F[2])){$max=$F[2]} printf "%0.2f\t%0.2f\t$max\n", ($F[0]-1)/($max-1), ($F[1]-1)/($max-1); ' >> data
     #  1	pubmedID
@@ -109,10 +184,21 @@ close(UT0);
 
 #
 open(UT, "> meanRankSpeedData.tsv");
-print UT "sumRanks\taccuracyRank\tspeedRank\tmethod\tnumTests\n";
+my $methInfo = join("\t", @methodInfoKeys); 
+print UT "sumRanks\taccuracyRank\tspeedRank\tmethod\tnumTests\t$methInfo\n";
 
-foreach my $meth (keys %ranks){    
-    printf UT "%0.2f\t%0.2f\t%0.2f\t%s\t%d\n", $ranks{$meth}[0]/$ranks{$meth}[2] + $ranks{$meth}[1]/$ranks{$meth}[2],  $ranks{$meth}[0]/$ranks{$meth}[2], $ranks{$meth}[1]/$ranks{$meth}[2], $meth, $ranks{$meth}[2];     
+foreach my $meth (keys %ranks){ 
+    
+    printf UT "%0.2f\t%0.2f\t%0.2f\t%s\t%d", $ranks{$meth}[0]/$ranks{$meth}[2] + $ranks{$meth}[1]/$ranks{$meth}[2],  $ranks{$meth}[0]/$ranks{$meth}[2], $ranks{$meth}[1]/$ranks{$meth}[2], $meth, $ranks{$meth}[2];     
+    
+    foreach my $methInfo (@methodInfoKeys){
+	if(not defined($methodInfo{$meth}{$methInfo} )){
+	    print "[$meth] needs [$methInfo]!\n"; 
+	    $methodInfo{$meth}{$methInfo} = 'NA';
+	}
+	printf UT "\t%s", $methodInfo{$meth}{$methInfo};
+    }
+    printf UT "\n";
 }
 close(UT);
 
@@ -132,3 +218,44 @@ sub isNumeric {
 }
 
 ######################################################################
+#Max and Min
+#max
+sub max {
+  return $_[0] if @_ == 1;
+  $_[0] > $_[1] ? $_[0] : $_[1]
+}
+
+#min
+sub min {
+  return $_[0] if @_ == 1;
+  $_[0] < $_[1] ? $_[0] : $_[1]
+}
+######################################################################
+#Max and Min for arrays:
+#max
+sub maxA {
+    my $max = $_[0];
+    foreach my $a (@_){
+	$max = max($max, $a) if isNumeric($a);
+    }
+    return $max;
+}
+
+#min
+sub minA {
+    my $min = $_[0];
+    foreach my $a (@_){
+	$min = min($min, $a) if isNumeric($a);
+    }
+    return $min;
+}
+
+######################################################################
+#sum values in an array
+sub sumA {
+    my $sum = 0;
+    foreach my $a (@_){
+	$sum += $a if isNumeric($a);
+    }
+    return $sum;
+}

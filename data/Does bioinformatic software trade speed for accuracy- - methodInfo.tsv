@@ -1,7 +1,7 @@
 method	yearPublished	journal	impactFactor	Journal H5-index	totalCitations	Corresponding author: H-index	Corresponding author: M-index	fullCite
 abyss	2009; 2009	Genome research; Bioinformatics	14.63	107	1410; 176	Inanc Birol:36	Inanc Birol:4.5	Simpson, Jared T., Kim Wong, Shaun D. Jackman, Jacqueline E. Schein, Steven JM Jones, and Inanç Birol. "ABySS: a parallel assembler for short read sequence data." Genome research 19, no. 6 (2009): 1117-1123.; Birol, Inanç, Shaun D. Jackman, Cydney B. Nielsen, Jenny Q. Qian, Richard Varhol, Greg Stazyk, Ryan D. Morin et al. "De novo transcriptome assembly with ABySS." Bioinformatics 25, no. 21 (2009): 2872-2877.
 antepiseeker								
-apg	2008	BMC bioinformatics			166	Antti Airola:13	Antti Airola:1.86	Airola, Antti, Sampo Pyysalo, Jari Björne, Tapio Pahikkala, Filip Ginter, and Tapio Salakoski. "All-paths graph kernel for protein-protein interaction extraction with evaluation of cross-corpus learning." BMC bioinformatics 9, no. Suppl 11 (2008): S2.
+apg	2008	BMC bioinformatics	2.58	74	166	Antti Airola:13	Antti Airola:1.86	Airola, Antti, Sampo Pyysalo, Jari Björne, Tapio Pahikkala, Filip Ginter, and Tapio Salakoski. "All-paths graph kernel for protein-protein interaction extraction with evaluation of cross-corpus learning." BMC bioinformatics 9, no. Suppl 11 (2008): S2.
 barry		Statistical Science			181	NA	NA	Barry, D., & Hartigan, J. A. (1987). Statistical analysis of hominoid molecular evolution. Statistical Science, 191-207.
 beast								
 bfast								
@@ -39,7 +39,7 @@ de	2012	International Journal of Chemical Reactor Engineering			2	Feiyi Wang:21	
 dexseq	2012	Genome research	14.63	107	234	Simon Anders:17	Simon Anders:1.7	Anders, Simon, Alejandro Reyes, and Wolfgang Huber. "Detecting differential usage of exons from RNA-seq data." Genome research 22, no. 10 (2012): 2008-2017.
 dialign	1998	Bioinformatics	4.90	106	413	Burkhard Morgenstern:34	Burkhard Morgenstern:2.27	Morgenstern, B., Frech, K., Dress, A., & Werner, T. (1998). DIALIGN: finding local similarities by multiple sequence alignment. Bioinformatics, 14(3), 290-294.
 dialign22	1999; 1998	Bioinformatics; Bioinformatics	4.90	106	779; 412	Burkhard Morgenstern:34	Burkhard Morgenstern:2.27	Morgenstern, Burkhard. "DIALIGN 2: improvement of the segment-to-segment approach to multiple sequence alignment." Bioinformatics 15, no. 3 (1999): 211-218.; Morgenstern, Burkhard, Kornelie Frech, Andreas Dress, and Thomas Werner. "DIALIGN: finding local similarities by multiple sequence alignment." Bioinformatics 14, no. 3 (1998): 290-294.
-dialignt	2005	BMC bioinformatics			155	Burkhard Morgenstern:34	Burkhard Morgenstern:2.27	Subramanian, Amarendran R., Jan Weyer-Menkhoff, Michael Kaufmann, and Burkhard Morgenstern. "DIALIGN-T: an improved algorithm for segment-based multiple sequence alignment." BMC bioinformatics 6, no. 1 (2005): 66.
+dialignt	2005	BMC bioinformatics	2.58	74	155	Burkhard Morgenstern:34	Burkhard Morgenstern:2.27	Subramanian, Amarendran R., Jan Weyer-Menkhoff, Michael Kaufmann, and Burkhard Morgenstern. "DIALIGN-T: an improved algorithm for segment-based multiple sequence alignment." BMC bioinformatics 6, no. 1 (2005): 66.
 dialigntx	2008	Algorithms Mol Biol			178	Burkhard Morgenstern:34	Burkhard Morgenstern:2.27	Subramanian, Amarendran R., Michael Kaufmann, and Burkhard Morgenstern. "DIALIGN-TX: greedy and progressive approaches for segment-based multiple sequence alignment." Algorithms Mol Biol 3, no. 6 (2008): 1-11.
 diffsplice	2013	Nucleic acids research			36	NA	NA	Hu, Yin, Yan Huang, Ying Du, Christian F. Orellana, Darshan Singh, Amy R. Johnson, Anaïs Monroy et al. "DiffSplice: the genome-wide detection of differential splicing events with RNA-seq." Nucleic acids research 41, no. 2 (2013): e39-e39.
 diginormvelvet	2012; 2008	arXiv Genomics (q-bio.GN); Genome research	14.63	36; 107	64; 4163	C. Titus Brown:29; Ewan Birney:92	C. Titus Brown:1.71; Ewan Birney:6.13	Brown, C. T., Howe, A., Zhang, Q., Pyrkosz, A. B., & Brom, T. H. (2012). A reference-free algorithm for computational normalization of shotgun sequencing data. arXiv preprint arXiv:1203.4802.; Zerbino, D. R., & Birney, E. (2008). Velvet: algorithms for de novo short read assembly using de Bruijn graphs. Genome research, 18(5), 821-829.
@@ -65,13 +65,13 @@ gottcha	2015	Nucleic acids research			3			Freitas, Tracey Allen K., Po-E. Li, Ma
 greedyft								
 gsnap	2010	Bioinformatics	4.90	106	625			Wu, T. D., & Nacu, S. (2010). Fast and SNP-tolerant detection of complex variants and splicing in short reads. Bioinformatics (Oxford, England), 26(7), 873–81. doi:10.1093/bioinformatics/btq057
 heidge								
-hmmer	1998	Bioinformatics	4.90	106	3803			Eddy, Sean R. "Profile hidden Markov models." Bioinformatics 14, no. 9 (1998): 755-763.
+hmmer	1998	Bioinformatics	4.90	106	3803	Sean R. Eddy:71	Sean R. Eddy:4.18	Eddy, Sean R. "Profile hidden Markov models." Bioinformatics 14, no. 9 (1998): 755-763.
 idbaud								
 igtpduplossft								
 inchworm								
-infernal	2002	BMC bioinformatics			249			Eddy, Sean R. "A memory-efficient dynamic programming algorithm for optimal alignment of a sequence to an RNA secondary structure." BMC bioinformatics3, no. 1 (2002): 18.
+infernal	2002	BMC bioinformatics	2.58	74	249	Sean R. Eddy:71	Sean R. Eddy:4.18	Eddy, Sean R. "A memory-efficient dynamic programming algorithm for optimal alignment of a sequence to an RNA secondary structure." BMC bioinformatics3, no. 1 (2002): 18.
 intarna	2008	Bioinformatics	4.90	106	180			Busch, A., Richter, A. S., & Backofen, R. (2008). IntaRNA: efficient prediction of bacterial sRNA targets incorporating target site accessibility and seed regions. Bioinformatics (Oxford, England), 24(24), 2849–56. doi:10.1093/bioinformatics/btn544
-kalign	2005	BMC bioinformatics			396			Lassmann, Timo, and Erik LL Sonnhammer. "Kalign–an accurate and fast multiple sequence alignment algorithm." BMC bioinformatics 6, no. 1 (2005): 298.
+kalign	2005	BMC bioinformatics	2.58	74	396			Lassmann, Timo, and Erik LL Sonnhammer. "Kalign–an accurate and fast multiple sequence alignment algorithm." BMC bioinformatics 6, no. 1 (2005): 298.
 kbsps	2009	Master's Thesis, Technische Universität Berlin			4			Palaga, Peter. "Extracting relations from biomedical texts using syntactic information." Mémoire de DEA, Technische Universität Berlin 138 (2009).
 kraken	2014	Genome biology			80			Wood, Derrick E., and Steven L. Salzberg. "Kraken: ultrafast metagenomic sequence classification using exact alignments." Genome Biol 15, no. 3 (2014): R46.
 kthse								
@@ -87,7 +87,7 @@ mats	2012	Nucleic acids research			73			Shen, Shihao, Juw Won Park, Jian Huang, 
 megan	2007; 2011	Genome research; Genome research	14.63	107	1108; 488			Huson, Daniel H., Alexander F. Auch, Ji Qi, and Stephan C. Schuster. "MEGAN analysis of metagenomic data." Genome research 17, no. 3 (2007): 377-386.; Huson, Daniel H., Suparna Mitra, Hans-Joachim Ruscheweyh, Nico Weber, and Stephan C. Schuster. "Integrative analysis of environmental sequences using MEGAN4." Genome research 21, no. 9 (2011): 1552-1560.
 metaphlan	2012	Nature methods			229			Segata, Nicola, Levi Waldron, Annalisa Ballarini, Vagheesh Narasimhan, Olivier Jousson, and Curtis Huttenhower. "Metagenomic microbial community profiling using unique clade-specific marker genes." Nature methods 9, no. 8 (2012): 811-814.
 metaphyler	2010	Bioinformatics and Biomedicine (BIBM), 2010 IEEE International Conference on			32			Liu, Bo, Theodore Gibbons, Mohammad Ghodsi, and Mihai Pop. "MetaPhyler: Taxonomic profiling for metagenomic sequences." In Bioinformatics and Biomedicine (BIBM), 2010 IEEE International Conference on, pp. 95-100. IEEE, 2010.
-mgrast	2008	BMC bioinformatics			1239			Meyer, Folker, Daniel Paarmann, Mark D'Souza, Robert Olson, Elizabeth M. Glass, Michael Kubal, Tobias Paczian et al. "The metagenomics RAST server–a public resource for the automatic phylogenetic and functional analysis of metagenomes." BMC bioinformatics 9, no. 1 (2008): 386.
+mgrast	2008	BMC bioinformatics	2.58	74	1239			Meyer, Folker, Daniel Paarmann, Mark D'Souza, Robert Olson, Elizabeth M. Glass, Michael Kubal, Tobias Paczian et al. "The metagenomics RAST server–a public resource for the automatic phylogenetic and functional analysis of metagenomes." BMC bioinformatics 9, no. 1 (2008): 386.
 minia	2013	Algorithms for Molecular Biology		19	85	Rayan Chikhi:12	Rayan Chikhi:1.71	Chikhi, R., & Rizk, G. (2013). Space-efficient and exact de Bruijn graph representation based on a Bloom filter. Algorithms for Molecular Biology, 8(22), 1.
 mira	2004	Genome research	14.63	107	554			Chevreux, Bastien, Thomas Pfisterer, Bernd Drescher, Albert J. Driesel, Werner EG Müller, Thomas Wetter, and Sándor Suhai. "Using the miraEST assembler for reliable and automated mRNA transcript assembly and SNP detection in sequenced ESTs." Genome research 14, no. 6 (2004): 1147-1159.
 mlclustalw								
@@ -107,8 +107,8 @@ mrpmp	1992;1992	Molecular phylogenetics and evolution; Taxon			391;465			Ragan, 
 mrsfast	2010	Nature methods	32.07	125	162			Hach, F., Hormozdiari, F., Alkan, C., Hormozdiari, F., Birol, I., Eichler, E. E., & Sahinalp, S. C. (2010). mrsFAST: a cache-oblivious algorithm for short-read mapping. Nature Methods, 7(8), 576–7. doi:10.1038/nmeth0810-576
 msinspect								
 multalin								
-muscle	2004	BMC bioinformatics			3080			Edgar, Robert C. "MUSCLE: a multiple sequence alignment method with reduced time and space complexity." BMC bioinformatics 5, no. 1 (2004): 113.
-musclemaxiters	2004	BMC bioinformatics			3080			Edgar, Robert C. "MUSCLE: a multiple sequence alignment method with reduced time and space complexity." BMC bioinformatics 5, no. 1 (2004): 113.
+muscle	2004	BMC bioinformatics	2.58	74	3080			Edgar, Robert C. "MUSCLE: a multiple sequence alignment method with reduced time and space complexity." BMC bioinformatics 5, no. 1 (2004): 113.
+musclemaxiters	2004	BMC bioinformatics	2.58	74	3080			Edgar, Robert C. "MUSCLE: a multiple sequence alignment method with reduced time and space complexity." BMC bioinformatics 5, no. 1 (2004): 113.
 mzmine								
 ncbiblast	1990	Journal of molecular biology	‎4.333	62	56158			Altschul, Stephen F., Warren Gish, Webb Miller, Eugene W. Myers, and David J. Lipman. "Basic local alignment search tool." Journal of molecular biology215, no. 3 (1990): 403-410.
 nest	2003	Proteins: Structure, Function, and Bioinformatics		45	298	NA	NA	Petrey, D., Xiang, Z., Tang, C. L., Xie, L., Gimpelev, M., Mitros, T., ... & Honig, B. (2003). Using multiple structure alignments, fast model building, and energetic analysis in fold recognition and homology modeling. Proteins: Structure, Function, and Bioinformatics, 53(S6), 430-435.
@@ -131,7 +131,7 @@ probcons	2005	Genome research	14.63	107	888			Do, Chuong B., Mahathi SP Mahabhas
 pso								
 pt	2006	Machine Learning: ECML 2006			281			Moschitti, Alessandro. "Efficient convolution kernels for dependency and constituent syntactic trees." In Machine Learning: ECML 2006, pp. 318-329. Springer Berlin Heidelberg, 2006.
 qiime	2010	Nature methods			3432			Caporaso, J. Gregory, Justin Kuczynski, Jesse Stombaugh, Kyle Bittinger, Frederic D. Bushman, Elizabeth K. Costello, Noah Fierer et al. "QIIME allows analysis of high-throughput community sequencing data." Nature methods 7, no. 5 (2010): 335-336.
-qsra	2009	BMC Bioinformatics			71			Bryant, Douglas W., Weng-Keen Wong, and Todd C. Mockler. "QSRA–a quality-value guided de novo short read assembler." BMC bioinformatics 10, no. 1 (2009): 69.
+qsra	2009	BMC Bioinformatics	2.58	74	71			Bryant, Douglas W., Weng-Keen Wong, and Todd C. Mockler. "QSRA–a quality-value guided de novo short read assembler." BMC bioinformatics 10, no. 1 (2009): 69.
 ravenna	2006	Bioinformatics	4.90	106	87			Weinberg, Zasha, and Walter L. Ruzzo. "Sequence-based heuristics for faster annotation of non-coding RNA families." Bioinformatics 22, no. 1 (2006): 35-39.
 raxml	2014	Bioinformatics	4.90	106	708			Stamatakis, Alexandros. "RAxML version 8: a tool for phylogenetic analysis and post-analysis of large phylogenies." Bioinformatics 30.9 (2014): 1312-1313.
 raxmllimited								
@@ -145,8 +145,8 @@ rnaduplex	2011	Algorithms for molecular biology	1.46	19	404			Lorenz, R., Bernha
 rnahybrid	2004	RNA	4.60	54	1173			Rehmsmeier, M., Steffen, P., Hochsmann, M., & Giegerich, R. (2004). Fast and effective prediction of microRNA/target duplexes. RNA (New York, N.Y.), 10(10), 1507–17. doi:10.1261/rna.5248604
 rnaplex	2008	Bioinformatics	4.90	106	74			Tafer, H., & Hofacker, I. L. (2008). RNAplex: a fast tool for RNA-RNA interaction search. Bioinformatics (Oxford, England), 24(22), 2657–63. doi:10.1093/bioinformatics/btn193
 rnaup	2006	Bioinformatics	4.90	106	209			Mückstein, U., Tafer, H., Hackermüller, J., Bernhart, S. H., Stadler, P. F., & Hofacker, I. L. (2006). Thermodynamics of RNA-RNA binding. Bioinformatics (Oxford, England), 22(10), 1177–82. doi:10.1093/bioinformatics/btl024
-rsearch	2003	BMC bioinformatics			284			Klein, Robert J., and Sean R. Eddy. "RSEARCH: finding homologs of single structured RNA sequences." BMC bioinformatics 4, no. 1 (2003): 44.
-rsmatch	2005	BMC bioinformatics			61			Liu, Jianghui, Jason TL Wang, Jun Hu, and Bin Tian. "A method for aligning RNA secondary structures and its application to RNA motif detection." BMC bioinformatics 6, no. 1 (2005): 89.
+rsearch	2003	BMC bioinformatics	2.58	74	284			Klein, Robert J., and Sean R. Eddy. "RSEARCH: finding homologs of single structured RNA sequences." BMC bioinformatics 4, no. 1 (2003): 44.
+rsmatch	2005	BMC bioinformatics	2.58	74	61			Liu, Jianghui, Jason TL Wang, Jun Hu, and Bin Tian. "A method for aligning RNA secondary structures and its application to RNA motif detection." BMC bioinformatics 6, no. 1 (2005): 89.
 sa								
 sam	1995	Bioinformatics	4.90	106	549			Hughey, Richard, and Anders Krogh. "Hidden Markov models for sequence analysis: extension and analysis of the basic method." Computer applications in the biosciences: CABIOS 12, no. 2 (1996): 95-107.
 sate								
@@ -171,7 +171,7 @@ soap2	2009	Bioinformatics	4.90	106	1588			Li, R., Yu, C., Li, Y., Lam, T.-W., Yi
 soapdenovo	2012; 2010	Gigascience; Genome research	14.63	107	535; 1322			Luo, Ruibang, Binghang Liu, Yinlong Xie, Zhenyu Li, Weihua Huang, Jianying Yuan, Guangzhu He et al. "SOAPdenovo2: an empirically improved memory-efficient short-read de novo assembler." Gigascience 1, no. 1 (2012): 18.; Li, Ruiqiang, Hongmei Zhu, Jue Ruan, Wubin Qian, Xiaodong Fang, Zhongbin Shi, Yingrui Li et al. "De novo assembly of human genomes with massively parallel short read sequencing." Genome research 20, no. 2 (2010): 265-272.
 spades	2012	Journal of computational biology			559			Bankevich, Anton, Sergey Nurk, Dmitry Antipov, Alexey A. Gurevich, Mikhail Dvorkin, Alexander S. Kulikov, Valery M. Lesin et al. "SPAdes: a new genome assembly algorithm and its applications to single-cell sequencing." Journal of Computational Biology 19, no. 5 (2012): 455-477.
 sparse								
-sparseassembler	2012	BMC bioinformatics		74	34	Mihai Pop:42	Mihai Pop:3.5	Ye, C., Ma, Z. S., Cannon, C. H., Pop, M., & Douglas, W. Y. (2012). Exploiting sparseness in de novo genome assembly. BMC bioinformatics, 13(Suppl 6), S1.
+sparseassembler	2012	BMC bioinformatics	2.58	74	34	Mihai Pop:42	Mihai Pop:3.5	Ye, C., Ma, Z. S., Cannon, C. H., Pop, M., & Douglas, W. Y. (2012). Exploiting sparseness in de novo genome assembly. BMC bioinformatics, 13(Suppl 6), S1.
 spcomp	2013	Bioinformatics	4.90	106	24	NA	NA	Aschoff, Moritz, Agnes Hotz-Wagenblatt, Karl-Heinz Glatting, Matthias Fischer, Roland Eils, and Rainer König. "SplicingCompass: differential splicing detection using RNA-Seq data." Bioinformatics (2013): btt101.
 specarray								
 spt	2007	Information and Media Technologies			33	Hisashi Kashima:24; Tetsuji Kuboyama:11	Hisashi Kashima:2; Tetsuji Kuboyama:0.69	Kuboyama, Tetsuji, Kouichi Hirata, Hisashi Kashima, Kiyoko F. Aoki-Kinoshita, and Hiroshi Yasuda. "A spectrum tree kernel." Information and Media Technologies 2, no. 1 (2007): 292-299.

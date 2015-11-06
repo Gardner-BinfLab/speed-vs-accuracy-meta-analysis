@@ -47,22 +47,28 @@ op<-par(mfrow=c(1,2),cex=1.1,las=2)
 
 ######################################################################
 #sumRanks	accuracyRank	speedRank	method	numTests	yearPublished	IF	H5	cites	hindex	mindex
-cites <-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$cites), method = "spearman")
-IF    <-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$IF), method = "spearman")
-H5    <-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$H5), method = "spearman")
-hindex<-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$hindex), method = "spearman")
-mindex<-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$mindex), method = "spearman")
+cites   <-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$cites),    method = "spearman")
+IF      <-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$IF),       method = "spearman")
+H5      <-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$H5),       method = "spearman")
+hindex  <-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$hindex),   method = "spearman")
+mindex  <-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$mindex),   method = "spearman")
+relAge  <-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$relAge),   method = "spearman")
+relCites<-cor.test(d$accuracyRank+d$speedRank, as.numeric(d$relCites), method = "spearman")
 
-barplot(t(c(hindex$estimate, mindex$estimate, cites$estimate, H5$estimate, IF$estimate )), names=c("Corr. Author\nH-index", "Corr. Auth\nM-index", 'journal.H5', 'tot.Cites', 'journal.IF'), ylab="Spearman's rho",ylim=c(-1,1))
+barplot(t(c(hindex$estimate, mindex$estimate, relAge$estimate, H5$estimate, cites$estimate, relCites$estimate, IF$estimate)), names=c("corresAuth\nH-index", "corresAuth\nM-index", 'relativeAge', 'journalH5', 'totalCites', 'relativeCites', 'journalIF'), ylab="Spearman's rho",ylim=c(-0.5,0.5), main="Affect size of prestige measures\non speed+accuracy ranks")
 lines(c(-100,100),c(0,0))
 
-
 par(mar = c(5,4,4,5) + .1)
-smoothScatter(d$accuracyRank, d$speedRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.8, xlab="mean normalised accuracy rank", ylab="mean normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2)) #nrpoints=.3*length(d$speedRank)
-points(d$accuracyRank[d$IF > 10], d$speedRank[d$IF > 10], pch='*',cex=1.5)
-points(d$accuracyRank[d$hindex > 50], d$speedRank[d$hindex > 50], pch='o',cex=1.5)
-points(d$accuracyRank[d$cites > 800], d$speedRank[d$cites > 800], pch='x',cex=1.0)
+smoothScatter(d$accuracyRank, d$speedRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.8, xlab="mean normalised accuracy rank", ylab="mean normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n") #nrpoints=.3*length(d$speedRank)
+th <- as.numeric(quantile(as.numeric(d$IF), probs=0.75,na.rm=T))
+points(d$accuracyRank[as.numeric(d$IF) > th], d$speedRank[as.numeric(d$IF) > th], pch='*',cex=1.5)
+th <- as.numeric(quantile(as.numeric(d$hindex), probs=0.75,na.rm=T))
+points(d$accuracyRank[d$hindex > th], d$speedRank[d$hindex > th], pch='o',cex=1.0)
+th <- as.numeric(quantile(as.numeric(d$cites), probs=0.75,na.rm=T))
+points(d$accuracyRank[d$cites > th], d$speedRank[d$cites > th], pch='x',cex=1.0)
 text(1.0, 1.1, "* = hi profile journal; o = hi profile author; x = hi cited",  pos=4, cex=0.5)
+axis(1,at=(0:5)/5)
+axis(2,at=(0:5)/5)
 
 #abline(reg1, lwd=5)
 #regression

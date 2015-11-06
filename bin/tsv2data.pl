@@ -3,6 +3,9 @@
 use warnings;
 use strict;
 
+
+#TODO: add relative age & relative cites & relative IF/H5, & relative corresponding author impact (H/M), ??????? 
+
 #Read method info:
 my %methodInfo; 
 my @methodInfoKeys = qw(yearPublished IF H5 cites hindex mindex); 
@@ -19,6 +22,7 @@ my @methodInfoKeys = qw(yearPublished IF H5 cites hindex mindex);
 open(IN0, "< Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ methodInfo.tsv");
 while(my $in = <IN0>){
     next if $in =~ /^method/; 
+    $in =~ s/[^[:ascii:]]//g; #strip of fucking unicode chars
     chomp($in);
     $in =~  s/\r//g;
     my @in = split(/\t/, $in); 
@@ -29,6 +33,7 @@ while(my $in = <IN0>){
 	    my @yrs = split(/;\s*/, $in[1]);
 	    $methodInfo{$in[0]}{'yearPublished'}='NA';
 	    $methodInfo{$in[0]}{'yearPublished'}=minA(@yrs) if ($in[1] !~ 'NA'); #using the first publication
+	    #printf "[$in[0]]\tyrsArray[@yrs]\tyearStr[$in[1]]\tminA[%d]\n", minA(@yrs);
 	}
 	
 	if(defined($in[3])){
@@ -114,17 +119,22 @@ close(IN0);
 my ($max,$numBench)=(1,0);
 my %ranks;
 my %methodCounts;
+my %benchMethod;
 my ($testId,$pmid,$accuracySource,$accuracyMetric,$speedSource)=("","","","","");
 
 open(IN1, "< Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ Data.tsv"); 
 open(UT0, "> rawRankSpeedData.tsv");
 print UT0 "testId\taccuracyRank\tspeedRank\tmethod\n";
-
 while(my $in = <IN1>){
     next if $in =~ /^pubmedID/; 
+    $in =~ s/[^[:ascii:]]//g; #strip of fucking unicode chars
     chomp($in);
     $in =~  s/\r//g;
     my @in = split(/\t/, $in); 
+    #fix method name:
+    $in[5] =~  s/[ -=\/0-9]//g;
+    $in[5]=lc($in[5]);
+    
     if (isNumeric($in[8])){
         $max=$in[8];
         $numBench++;
@@ -155,12 +165,12 @@ while(my $in = <IN1>){
 	
         if($pmid && length($accuracySource) && length($accuracyMetric) && length($speedSource) ){
 	    $testId = "$pmid:$accuracySource:$accuracyMetric:$speedSource";
+	    push(@{$benchMethod{$testId}}, $in[5]);
+#	    if($testId =~ /17151342:Fig2A:medianrankMCC:Fig2C/){
+#		print "17151342:Fig2A:medianrankMCC:Fig2C meth[$in[5]]\n";
+#	    }
 	}
-	
-	#fix method name:
-        $in[5] =~  s/[ -=\/0-9]//g;
-        $in[5]=lc($in[5]);
-        
+	        
         if (not defined $ranks{$in[5]}){
             #sum(accuracy) sum(speed) numEntries whichBenchmark
             $ranks{$in[5]} = [0.0,0.0, 0, 0]; 
@@ -182,10 +192,42 @@ while(my $in = <IN1>){
 close(IN1);
 close(UT0);
 
-#
+#COMPUTE RELATIVE AGE & CITATION COUNT FOR EACH METHOD IN EACH BENCHMARK/TEST:
+#GAH. This block is fucking filthy and farts like a dog. Problem is methods may have ages, but not cites, ... need to treat each stat seperately. Or learn how to deal with tonnes of missing values:
+my (%datesRelRanks, %citesRelRanks);
+foreach my $bench (keys %benchMethod){ 
+    my %dates=(); 
+    my %cites=(); 
+    foreach my $meth (@{$benchMethod{$bench}}){
+	
+	#printf "[$meth]\ty[%0.2f]y[%s]\tc[%0.2f]c[%s]\t[$bench]\n", $methodInfo{$meth}{'yearPublished'}, $methodInfo{$meth}{'yearPublished'}, $methodInfo{$meth}{'cites'}, $methodInfo{$meth}{'cites'};
+
+	if(defined($methodInfo{$meth}{'yearPublished'} )){
+	    $dates{$meth} = $methodInfo{$meth}{'yearPublished'} if (isNumeric($methodInfo{$meth}{'yearPublished'})); 
+	}
+	
+	if(defined($methodInfo{$meth}{'cites'} )){
+	    $cites{$meth} = $methodInfo{$meth}{'cites'}        if (isNumeric($methodInfo{$meth}{'cites'})); 
+	}
+	
+	#hash2relrank returns a hash
+	my $relRankDates = hash2relrank( \%dates ); 
+	foreach my $meth (keys %{$relRankDates}){ 
+	    push(@{ $datesRelRanks{$meth} }, $relRankDates->{$meth} );
+	}
+	
+	my $relRankCites = hash2relrank( \%cites ); 
+	foreach my $meth (keys %{$relRankCites}){ 
+	    push(@{ $citesRelRanks{$meth} }, $relRankCites->{$meth} );
+	}
+    }
+}
+#exit(0);
+
+#COMPUTE MEAN SPEED/ACCURACY RELATIVE RANK FOR EACH METHOD:
 open(UT, "> meanRankSpeedData.tsv");
 my $methInfo = join("\t", @methodInfoKeys); 
-print UT "sumRanks\taccuracyRank\tspeedRank\tmethod\tnumTests\t$methInfo\n";
+print UT "sumRanks\taccuracyRank\tspeedRank\tmethod\tnumTests\t$methInfo\trelAge\trelCites\n";
 
 foreach my $meth (keys %ranks){ 
     
@@ -196,7 +238,21 @@ foreach my $meth (keys %ranks){
 	    print "[$meth] needs [$methInfo]!\n"; 
 	    $methodInfo{$meth}{$methInfo} = 'NA';
 	}
-	printf UT "\t%s", $methodInfo{$meth}{$methInfo};
+	printf UT "\t%s", $methodInfo{$meth}{$methInfo};	
+    }
+
+    if( defined($datesRelRanks{$meth}) && scalar(@{ $datesRelRanks{$meth} }) ){
+	printf UT "\t%0.2f", meanA(@{ $datesRelRanks{$meth} });
+    }
+    else{
+	printf UT "\tNA"
+    }
+    
+    if( defined($citesRelRanks{$meth}) && scalar(@{ $citesRelRanks{$meth} }) ){
+	printf UT "\t%0.2f", meanA(@{ $citesRelRanks{$meth} });
+    }
+    else{
+	printf UT "\tNA"
     }
     printf UT "\n";
 }
@@ -259,3 +315,55 @@ sub sumA {
     }
     return $sum;
 }
+
+######################################################################
+#mean of values in an array
+sub meanA {
+    my ($sum,$count) = (0,0);
+    foreach my $a (@_){
+	if ( isNumeric($a) ){
+	    $sum += $a;
+	    $count++;
+	}
+    }
+    return ($sum/$count);
+}
+
+######################################################################
+#return relative rank of values in a hash: values to lie between 0 & 1. 
+sub hash2relrank {
+    my $h = shift;
+     my (@keys, @vals);
+    foreach my $k (keys %{$h}){
+	push(@keys, $k);
+	push(@vals, $h->{$k});
+    }
+    my $vals = relRankA(@vals);
+    
+    my %hash; 
+    for(my $i=0; $i < scalar(@keys); $i++){
+	$hash{ $keys[$i] } = $vals->[$i];
+    }
+    return \%hash;
+}
+
+######################################################################
+#return relative rank of values in an array: normalised to lie between 0 & 1. 
+sub relRankA {
+    my @a = @_; 
+    my $minVal = minA(@a);
+    #subtract min val.
+    for(my $i = 0; $i<scalar(@a); $i++){
+	$a[$i] = ($a[$i] - $minVal) if isNumeric($a[$i]);
+    }
+    
+    my $maxVal = maxA(@a);
+    #divide by max val.
+    for(my $i = 0; $i<scalar(@a); $i++){
+	$a[$i] = ($a[$i]/$maxVal) if (isNumeric($a[$i]) && $maxVal != 0);
+    }
+    
+    return \@a;
+}
+
+

@@ -97,7 +97,7 @@ if(defined($fictionFile)){
 
 
 #read training data, exclude common words, compute word frequencies for the remainder: 
-open(TD, "< $trainingFile"); 
+open(TD, "< $trainingFile") or die "[missing training file]: [$trainingFile]\n[$!]"; 
 my @training = <TD>;
 close(TD);
 my %empty;
@@ -283,7 +283,7 @@ sub filterCommonWords {
     my $sum = 0;
     foreach my $word (keys %words){
 	next if (defined($commonWordDict{$word}));
-	next if (length($word) < 4);#filter short words
+	#next if (length($word) < 4);#filter short words
 	next if (defined($skipWords{$word}));
         #next if ($words{$word} < 1);#FILTER WORDS ONLY SEEN ONCE -- MAY REVISIT THIS!!!
 	$filteredTrainingWords{$word} = $words{$word}; 

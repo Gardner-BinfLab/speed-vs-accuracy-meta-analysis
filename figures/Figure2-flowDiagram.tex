@@ -46,38 +46,38 @@ introduced in PGF/TikZ >= 1.09.
 
 % Define block styles
 \tikzstyle{block} = [rectangle, draw, fill=blue!20, 
-    text width=5em, text centered, rounded corners, minimum height=4em]
+    text width=12em, text centered, rounded corners, minimum height=4em]
 \tikzstyle{line} = [draw, line width=1mm, -latex']
 \tikzstyle{cloud} = [draw, rectangle,fill=red!20, 
-       text width=14em, text centered, rounded corners, minimum height=4em]
+       text width=32em, text centered, rounded corners, minimum height=4em]
 \tikzstyle{decision} = [diamond, draw, fill=blue!20, 
-    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+    text width=9em, text badly centered, node distance=3cm, inner sep=0pt]
     
-\begin{tikzpicture}[->,node distance = 6cm, auto,thick,main node/.style={font=\sffamily\Large\bfseries}]
+\begin{tikzpicture}[->,node distance = 20cm, auto,thick,main node/.style={font=\sffamily\Large\bfseries}]
     % Place nodes
     \node [align=center]                              (dummy)  {}; 
 %    \node [block]                  (dummy)  {}; 
-    \node [block, left of=dummy,   node distance=4.5cm] (init1)  {Training articles};
-    \node [block, right of=dummy,  node distance=4.5cm] (init2)  {Background articles};
-    \node [cloud, below of=dummy,  node distance=1cm] (remove) {Remove high freq. words};
-    \node [cloud, below of=remove, node distance=2.5cm] (freqs)  {Compute word \& di-word freqs};
-    \node [cloud, below of=freqs,  node distance=4cm] (lods)   {Compute word scores: $s(word)=\log_2\left(\frac{f_{training}(word)+\delta}{f_{background}(word)+\delta}\right)$\\
+    \node [block, left of=dummy,   node distance=9cm] (init1)  {\Huge Training articles};
+    \node [block, right of=dummy,  node distance=9cm] (init2)  {\Huge Background articles};
+    \node [cloud, below of=dummy,  node distance=2cm] (remove)   {\Huge Remove high freq. words};
+    \node [cloud, below of=remove, node distance=3cm] (freqs)  {\Huge Compute word \& di-word freqs};
+    \node [cloud, below of=freqs,  node distance=8cm] (lods)     {\Huge Compute word scores: $lo(word)=\log_2\left(\frac{f_{training}(word)+\delta}{f_{background}(word)+\delta}\right)$\\
 \begin{tabular}{llll}
-{\tiny logOdds} & {\tiny tnFreq} & {\tiny bgFreq} & {\tiny word}\\
-{\tiny 5.28}    & {\tiny 0.0019} & {\tiny 0.0000} & {\tiny benchmarking}\\
-{\tiny 5.21}    & {\tiny 0.0061} & {\tiny 0.0002} & {\tiny benchmark}\\
-{\tiny 4.91}    & {\tiny 0.0011} & {\tiny 0.0000} & {\tiny noisy}\\
-{\tiny 4.85}    & {\tiny 0.0022} & {\tiny 0.0001} & {\tiny metrics}\\
-{\tiny 4.85}    & {\tiny 0.0003} & {\tiny 0.0000} & {\tiny encouragingly}\\
+{\normalsize logOdds} & {\normalsize tnFreq} & {\normalsize bgFreq} & {\normalsize word}\\
+{\normalsize 5.28}    & {\normalsize 0.0019} & {\normalsize 0.0000} & {\normalsize benchmarking}\\
+{\normalsize 5.21}    & {\normalsize 0.0061} & {\normalsize 0.0002} & {\normalsize benchmark}\\
+{\normalsize 4.91}    & {\normalsize 0.0011} & {\normalsize 0.0000} & {\normalsize noisy}\\
+{\normalsize 4.85}    & {\normalsize 0.0022} & {\normalsize 0.0001} & {\normalsize metrics}\\
+{\normalsize 4.85}    & {\normalsize 0.0003} & {\normalsize 0.0000} & {\normalsize encouragingly}\\
 ...\\
-{\tiny -7.90}   & {\tiny 0.0000} & {\tiny 0.0024} & {\tiny disease}\\
-{\tiny -8.02}   & {\tiny 0.0000} & {\tiny 0.0026} & {\tiny associated}\\
-{\tiny -8.09}   & {\tiny 0.0000} & {\tiny 0.0027} & {\tiny mirnas}\\
+{\normalsize -7.90}   & {\normalsize 0.0000} & {\normalsize 0.0024} & {\normalsize disease}\\
+{\normalsize -8.02}   & {\normalsize 0.0000} & {\normalsize 0.0026} & {\normalsize associated}\\
+{\normalsize -8.09}   & {\normalsize 0.0000} & {\normalsize 0.0027} & {\normalsize mirnas}\\
 \end{tabular}
 };
-    \node [cloud, below of=lods, node distance=4cm]     (score)  {Score \& rank candidate articles: $\sum_{word\in article} s(word)$};
-    \node [block, left  of=score, node distance=4.5cm]    (cand)   {Candidate articles};
-    \node [decision, below of=score, node distance=3.5cm] (decide) {Manually evaluate high scoring articles};
+    \node [cloud, below of=lods, node distance=8cm]     (score)  {\Huge Score \& rank candidate articles: $\sum_{i} lo(w_i)$};
+    \node [block, left  of=score, node distance=10cm]    (cand)   {\Huge Candidate articles};
+    \node [decision, below of=score, node distance=7cm] (decide) {\Huge Manually evaluate high scoring articles};
 
     % Draw edges
     \path [line] (init1)  -- (remove);
@@ -87,18 +87,15 @@ introduced in PGF/TikZ >= 1.09.
     \path [line] (lods)  -- (score);
     \path [line] (cand)  -- (score);
     \path [line] (score)  -- (decide);
-    \path (decide) edge[bend right=90, line width=1mm] node[anchor=init2,right]{no }(init2);
-    \path (decide) edge[bend  left=90, line width=1mm] node[anchor=init1,right]{yes}(init1);
+    \path (decide) edge[bend right=90, line width=1mm] node[anchor=init2,right]{\Huge no }(init2);
+    \path (decide) edge[bend  left=90, line width=1mm] node[anchor=init1,right]{\Huge yes}(init1);
 
-
-               
-%    \path (remove.north) +(0,-2.3) node (clouds) {Build model};
-    \path (remove.north) +(-1.5,-2.0) node (clouds) {Build model};
+    \path (remove.north) +(7,-2.0) node[rotate=-90] (clouds) {\Huge Build model};
   
     \begin{pgfonlayer}{background}
-        \path (remove.west |- remove.north)+(-0.5,0.3) node (a) {};
-        \path (lods.south -| lods.east)+(+0.5,-0.3)    node (b) {};
-        \path (clouds.east |- clouds.east)+(+3.5,-7.8)   node (c) {};
+        \path (remove.west |- remove.north)+(-1,0.3) node (a) {};
+        \path (lods.south -| lods.east)+(-0.5,-0.3)    node (b) {};
+        \path (clouds.east |- clouds.east)+(+1.75,-17.8)   node (c) {};
           
         \path[fill=yellow!20,rounded corners, draw=black!50, dashed]
             (a) rectangle (c);           

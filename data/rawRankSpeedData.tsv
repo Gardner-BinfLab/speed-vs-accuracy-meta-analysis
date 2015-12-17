@@ -461,12 +461,12 @@ testId	accuracyRank	speedRank	method
 25521762:Table5:sumqualityrows14:Table3meanrank	0.17	1.00	spades
 25521762:Table5:sumqualityrows14:Table3meanrank	0.83	0.50	sparse
 25521762:Table5:sumqualityrows14:Table3meanrank	0.50	0.17	velvet
-20375457:Table5:errorrate:Table5	1.00	1.00	sa
-20375457:Table5:errorrate:Table5	0.50	0.50	downhillsimplex
-20375457:Table5:errorrate:Table5	0.00	0.00	pso
-20375457:Table6:errorrate:Table6	0.50	1.00	sa
-20375457:Table6:errorrate:Table6	1.00	0.50	downhillsimplex
-20375457:Table6:errorrate:Table6	0.00	0.00	pso
+999999999:Table5:errorrate:Table5	1.00	1.00	simulatedannealing
+999999999:Table5:errorrate:Table5	0.50	0.50	downhillsimplex
+999999999:Table5:errorrate:Table5	0.00	0.00	pso
+999999999:Table6:errorrate:Table6	0.50	1.00	simulatedannealing
+999999999:Table6:errorrate:Table6	1.00	0.50	downhillsimplex
+999999999:Table6:errorrate:Table6	0.00	0.00	pso
 23593445:Table1:Avefitness5noise:Table1	0.67	0.33	de
 23593445:Table1:Avefitness5noise:Table1	0.00	1.00	fa
 23593445:Table1:Avefitness5noise:Table1	0.33	0.67	cro
@@ -499,7 +499,7 @@ testId	accuracyRank	speedRank	method
 24708189:Figure3:Fmeasure@4errorrate:Figure2RD_400	0.62	0.27	bwasw
 24708189:Figure3:Fmeasure@4errorrate:Figure2RD_400	0.77	0.85	gsnap
 24708189:Figure3:Fmeasure@4errorrate:Figure2RD_400	0.08	0.65	mosaik
-24708189:Figure3:Fmeasure@4errorrate:Figure2RD_400	0.38	1.00	novaalign
+24708189:Figure3:Fmeasure@4errorrate:Figure2RD_400	0.38	1.00	novoalign
 24708189:Figure3:Fmeasure@4errorrate:Figure2RD_400	0.96	0.46	pass
 24708189:Figure3:Fmeasure@4errorrate:Figure2RD_400	0.00	0.92	segemehl
 24708189:Figure3:Fmeasure@4errorrate:Figure2RD_400	0.15	0.46	shrimp
@@ -630,7 +630,7 @@ testId	accuracyRank	speedRank	method
 21856737:Fig1a:Accuracy@0100:Fig5b	0.40	0.40	mrsfast
 21856737:Fig1a:Accuracy@0100:Fig5b	0.20	1.00	novoalign
 21856737:Fig1a:Accuracy@0100:Fig5b	0.00	0.00	soap
-21113338:Table2:MissingbranchrateAvgerror:Table3sumalltimes	0.00	1.00	sat
+21113338:Table2:MissingbranchrateAvgerror:Table3sumalltimes	0.00	1.00	sate
 21113338:Table2:MissingbranchrateAvgerror:Table3sumalltimes	0.14	0.43	mlmafft
 21113338:Table2:MissingbranchrateAvgerror:Table3sumalltimes	0.29	0.14	mlmafftparttree
 21113338:Table2:MissingbranchrateAvgerror:Table3sumalltimes	0.43	0.86	mlprankgt
@@ -639,7 +639,7 @@ testId	accuracyRank	speedRank	method
 21113338:Table2:MissingbranchrateAvgerror:Table3sumalltimes	0.86	0.00	mlclustalwquicktree
 21113338:Table2:MissingbranchrateAvgerror:Table3sumalltimes	1.00	0.71	mlopal
 23842808:Fig550genes:AverageFNrate:Section:31Computationalissues	0.00	0.07	caml
-23842808:Fig550genes:AverageFNrate:Section:31Computationalissues	0.14	0.57	beast
+23842808:Fig550genes:AverageFNrate:Section:31Computationalissues	0.14	0.57	starbeast
 23842808:Fig550genes:AverageFNrate:Section:31Computationalissues	0.43	0.36	buckycon
 23842808:Fig550genes:AverageFNrate:Section:31Computationalissues	0.29	0.36	buckypop
 23842808:Fig550genes:AverageFNrate:Section:31Computationalissues	0.57	0.07	mpest
@@ -653,3 +653,10 @@ testId	accuracyRank	speedRank	method
 15840834:Table2:NoofRMSD>3frombackbone:Table2	0.06	0.06	scwrlcons
 15840834:Table2:NoofRMSD>3frombackbone:Table2	0.56	0.22	segmodencad
 15840834:Table2:NoofRMSD>3frombackbone:Table2	0.78	0.78	swissmodel
+19179695:Fig8b:Treeerrorfraction:Fig9	1.00	0.83	poy
+19179695:Fig8b:Treeerrorfraction:Fig9	0.17	1.00	poystar
+19179695:Fig8b:Treeerrorfraction:Fig9	0.00	0.67	probtree
+19179695:Fig8b:Treeerrorfraction:Fig9	0.33	0.33	mlmafft
+19179695:Fig8b:Treeerrorfraction:Fig9	0.50	0.00	mlclustalw
+19179695:Fig8b:Treeerrorfraction:Fig9	0.83	0.50	mpsclustalw
+19179695:Fig8b:Treeerrorfraction:Fig9	0.67	0.17	mpjclustalw

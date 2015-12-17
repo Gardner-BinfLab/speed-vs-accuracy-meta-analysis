@@ -11,9 +11,9 @@ pubmedID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	spe
 					paralign	10	1			
 					rsmatch	11	10			
 					erpin	12	4			
-		Fig. 2B	median rank(MCC)	Fig. 2C	Rsearch	2	11	12		
-					Infernal	1	12			
-					Ravenna	3	9			
+		Fig. 2B	median rank(MCC)	Fig. 2C	rsearch	2	11	12		
+					infernal	1	12			
+					ravenna	3	9			
 					SAM	4	8			
 					hmmer	5	6			
 					wu-blast	10	7			
@@ -461,10 +461,10 @@ pubmedID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	spe
 					SPAdes	2	7			
 					Sparse	6	4			
 					Velvet	4	2			
-20375457	Comparison of different algorithms for simultaneous estimation of multiple parameters in kinetic metabolic models.	Table 5	error rate	Table 5	SA	3	3	3		
+999999999	Estimating Kinetic Parameters for Essential Amino Acid Production in Arabidopsis Thaliana by Using Particle Swarm Optimization	Table 5	error rate	Table 5	SimulatedAnnealing	3	3	3		
 					DownhillSimplex	2	2			
 					PSO	1	1			
-		Table 6	error rate	Table 6	SA	2	3			
+		Table 6	error rate	Table 6	SimulatedAnnealing	2	3			
 					DownhillSimplex	3	2			
 					PSO	1	1			
 23593445	An improved swarm optimization for parameter estimation and biological model selection.	Table 1	Ave fitness (5% noise)	Table 1	DE	3	2	4		
@@ -499,7 +499,7 @@ pubmedID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	spe
 					BWASW	9	4.5			
 					GSNAP	11	12			
 					MOSAIK	2	9.5			
-					Novaalign	6	14			
+					Novoalign	6	14			
 					PASS	13.5	7			
 					segemehl	1	13			
 					SHRIMP2	3	7			
@@ -630,7 +630,7 @@ pubmedID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	spe
 					mrsFAST	3	3			
 					Novoalign	2	6			
 					SOAP2	1	1			
-21113338	Multiple sequence alignment: a major challenge to large-scale phylogenetics.	Table 2	 Missing branch rate (%) - Avg error	Table 3 - sum all times	SATé	1	8	8		
+21113338	Multiple sequence alignment: a major challenge to large-scale phylogenetics.	Table 2	 Missing branch rate (%) - Avg error	Table 3 - sum all times	SATe	1	8	8		
 					ML(MAFFT)	2	4			
 					ML(MAFFT-PartTree)	3	2			
 					ML(Prank+GT)	4	7			
@@ -639,13 +639,13 @@ pubmedID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	spe
 					ML(ClustalW-quicktree)	7	1			
 					ML(Opal)	8	6			
 23842808	Naive binning improves phylogenomic analyses.	Fig. 5 (50 genes)	Average FN rate	Section: 3.1 Computational issues	CA-ML	1	1.5			
-					*BEAST	2	5			
+					starBEAST	2	5			
 					BUCKy-con	4	3.5			
 					BUCKy-pop	3	3.5			
 					MP-EST	5	1.5			
 15840834	All are not equal: a benchmark of different homology modeling programs.	Table 2	No. of RMSD >3 Å from backbone	Table 2	3D-JIGSAW	3	10	10		
 					Builder	7	5			
-					Modeller6v2–10	5	9			
+					Modeller6v2-10	5	9			
 					Modeller6v2	9	6			
 					Modeller7v7	10	7			
 					nest	4	4			
@@ -653,3 +653,10 @@ pubmedID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	spe
 					SCWRL-CONS	1.5	1.5			
 					SegMod/ENCAD	6	3			
 					SWISS-MODEL	8	8			
+19179695	Barking up the wrong treelength: the impact of gap penalty on alignment and tree accuracy.	Fig. 8 (b)	Tree error fraction	Fig. 9.	POY	7	6	7		
+					POYstar	2	7			
+					Probtree	1	5			
+					ML(MAFFT)	3	3			
+					ML(ClustalW)	4	1			
+					MPS(ClustalW)	6	4			
+					MPJ(ClustalW)	5	2			

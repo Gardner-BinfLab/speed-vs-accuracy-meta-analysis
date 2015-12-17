@@ -229,7 +229,7 @@ open(UT, "> meanRankSpeedData.tsv");
 my $methInfo = join("\t", @methodInfoKeys); 
 print UT "sumRanks\taccuracyRank\tspeedRank\tmethod\tnumTests\t$methInfo\trelAge\trelCites\n";
 
-foreach my $meth (keys %ranks){ 
+foreach my $meth (sort keys %ranks){ 
     
     printf UT "%0.2f\t%0.2f\t%0.2f\t%s\t%d", $ranks{$meth}[0]/$ranks{$meth}[2] + $ranks{$meth}[1]/$ranks{$meth}[2],  $ranks{$meth}[0]/$ranks{$meth}[2], $ranks{$meth}[1]/$ranks{$meth}[2], $meth, $ranks{$meth}[2];     
     

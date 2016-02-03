@@ -13,7 +13,7 @@
 #                      2. exclude high frequency words (possibly use the further background/non-scientific text for this e.g. Alice in Wonderland & The Hobbit)
 #                                 --add a list of words to ignore e.g. methods, sub-disciplines of bioinformatics
 #                                 --echo -e "assemblers\nmappers\nmapper\nassembler\ngabenchtob\nclustal\nenme\nsimprot\ncuresim\ncoffee\nseal\nsmidgen\nmsbi\nbrat\nidba\nfirefly\nsoapv\nreas\nhartigan\nhalle\ngsas\ncaap\nsegmod\nencad" | sort -d  > ignore.tsv
-#                                 --cat meanRankSpeedData | cut -f 4 | grep -v method | perl -lane 's/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/\_\*]//g; print;' >>ignore.tsv
+#                                 --cat meanRankSpeedData | cut -f 4 | grep -v method | perl -lane 's/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"\'()\[\]\-\/\_\*]//g; print;' >>ignore.tsv
 #
 #                      3. score each remaining word based upon how frequently it is used in the training data relative to the background set 
 #                         (e.g. log2( [f(t.word)/t.size + d]/[f(b.word)/b.size + d] ) ...  )
@@ -216,10 +216,11 @@ sub arrayToDictionary {
     my ($wordCount,$diWordCount)=(0,0); 
     my $lastWord;
     foreach my $str (@strings){
-	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/\_\*]/, $str);
+	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"\'()\[\]\-\/\_\*×]/, $str);
 	foreach my $st (@str){
 	    next if ($st =~ /\d/); 
-	    next if ($st !~ /\w/); 
+	    next if ($st !~ /^\w+$/); 
+	    #next if ($st !~ /\w/); 
 	    $st = lc($st); 
 	    $wordCounts{$st}=0 if (not defined($wordCounts{$st}));
 	    $wordCounts{$st}++; 
@@ -283,7 +284,7 @@ sub filterCommonWords {
     my $sum = 0;
     foreach my $word (keys %words){
 	next if (defined($commonWordDict{$word}));
-	#next if (length($word) < 4);#filter short words
+	next if (length($word) < 4);#filter short words
 	next if (defined($skipWords{$word}));
         #next if ($words{$word} < 1);#FILTER WORDS ONLY SEEN ONCE -- MAY REVISIT THIS!!!
 	$filteredTrainingWords{$word} = $words{$word}; 
@@ -310,6 +311,8 @@ sub computeLODS {
     my %lods;
     my $log2 = log(2);
     foreach my $word (keys %trainingWords){
+	
+	$word =~ s/\s+//g; 
 	if ( defined($backgroundWords{$word}) ){
 	    $lods{$word} = log( ($trainingWords{$word} + $pseudo)/($backgroundWords{$word} + $pseudo)  )/$log2;
 	}
@@ -323,13 +326,19 @@ sub computeLODS {
     #Compute LODS for words only found in the background:
     foreach my $word (keys %backgroundWords){
 	next if (defined( $trainingWords{$word} )); #already computed
+	$word =~ s/\s+//g; 
 	$trainingWords{$word}=0;
 	$lods{$word} = log( ($pseudo)/($backgroundWords{$word} + $pseudo)  )/$log2;
     }
 
     open(WUT, "> wordScores.tsv");
     printf WUT "logOdds\ttraingFreq\tbackgroundFreq\n";
-    foreach my $word (keys %lods){
+    foreach my $word (sort {$lods{$a} <=> $lods{$b}} keys %lods){
+	
+	next if (length($word) < 4);#filter short words
+	next if ($word =~ /[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"\'()\[\]\-\/\_\*×]/);
+	next if ($word !~ /^\w+$/);
+
 	if( defined($word) && defined($lods{$word}) && defined($trainingWords{$word}) && defined($backgroundWords{$word}) ){
 	    printf WUT "%0.2f\t%0.4f\t%0.4f\t$word\n", $lods{$word}, $trainingWords{$word}, $backgroundWords{$word};
 	}
@@ -368,7 +377,7 @@ sub computeDiLODS {
 
     open(WUT, "> diWordScores.tsv");
     printf WUT "logOdds\ttraingFreq\tbackgroundFreq\n";
-    foreach my $word (keys %lods){
+    foreach my $word (sort {$lods{$a} <=> $lods{$b}} keys %lods){
 	if( defined($word) && defined($lods{$word}) && defined($trainingDiWords{$word}) && defined($backgroundDiWords{$word}) ){
 	    printf WUT "%0.2f\t%0.4f\t%0.4f\t$word\n", $lods{$word}, $trainingDiWords{$word}/$trainingTot, $backgroundDiWords{$word}/$backgroundTot;
 	}
@@ -411,9 +420,10 @@ sub scoreArticles {
     print AUT "articleScore(monoWord)\tarticleScore(diWord)\tPMID\tTitle\tAbstract\n";
     foreach my $pmid (keys %candidates){
 	next if (not defined($candidates{$pmid}));
- 	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"()\[\]\-\/\_\*]/, $candidates{$pmid});
+ 	my @str = split(/[\s+\d+\.,;:\!\?\&\$\@\%\=\|\"\'()\[\]\-\/\_\*×]/, $candidates{$pmid});
 	my $lastWord;
 	foreach my $word (@str){
+	    next if ($word !~ /^\w+$/);
 	    if( defined($scores{$word}) ){
 		$sumScores += $scores{$word};
 	    }

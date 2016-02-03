@@ -1,3 +1,5 @@
+#!/usr/bin/Rscript
+
 #R CMD BATCH ../bin/prettyPlot.R
 
 library(MASS)  # in case it is not already loaded 
@@ -24,12 +26,11 @@ citesA   <-cor.test(1-d$accuracyRank, as.numeric(d$cites),    method = "spearman
 IFA      <-cor.test(1-d$accuracyRank, as.numeric(d$IF),       method = "spearman")
 
 op<-par(mfrow=c(1,2),cex=1.1,las=2)
-barplot(t(c(hindexA$estimate, mindexA$estimate, H5A$estimate, relAgeA$estimate, speedA$estimate, citesA$estimate, IFA$estimate)), names=c("H-index", "M-index", 'journal.H5', "relative\nage", "speed", "#citations", 'journal.IF'), ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlations with accuracy")
+barplot(t(c(mindexA$estimate, hindexA$estimate, H5A$estimate, relAgeA$estimate, speedA$estimate, citesA$estimate, IFA$estimate)), names=c("author.M", "author.H", 'journal.H5', "relative\nage", "speed", "#citations", 'journal.IF'), ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlations with accuracy rank")
 lines(c(-100,100),c(0,0))
 
 par(mar = c(5,4,4,5) + .1)
-smoothScatter(d$speedRank, d$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="mean normalised accuracy rank", xlab="mean normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n"
-) 
+smoothScatter(d$speedRank, d$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="mean normalised accuracy rank", xlab="mean normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n",main="Accuracy vs. Speed") 
 lines(lowess(d$speedRank, d$accuracyRank, f = .2), col = 2, lwd=5)
 axis(1,at=(0:5)/5)
 axis(2,at=(0:5)/5)
@@ -86,7 +87,7 @@ relCites<-cor.test(2-d$accuracyRank-d$speedRank, as.numeric(d$relCites), method 
 aac <- ((as.numeric(d$yearPublished)>0) & (as.numeric(d$cites) > 0))
 citesPerYear<-cor.test(2-d$accuracyRank-d$speedRank, as.numeric(d$cites[aac])/(1+2015-as.numeric(d$yearPublished)), method = "spearman")
 
-barplot(t(c(hindex$estimate, H5$estimate, mindex$estimate, relAge$estimate, cites$estimate, IF$estimate)), names=c("H-index", 'journal.H5', "M-index", "relative\nage", "#citations", 'journal.IF'), ylab="Spearman's rho",ylim=c(-0.1,0.1), main="Correlations with speed+accuracy")
+barplot(t(c(hindex$estimate, H5$estimate, mindex$estimate, relAge$estimate, cites$estimate, IF$estimate)), names=c("author.H", 'journal.H5', "author.M", "relative\nage", "#citations", 'journal.IF'), ylab="Spearman's rho",ylim=c(-0.1,0.1), main="Correlations with speed+accuracy")
 lines(c(-100,100),c(0,0))
 
 }
@@ -102,7 +103,7 @@ hiHI   <-sPa[as.numeric(d$hindex)   > hIQ[4]]
 hqrHI  <-sPa[ (as.numeric(d$hindex) <=hIQ[4]) & (as.numeric(d$hindex) > hIQ[3]) ]
 lqrHI  <-sPa[ (as.numeric(d$hindex) <=hIQ[3]) & (as.numeric(d$hindex) > hIQ[2]) ]
 loHI   <-sPa[  as.numeric(d$hindex) <=hIQ[2] ]
-boxplot(loHI,lqrHI,hqrHI,hiHI,names=c("low\nH-index","lower\ninter-quartile\nH-index","higher\ninter-quartile\nH-index","high\nH-index"), ylab="speed+accuracy rank", ylim=c(2.0,0.0), main="H-index",notch = T, varwidth = T)
+boxplot(loHI,lqrHI,hqrHI,hiHI,names=c("low\nauthor.H","lower\ninter-quartile\nauthor.H","higher\ninter-quartile\nauthor.H","high\nauthor.H"), ylab="speed+accuracy rank", ylim=c(2.0,0.0), main="author.H",notch = T, varwidth = T)
 
 otHI   <-sPa[  as.numeric(d$hindex) > hIQ[2] ]
 wilcox.test(loHI,otHI,alternative="l")
@@ -180,7 +181,47 @@ png(filename="../figures/Figure1.png", width = 730, height = 360)
 plotMe( c(1,1) )
 dev.off()
 
+
+
+
+
 ######################################################################
+
+pdf(file=    "../figures/supplementary-figures.pdf", width = 11,  height = 5)
+op<-par(mfrow=c(1,1),cex=1.5,las=1)
+hist(d$accuracyRank, breaks=50, xlab="Mean Accuracy Rank",main="")
+hist(dr$accuracyRank, breaks=50, xlab="Accuracy Rank",main="")
+hist(d$speedRank, breaks=50, xlab="Mean Speed Rank",main="")
+hist(dr$speedRank, breaks=50, xlab="Mean Speed Rank",main="")
+hist(d$cites, breaks=50, xlab="#citations",main="")
+hist(d$relCites, breaks=50, xlab="Relative citations",main="")
+hist(d$IF, breaks=50, xlab="journal.IF",main="")
+hist(d$H5, breaks=50, xlab="journal.H5",main="")
+hist(d$hindex, breaks=50, xlab="author.H",main="")
+hist(d$mindex, breaks=50, xlab="author.M",main="")
+hist(d$relAge, breaks=50, xlab="Relative age",main="")
+dev.off()
+
+
+pdf(file=    "../figures/supplementary-figures-small.pdf", width = 22,  height = 15)
+op<-par(mfrow=c(3,2),cex=1.7,las=1)
+hist(log10(d$cites), breaks=30, xlab="#citations",main="Number of citations",xaxt = "n",xlim=c(0,5))
+axis(1,at=0:5, c(10^(0:2),"1,000","10,000","100,000"))
+hist(log10(d$IF), breaks=25, xlab="journal.IF",main="Journal impact factor",xaxt = "n",xlim=c(-0.3,1.7))
+tcks<-c(0.5,1,2.5,5,10,25,50); axis(1,at=log10(tcks), tcks)
+hist(log10(d$H5), breaks=30, xlab="journal.H5",main="Journal H5 index (GoogleScholar)",xaxt = "n",xlim=c(1,2.7))
+tcks<-c(10,25,50,100,250,500); axis(1,at=log10(tcks), tcks)
+hist(log10(d$hindex), breaks=30, xlab="author.H",main="Corresponding Author\47s H-index",xaxt = "n",xlim=c(0.6,2.2))
+tcks<-c(1,5,10,25,50,100,150); axis(1,at=log10(tcks), tcks)
+hist(d$mindex, breaks=30, xlab="author.M",main="Corresponding Author\47s M-index") #,xaxt = "n",xlim=c(-0.15,1))
+#axis(1,at=log10(c(0.5,1,2,3,4,5,10)), c(0.5,1,2,3,4,5,10))
+hist(d$relAge, breaks=30, xlab="Relative age",main="Relative age")
+dev.off()
+
+
+
+######################################################################
+
 
 # #ENRICHMENT:
 # accQs<-quantile(as.numeric(d$accuracyRank), probs=c(0.25,0.5,0.75),na.rm=T)
@@ -253,11 +294,31 @@ meanp(p_values)
 #selfcontained.test(p_values,weight=weights,p_permu=NA)
 #competitive.test(Pvalue=p_values,Weight=weights)
 
+######################################################################
+
+wS<-read.table("wordScores.tsv", header=T, row.names=4)
+
+N=20
+pdf(file=    "../figures/wordScores.pdf", width = 16,  height = 8)
+op<-par(cex=2.0,las=2,mar = c(7,4,4,2) + .1)
+barplot(as.numeric( c(head(wS,n=N)[,1], NA, NA, NA, tail(wS,n=N)[,1]) ), names= c( row.names(head(wS,n=N)), '.', '.', '.', row.names(tail(wS,n=N)) ), ylab="word score (bits)",main="head & tail word scores",ylim=c(-10,7))
+dev.off()
+
+###
+pdf(file=    "../figures/smoothScatters.pdf", width = 11,  height = 5)
+op<-par(mfrow=c(1,2),cex=1.1,las=2,mar = c(5,4,4,5) + .1)
+smoothScatter(log10(as.numeric(d$IF)), d$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="mean normalised accuracy rank", xlab="Journal impact factor",xlim=c(log10(0.4),log10(54)),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n",main="Accuracy vs. IF") 
+notNA <- !is.na(d$IF)
+lines(lowess(log10(d$IF[notNA]), d$accuracyRank[notNA], f = .2), col = 2, lwd=5)
+tcks<-c(0.5,1,2.5,5,10,25,50); axis(1,at=log10(tcks), tcks)
+axis(2,at=(0:5)/5)
+
+smoothScatter(log10(as.numeric(d$cites)), d$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="mean normalised accuracy rank", xlab="# citations",xlim=c(0,5),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n",main="Accuracy vs. #citations") 
+notNA <- !is.na(d$cites)
+lines(lowess(log10(d$cites[notNA]), d$accuracyRank[notNA], f = .2), col = 2, lwd=5)
+axis(1,at=0:5, c(1,10,100,"1,000","10,000","100,000"))
+axis(2,at=(0:5)/5)
+dev.off()
 
 
-
-
-
-
-
-
+######################################################################

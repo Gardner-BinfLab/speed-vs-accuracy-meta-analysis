@@ -77,7 +77,7 @@ while(my $in = <IN0>){
 	    if ($in[7] !~ 'NA'){
 		my @ms = split(/;\s*/, $in[7]);
 		for (my $i=0; $i<scalar(@ms); $i++){
-		    if($ms[$i] =~ /:(\d+)/){
+		    if($ms[$i] =~ /:(\d+\.\d+)/ or $ms[$i] =~ /:(\d+)/){
 			$ms[$i] = $1;
 		    }
 		    else{
@@ -210,13 +210,13 @@ foreach my $bench (keys %benchMethod){
 	    $cites{$meth} = $methodInfo{$meth}{'cites'}        if (isNumeric($methodInfo{$meth}{'cites'})); 
 	}
 	
-	#hash2relrank returns a hash
-	my $relRankDates = hash2relrank( \%dates ); 
+	#normaliseH returns a hash
+	my $relRankDates = normaliseH( \%dates ); 
 	foreach my $meth (keys %{$relRankDates}){ 
 	    push(@{ $datesRelRanks{$meth} }, $relRankDates->{$meth} );
 	}
 	
-	my $relRankCites = hash2relrank( \%cites ); 
+	my $relRankCites = normaliseH( \%cites ); 
 	foreach my $meth (keys %{$relRankCites}){ 
 	    push(@{ $citesRelRanks{$meth} }, $relRankCites->{$meth} );
 	}
@@ -330,15 +330,15 @@ sub meanA {
 }
 
 ######################################################################
-#return relative rank of values in a hash: values to lie between 0 & 1. 
-sub hash2relrank {
+#return normalised values in a hash: values to lie between 0 & 1. 
+sub normaliseH {
     my $h = shift;
      my (@keys, @vals);
     foreach my $k (keys %{$h}){
 	push(@keys, $k);
 	push(@vals, $h->{$k});
     }
-    my $vals = relRankA(@vals);
+    my $vals = normaliseA(@vals);
     
     my %hash; 
     for(my $i=0; $i < scalar(@keys); $i++){
@@ -348,8 +348,8 @@ sub hash2relrank {
 }
 
 ######################################################################
-#return relative rank of values in an array: normalised to lie between 0 & 1. 
-sub relRankA {
+#return normalise values in an array: normalised to lie between 0 & 1. 
+sub normaliseA {
     my @a = @_; 
     my $minVal = minA(@a);
     #subtract min val.

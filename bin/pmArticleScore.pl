@@ -25,11 +25,11 @@
 
 #PUBMED SEARCHES:
 #                      TRAINING
-#                      less Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ Data.tsv | perl -lane '@F=split(/\t/); print "$F[0]\[uid\] OR " if $F[0]>0' | tr -d "\n"
-#                      17151342[uid] OR 20047664[uid] OR 25198770[uid] OR 21483869[uid] OR 24526711[uid] OR 24839440[uid] OR 17062146[uid] OR 21423806[uid] OR 25511303[uid] OR 20617200[uid] OR 99999999[uid] OR 25521762[uid] OR 20375457[uid] OR 23593445[uid] OR 21525877[uid] OR 24708189[uid] OR 18287116[uid] OR 24602402[uid] OR 24086547[uid] OR 18793413[uid] OR 23393030[uid] OR 22132132[uid] OR 15701525[uid] OR 22152123[uid] OR 19046431[uid] OR 25760244[uid] OR 23758764[uid] OR 22172045[uid] OR 25574120[uid] OR 22506536[uid] OR 21856737[uid] OR 21113338[uid] OR 23842808[uid] OR 15840834[uid]
+#                      less Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ Data.tsv | perl -lane '@F=split(/\t/); print "$F[0]\[uid\] OR " if $F[0]>0' | grep -v 999999999 | tr -d "\n" && echo
+#                      17151342[uid] OR 20047664[uid] OR 25198770[uid] OR 21483869[uid] OR 24526711[uid] OR 24839440[uid] OR 17062146[uid] OR 21423806[uid] OR 25511303[uid] OR 20617200[uid] OR 26778510[uid] OR 25521762[uid] OR 23593445[uid] OR 21525877[uid] OR 24708189[uid] OR 18287116[uid] OR 24602402[uid] OR 24086547[uid] OR 18793413[uid] OR 23393030[uid] OR 22132132[uid] OR 15701525[uid] OR 22152123[uid] OR 19046431[uid] OR 25760244[uid] OR 23758764[uid] OR 22172045[uid] OR 25574120[uid] OR 22506536[uid] OR 21856737[uid] OR 21113338[uid] OR 23842808[uid] OR 15840834[uid] OR 19179695[uid] OR 26862001[uid] OR 22492192[uid] OR 21615913[uid] OR 19126200[uid] OR 22574964[uid]
 #                      
 #                      BACKGROUND
-#                      cat checked-pmids.tsv | perl -lane 'print "$F[0]\[uid\] OR " if $F[0]>0' | tr -d "\n"
+#                      cat checked-pmids.tsv | perl -lane 'print "$F[0]\[uid\] OR " if $F[0]>0' | tr -d "\n" && echo 
 #                      bioinformatics [TIAB] 2013:2015 [dp] (sorted on first author)
 #                      cat pubmed_result-checked.xml pubmed_result-background1.xml > pubmed_result-background.xml
 #
@@ -128,7 +128,7 @@ my $candidates = pubmedXML2hash(\@candidates, 35000); #limit to the first XXXX p
 
 #score the training articles
 unlink("articleScores.tsv");
-scoreArticles($training,   $scores, $diScores, 'training', \%empty,    $doneFile); 
+#scoreArticles($training,   $scores, $diScores, 'training', \%empty,    $doneFile); 
               
 #score the candidate articles
 scoreArticles($candidates, $scores, $diScores, 'candidate', $training, $doneFile); 

@@ -1,662 +1,752 @@
-pubmedID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	speedRank	numMethods	Data set (if applicable)	Bias
-17151342	Exploring genomic dark matter: A critical assessment of the performance of homology search methods on noncoding RNA	Fig. 2A	median rank(MCC)	Fig. 2C	Rsearch	1	11	12		
-					Infernal	2	12			
-					Ravenna	3	9			
-					SAM	4	8			
-					hmmer	6.5	6			
-					wu-blast	6.5	7			
-					ssearch	6.5	5			
-					fasta	6.5	2			
-					ncbi-blast	9	3			
-					paralign	10	1			
-					rsmatch	11	10			
-					erpin	12	4			
-		Fig. 2B	median rank(MCC)	Fig. 2C	rsearch	2	11	12		
-					infernal	1	12			
-					ravenna	3	9			
-					SAM	4	8			
-					hmmer	5	6			
-					wu-blast	10	7			
-					ssearch	6	5			
-					fasta	8	2			
-					ncbi-blast	8	3			
-					paralign	8	1			
-					rsmatch	11	10			
-					erpin	12	4			
-		Fig. 3A	median rank(MCC)	Fig. 3C	ssearch	2	5	5		
-					fasta	1	3			
-					wu-blast	3.5	1			
-					ncbi-blast	3.5	4			
-					paralign	5	2			
-		Fig. 3B	median rank(MCC)	Fig. 3C	ssearch	1	5	5		
-					fasta	3	3			
-					wu-blast	3	1			
-					ncbi-blast	3	4			
-					paralign	5	2			
-20047664	A simulation study comparing supertree and combined analysis methods using SMIDGen	Fig. 3c/f	Average topological error rate	Table 3, 1000 taxa, 20% SF, 1 SG.	wMRP-MP	5	5	5		
- 					MRP-MP	4	2			
-					CA-MP	3	3			
-					MRP-ML	2	1			
-					CA-ML	1	4			
-25198770	GABenchToB: A Genome Assembly Benchmark Tuned on Bacteria and Benchtop Sequencers	Fig. 2A S.aureus (COL) Mis2x150bp	NGA50	Fig. 3A	abyss	6	4	9	S.aureus (COL) Mis2x150bp	No
-					clc	3	1			
-					soap2	7	2			
-					velvet	8	3			
-					spades	9	6			
-					celera	2	9			
-					newbler	4	7			
-					seqman	1	5			
-					mira	3	8			
-		Fig. 2B S.aureus (COL) Mis2x150bp	Misassemblies		abyss	6	4	9		
-					clc	4	1			
-					soap2	7	2			
-					velvet	3	3			
-					spades	1	6			
-					celera	9	9			
-					newbler	8	7			
-					seqman	2	5			
-					mira	5	8			
-		Fig. 2A E.coli (SAKAI) Mis2x150bp	NGA50		abyss	8	4	9	E.coli (SAKAI) Mis2x150bp	
-					clc	6	1			
-					soap2	6	3			
-					velvet	6	2			
-					spades	9	6			
-					celera	4	9			
-					newbler	2	5			
-					seqman	3	7			
-					mira	1	8			
-		Fig. 2B E.coli (SAKAI) Mis2x150bp	Misassemblies		abyss	4	4	9		
-					clc	3	1			
-					soap2	9	3			
-					velvet	6	2			
-					spades	1	6			
-					celera	5	9			
-					newbler	8	5			
-					seqman	2	7			
-					mira	7	8			
-		Fig. 2A S.aureus (COL) Mis2x250bp	NGA50		abyss	3	4	9	S.aureus (COL) Mis2x250bp	
-					clc	6	1			
-					soap2	2	2			
-					velvet	4	3			
-					spades	7	7			
-					celera	5	9			
-					newbler	9	5			
-					seqman	1	6			
-					mira	8	8			
-		Fig. 2B S.aureus (COL) Mis2x250bp 	Misassemblies		abyss	4.5	4	9		
-					clc	3	1			
-					soap2	6	2			
-					velvet	7	3			
-					spades	1.5	7			
-					celera	4.5	9			
-					newbler	9	5			
-					seqman	1.5	6			
-					mira	8	8			
-		Fig. 2A E.coli (SAKAI) Mis2x250bp	NGA50		abyss	5	4	9	E.coli (SAKAI) Mis2x250bp	
-					clc	9	1			
-					soap2	1	3			
-					velvet	2	2			
-					spades	8	7			
-					celera	4	9			
-					newbler	7	5			
-					seqman	3	6			
-					mira	6	8			
-		Fig. 2B E.coli (SAKAI) Mis2x250bp	Misassemblies		abyss	5	4	9		
-					clc	2	1			
-					soap2	9	3			
-					velvet	8	2			
-					spades	1	7			
-					celera	3	9			
-					newbler	6	5			
-					seqman	4	6			
-					mira	7	8			
-		Fig. 2A M.tuberculosis (H37) Mis2x250bp	NGA50		abyss	4	5	9	M.tuberculosis (H37) Mis2x250bp	
-					clc	6	1			
-					soap2	5	3			
-					velvet	2	2			
-					spades	7	9			
-					celera	9	7			
-					newbler	8	4			
-					seqman	3	6			
-					mira	1	8			
-		Fig. 2B M.tuberculosis (H37) Mis2x250bp	Misassemblies		abyss	3	5	9		
-					clc	2	1			
-					soap2	9	3			
-					velvet	8	2			
-					spades	4	9			
-					celera	5	7			
-					newbler	7	4			
-					seqman	1	6			
-					mira	6	8			
-		Fig. 2A S.aureus (COL) PGM200bp	NGA50		abyss	5	4	9	S.aureus (COL) PGM200bp	
-					clc	6	1.5			
-					soap2	1	1.5			
-					velvet	3	3			
-					spades	8	8			
-					celera	4	7			
-					newbler	7	5			
-					seqman	2	6			
-					mira	9	9			
-		Fig. 2B S.aureus (COL) PGM200bp	Misassemblies		abyss	1	4	9		
-					clc	6	1.5			
-					soap2	5	1.5			
-					velvet	2.5	3			
-					spades	7	8			
-					celera	4	7			
-					newbler	2.5	5			
-					seqman	9	6			
-					mira	8	9			
-		Fig. 2A E.coli (SAKAI) PGM200bp	NGA50		abyss	3	4	9	E.coli (SAKAI) PGM200bp	
-					clc	6	1			
-					soap2	1	2			
-					velvet	2	3			
-					spades	9	8			
-					celera	5	6			
-					newbler	8	5			
-					seqman	4	7			
-					mira	7	9			
-		Fig. 2B E.coli (SAKAI) PGM200bp	Misassemblies		abyss	2	4	9		
-					clc	5	1			
-					soap2	1	2			
-					velvet	7	3			
-					spades	6	8			
-					celera	3	6			
-					newbler	4	5			
-					seqman	9	7			
-					mira	8	9			
-		Fig. 2A S.aureus (COL) PGM400bp	NGA50		abyss	3	4	9	S.aureus (COL) PGM400bp	
-					clc	5	2			
-					soap2	1	3			
-					velvet	2	1			
-					spades	7	8			
-					celera	6	7			
-					newbler	9	5			
-					seqman	4	6			
-					mira	8	9			
-		Fig. 2B S.aureus (COL) PGM400bp	Misassemblies		abyss	1	4	9		
-					clc	4	2			
-					soap2	9	3			
-					velvet	6	1			
-					spades	5	8			
-					celera	2	7			
-					newbler	3	5			
-					seqman	8	6			
-					mira	7	9			
-		Fig. 2A E.coli (SAKAI) PGM400bp	NGA50		abyss	3	4	9	E.coli (SAKAI) PGM400bp	
-					clc	4	1			
-					soap2	1	3			
-					velvet	2	2			
-					spades	8	6			
-					celera	5	7			
-					newbler	6	5			
-					seqman	7	8			
-					mira	9	9			
-		Fig. 2B E.coli (SAKAI) PGM400bp	Misassemblies		abyss	2	4	9		
-					clc	4	1			
-					soap2	9	3			
-					velvet	8	2			
-					spades	5	6			
-					celera	1	7			
-					newbler	3	5			
-					seqman	7	8			
-					mira	6	9			
-		Fig. 2A M.tuberculosis (H37) PGM400bp	NGA50		abyss	3	4	9	M.tuberculosis (H37) PGM400bp	
-					clc	4	1			
-					soap2	1	2			
-					velvet	2	3			
-					spades	8	7			
-					celera	6	6			
-					newbler	7	5			
-					seqman	5	8			
-					mira	9	9			
-		Fig. 2B M.tuberculosis (H37) PGM400bp	Misassemblies		abyss	1	4	9		
-					clc	6	1			
-					soap2	5	2			
-					velvet	2	3			
-					spades	7	7			
-					celera	4	6			
-					newbler	3	5			
-					seqman	8	8			
-					mira	9	9			
-21483869	A Comprehensive Benchmark Study of Multiple Sequence Alignment Methods: Current Challenges and Future Perspectives	Figure 3	Column Score (CS)	Figure 3	ClustalW	9	6	9		Yes
-					Muscle	8	5			
-					Muscle(maxiters=2)	7	3			
-					dialign-tx	6	7			
-					kalign	5	1			
-					mafft(fftns2)	4	1			
-					probcons	3	9			
-					tcoffee	2	8			
-					mafft(linsi)	1	4			
-24526711	A benchmark for comparison of cell tracking algorithms.	Supplementary-Table 1 Final Ranking	Final/Combined C2DL-MSC	Supplementary-Table 1 RANKINGS (Real videos)	COM-US	5	1	5	C2DL-MSC	yes
-					HEID-GE	2	4			
-					KTH-SE	1	2			
-					PRAG-CZ	4	3			
-					UPM-ES	3	5			
-			Final/Combined C3DH-H157		COM-US	4	2	4	C3DH-H157	
-					HEID-GE	3	4			
-					KTH-SE	2	3			
-					PRAG-CZ	1	1			
-			Final/Combined C3DL-MDA231		COM-US	3	2	4	C3DL-MDA231	
-					HEID-GE	2	4			
-					KTH-SE	1	3			
-					PRAG-CZ	4	1			
-			Final/Combined N2DH-GOWT1		COM-US	6	1	6	N2DH-GOWT1	
-					HEID-GE	3	4			
-					LEID-NL	4	5			
-					KTH-SE	1	2			
-					PRAG-CZ	2	3			
-					UPM-ES	5	6			
-			Final/Combined N2DL-Hela		COM-US	5	1	5	N2DL-Hela	
-					HEID-GE	2	4			
-					KTH-SE	1	2			
-					PRAG-CZ	3	3			
-					UPM-ES	4	5			
-			Final/Combined N3DH-CHO		COM-US	5	1	5	N3DH-CHO	
-					HEID-GE	1	4			
-					LEID-NL	3	5			
-					KTH-SE	2	3			
-					PRAG-CZ	4	2			
-			Final/Combined N2DH-SIM		COM-US	6	1	6	N2DH-SIM	
-					HEID-GE	3	4			
-					LEID-NL	1	5			
-					KTH-SE	2	2			
-					PRAG-CZ	5	3			
-					UPM-ES	4	6			
-			Final/Combined N3DH-SIM		COM-US	4	2	5	N3DH-SIM	
-					HEID-GE	3	4			
-					LEID-NL	1	5			
-					KTH-SE	2	3			
-					PRAG-CZ	5	1			
-24839440	Objective and Comprehensive Evaluation of Bisulfite Short Read Mapping Tools	Fig. 6	Mapping efficiency	Fig. 3	BSMAP	3	2	5		
-					BS-Seeker	5	3			
-					Bismark	1	4			
-					BRAT-BW	4	1			
-					BiSS	2	5			
-17062146	The accuracy of several multiple sequence alignment programs for proteins	Fig. 1	average accuracy values (all refs)	Fig. 1	ClustalW	6	6	10		
-					Dialign2.2	9	8			
-					TCoffee	3	10			
-					POA	10	4			
-					Mafft(FFTNS2)	7	1			
-					Muscle	4	3			
-					Mafft(LINSi)	2	5			
-					ProbCons	1	9			
-					Dialign-T	8	7			
-					Kalign	5	2			
-		Fig. 1	average accuracy values (Simprot)	Fig. 1	ClustalW	7	6	10		
-					Dialign2.2	9	8			
-					Dialign-T	8	7			
-					Kalign	6	2			
-					Mafft(FFTNS2)	3	1			
-					Mafft(LINSi)	2	5			
-					Muscle	5	3			
-					POA	10	4			
-					ProbCons	1	9			
-					TCoffee	4	10			
-21423806	A practical comparison of de novo genome assembly software tools for next-generation sequencing technologies	Fig. 6A	Swinepox-SE N50	Fig. 2A	SSAKE	1	4.5	9		
-					VCAKE	8	9			
-					QSRA	6	4.5			
-					SHARCGS	5	4.5			
-					Edena-strict	4	4.5			
-					Edena-nonstrict	2	4.5			
-					Velvet	9	4.5			
-					SOAPdenovo	7	4.5			
-					Taipan	3	4.5			
-		Fig. 6B	E. coli N50	Fig. 2A	SSAKE	8	6	8		
-					VCAKE	7	8			
-					QSRA	6	7			
-					Edena-strict	3	4.5			
-					Edena-nonstrict	1	4.5			
-					Velvet	5	3			
-					SOAPdenovo	4	1.5			
-					Taipan	2	1.5			
-		Fig. 6C	Yeast N50	Fig. 2A	SSAKE	6	6			
-					VCAKE	7	8			
-					QSRA	5	7			
-					Edena-strict	3	4.5			
-					Edena-nonstrict	2	4.5			
-					Velvet	8	3			
-					SOAPdenovo	4	1			
-					Taipan	1	2			
-25511303	Comparisons of computational methods for differential alternative splicing detection using RNA-seq in plant 	Table 1	Mean of 15 AUC ranks (Table 1)	Supplementary Table S2	rDiff-param	5	1	8		
-					DSGseq	2	2			
-					DiffSplice	8	3			
-					DEXSeq	1	4			
-					MATS	6	5			
-					SpComp	7	6			
-					SeqGSEA	4	7			
-					Cufflinks	3	8			
-20617200	A Comprehensive Benchmark of Kernel Methods to Extract Protein–Protein Interactions from Literature	Table 2	AUC-AIMed	Table S9	SL	2	1	9		
-					ST	6.5	6			
-					SST	6.5	8			
-					PT	8	9			
-					SpT	9	7			
-					kBSPS	4	2			
-					cosine	5	4.5			
-					edit	3	4.5			
-					APG	1	3			
-		Table 2	AUC-BioInfer	Table S9	SL	2	1	9		
-					ST	4	6			
-					SST	7	8			
-					PT	6	9			
-					SpT	5	7			
-					kBSPS	3	2			
-					cosine	9	4.5			
-					edit	8	4.5			
-					APG	1	3			
-		Table 2	AUC-HPRD50	Table S9	SL	2	1	9		
-					ST	8	6			
-					SST	9	8			
-					PT	7	9			
-					SpT	6	7			
-					kBSPS	3	2			
-					cosine	5	4.5			
-					edit	4	4.5			
-					APG	1	3			
-		Table 2	AUC-IEPA	Table S9	SL	3	1	9		
-					ST	6	6			
-					SST	9	8			
-					PT	8	9			
-					SpT	5	7			
-					kBSPS	2	2			
-					cosine	7	4.5			
-					edit	4	4.5			
-					APG	1	3			
-		Table 2	AUC-LLL	Table S9	SL	4	1	9		
-					ST	6	6			
-					SST	8	8			
-					PT	7	9			
-					SpT	9	7			
-					kBSPS	2	2			
-					cosine	5	4.5			
-					edit	1	4.5			
-					APG	3	3			
-99999999	An evaluation of the accuracy and speed of metagenome analysis tools	Table 1	Pearson Correlation Coefficient	Table 1	CLARK	1	6	14		
-					EBI	13	13			
-					Genometa	8	8			
-					GOTTCHA	14	7			
-					Kraken	2	4			
-					LMAT	5	9			
-					MEGAN	12	10			
-					MetaPhlAn	4	5			
-					MetaPhyler	10	14			
-					MG-RAST	7	12			
-					mOTU	6	3			
-					One Codex	3	2			
-					QIIME	11	1			
-					Taxator-tk	9	11			
-		Table 2	MCC	Table 1	CLARK	1	6	14		
-					EBI	14	13			
-					Genometa	7	8			
-					GOTTCHA	5	7			
-					Kraken	3	4			
-					LMAT	8	9			
-					MEGAN	6	10			
-					MetaPhlAn	10	5			
-					MetaPhyler	11	14			
-					MG-RAST	4	12			
-					mOTU	12	3			
-					One Codex	2	2			
-					QIIME	13	1			
-					Taxator-tk	9	11			
-		Table 2	SEN	Table 1	CLARK	1	6	14		
-					EBI	13	13			
-					Genometa	9	8			
-					GOTTCHA	7	7			
-					Kraken	3	4			
-					LMAT	5	9			
-					MEGAN	6	10			
-					MetaPhlAn	10	5			
-					MetaPhyler	11	14			
-					MG-RAST	4	12			
-					mOTU	12	3			
-					One Codex	2	2			
-					QIIME	14	1			
-					Taxator-tk	8	11			
-		Table 2	SPEC	Table 1	CLARK	12	6	14		
-					EBI	8	13			
-					Genometa	11	8			
-					GOTTCHA	3	7			
-					Kraken	3	4			
-					LMAT	14	9			
-					MEGAN	10	10			
-					MetaPhlAn	3	5			
-					MetaPhyler	6.5	14			
-					MG-RAST	9	12			
-					mOTU	3	3			
-					One Codex	6.5	2			
-					QIIME	3	1			
-					Taxator-tk	13	11			
-		Figure 2	logOddsGenus	Table 1	CLARK	2	6	14		
-					EBI	8	13			
-					Genometa	11	8			
-					GOTTCHA	14	7			
-					Kraken	1	4			
-					LMAT	4	9			
-					MEGAN	7	10			
-					MetaPhlAn	5	5			
-					MetaPhyler	12	14			
-					MG-RAST	10	12			
-					mOTU	6	3			
-					One Codex	3	2			
-					QIIME	9	1			
-					Taxator-tk	13	11			
-		Figure 2	logOddsPhylum	Table 1	CLARK	1	6	14		
-					EBI	10	13			
-					Genometa	8	8			
-					GOTTCHA	14	7			
-					Kraken	2	4			
-					LMAT	4	9			
-					MEGAN	12	10			
-					MetaPhlAn	6	5			
-					MetaPhyler	11	14			
-					MG-RAST	5	12			
-					mOTU	7	3			
-					One Codex	3	2			
-					QIIME	9	1			
-					Taxator-tk	13	11			
-25521762	Assessment of de novo assemblers for draft genomes: a case study with fungal genomes.	Table 5	sum quality rows 1-4	Table 3 (mean rank)	ABySS	3	5	7		
-					IDBA-UD	1	6			
-					Minia	7	1			
-					SOAP	5	3			
-					SPAdes	2	7			
-					Sparse	6	4			
-					Velvet	4	2			
-999999999	Estimating Kinetic Parameters for Essential Amino Acid Production in Arabidopsis Thaliana by Using Particle Swarm Optimization	Table 5	error rate	Table 5	SimulatedAnnealing	3	3	3		
-					DownhillSimplex	2	2			
-					PSO	1	1			
-		Table 6	error rate	Table 6	SimulatedAnnealing	2	3			
-					DownhillSimplex	3	2			
-					PSO	1	1			
-23593445	An improved swarm optimization for parameter estimation and biological model selection.	Table 1	Ave fitness (5% noise)	Table 1	DE	3	2	4		
-					FA	1	4			
-					CRO	2	3			
-					S-CRO	4	1			
-		Table 1	Ave fitness (10% noise)	Table 1	DE	2	2			
-					FA	3	4			
-					CRO	1	3			
-					S-CRO	4	1			
-		Table 1	Ave fitness (15% noise)	Table 1	DE	3	2			
-					FA	1	4			
-					CRO	2	3			
-					S-CRO	4	1			
-21525877	Evaluation of next-generation sequencing software in mapping and assembly.	Table 2	Reads mapped correctly (SE)	Table 2 (SE)	Bowtie	3	3	8		
-					BWA	2	5			
-					Mosaik	5	4			
-					PASS	8	2			
-					RMAP	7	6			
-					SeqMap	6	7			
-					SHRiMP	1	8			
-					SOAP	4	1			
-		Table 2	Reads mapped correctly (PE)	Table 2 (PE)	Bowtie	7	2	7		
-					BWA	1	4			
-					Mosaik	4	3			
-					RMAP	6	5			
-					SHRiMP	3	7			
-					SOAP	5	1			
-					SSAHA2	2	6			
-24708189	Comparison of mapping algorithms used in high-throughput sequencing: application to Ion Torrent data.	Figure 3	F-measure (@ 4% error rate)	Figure 2 (RD_400)	Bowtie2	5	2	14		
-					BWA	12	11			
-					BWASW	9	4.5			
-					GSNAP	11	12			
-					MOSAIK	2	9.5			
-					Novoalign	6	14			
-					PASS	13.5	7			
-					segemehl	1	13			
-					SHRIMP2	3	7			
-					SMALT	4	3			
-					SNAP	10	1			
-					SRmapper	13.5	4.5			
-					SSAHA2	7	9.5			
-					TMAP	8	7			
-18287116	Empirical comparison of ab initio repeat finding programs.	Table 1	Sensitivity (Chromosome segment) 	Table 1 (Chromosome segment)	RepeatGluer	1	3	4		
-					RepeatScout	3	4			
-					RepeatFinder	2	2			
-					PILER	4	1			
-		Table 1	Sensitivity (Chromosome) 	Table 1 (Chromosome)	RepeatScout	2	3	3		
-					RepeatFinder	1	2			
-					PILER	3	1			
-24602402	Assessing the efficiency of multiple sequence alignment programs.	Additional file 2	RV50 - BB_SP* (Average)	Additional file 3 (RV50 - BB)	CLUSTALW	9	1	9		
-					CLUSTAL OMEGA	5	6			
-					DIALIGN-TX	7	5			
-					MAFFT	1	4			
-					MUSCLE	6	2			
-					POA	8	3			
-					Probalign	2.5	7			
-					Probcons	2.5	8			
-					T-Coffee	4	9			
-24086547	Comparing memory-efficient genome assemblers on stand-alone and cloud infrastructures.	Table 4.	N50	Table 4.	Diginorm-Velvet	1	4	8		
-					DiMA	6	5			
-					Gossamer	8	7			
-					Minia	5	1			
-					SGA	4	8			
-					SparseAssembler	3	3			
-					Velvet	2	2			
-					ZeMA	7	6			
-		Table 4.	N50	Table 4.	Diginorm-Velvet	2	3	7		
-					DiMA	5	4			
-					Gossamer	7	7			
-					Minia	6	5			
-					SparseAssembler	3	1			
-					Velvet	1	6			
-					ZeMA	4	2			
-18793413	Critical assessment of alignment procedures for LC-MS proteomics and metabolomics measurements.	Table 3	Recall(align) - fraction 00	Table 5 (P1)	msInspect	7	4	7		
-					MZmine	3	2			
-					OpenMS	1	6			
-					SpecArray	6	7			
-					XAlign	2	5			
-					XCMS (without retention time)	4	1			
-					XCMS (with correction)	5	3			
-		Table 3	Precision(align) - fraction 00	Table 5 (P1)	msInspect	7	4	7		
-					MZmine	3	2			
-					OpenMS	1	6			
-					SpecArray	4	7			
-					XAlign	2	5			
-					XCMS (without retention time)	6	1			
-					XCMS (with correction)	5	3			
-23393030	Comparative study of de novo assembly and genome-guided assembly strategies for transcriptome reconstruction based on RNA-Seq	Table 1 (brain)	Accuracy (%)	Figure 2A (brain)	inchworm	1	1	4		
-					oases	3	2			
-					trans-ABySS	4	3			
-					trinity	2	4			
-		Table 1 (esc)	Accuracy (%)	Figure 2A (esc)	inchworm	2	1	4		
-					oases	4	2			
-					trans-ABySS	1	3			
-					trinity	3	4			
-		Table 1 (spombe)	Accuracy (%)	Figure 2A (spombe)	inchworm	2	1	4		
-					oases	3	2			
-					trans-ABySS	1	3			
-					trinity	4	4			
-22132132	RAxML and FastTree: comparing two methods for large-scale maximum likelihood phylogeny estimation.	Figure 3	Missing branch rate (TrueAln)	Figure 3 (TrueAln)	RAxML	1	3			
-					FastTree	2	1			
-					RAxML-Limited	3	2			
-15701525	Comprehensive evaluation of protein structure alignment methods: scoring by geometric measures.	Table 1	AUROC (native score)	Table 5	CE	3	4	6		
-					DALI	1.5	5			
-					LSQMAN	6	2			
-					SSAP	4	6			
-					SSM	5	1			
-					STRCUTAL	1.5	3			
-22152123	Fast and accurate methods for phylogenomic analyses.	Figure 5	FN rate (representative methods)	Figure 1 (50 genes)	BUCKy(MrBayes)	1	6	6		
-					BUCKy(MrBayes-spa)	2	5			
-					BUCKy(RAxML)	3	4			
-					phylonet(FT)	4.5	1.5			
-					greedy(FT)	4.5	1.5			
-					igtp-duploss(FT)	6	3			
-19046431	Comparison of methods for estimating the nucleotide substitution matrix.	Figure 2 (a)	Euclidean distance (L=5000) -- Lake excluded.	Figure 2 (b)	Barry	1	3			
-					Goldman	4	2			
-					Gojobori	2	1			
-					Woodhams	3	4			
-25760244	An assessment of bacterial small RNA target prediction programs.	Table 1.	AUC	Table 3.	CopraRNA	1	8	9		
-					IntaRNA	2	6			
-					RNAup	3	5			
-					RNAplex	4	1.5			
-					TargetRNA2	5	1.5			
-					RNAhybrid	6	3			
-					RNAduplex	7	7			
-					RNAcofold	8	4			
-					Pairfold	9	9			
-23758764	Benchmarking short sequence mapping tools.	Table 2. (reported correct)	Sensitivity	Figure 14 (C. elegans)	Bowtie	2	1	9		
-					Bowtie2	8	3			
-					BWA	6	8			
-					SOAP2	7	2			
-					MAQ	5	5			
-					RMAP	9	9			
-					GSNAP	4	4			
-					Novoalign	1	6			
-					mrsFAST	3	7			
-22172045	Performance analysis of novel methods for detecting epistasis.	Figure 7 (Sim4)	Sensitivity at 0.01 FPR	Table 2 (Sim 4)	AntEpiSeeker	2	4	5		
-					BOOST	1	1			
-					EpiMODE	4.5	5			
-					SNPRuler	3	2			
-					TEAM	4.5	3			
-25574120	Evaluating the accuracy and efficiency of multiple sequence alignment methods.	Figure 1	Alignment accuracy (SPS)	Figure 6	Clustal Omega	8	5	10		
-					Dialign-TX	7	7			
-					Kalign	4	4			
-					MAFFT(FFT-NS-2)	9.5	2			
-					MAFFT(L-INS-i)	3	8			
-					Multalin	6	3			
-					MUSCLE	5	1			
-					ProbCons	1	10			
-					SATe	2	6			
-					T-Coffee	9.5	9			
-22506536	Mapping reads on a genomic sequence: an algorithmic overview and a practical comparative analysis.	Table 5. 	number of mapped reads whose original position has been retrieved in the complete list of hits.	Table 5. (Indexing + Mapping time)	BFAST	6	4	7		
-					Bowtie	1.5	2			
-					BWA	1.5	3			
-					GASSST	4	5			
-					Novoalign	5	6			
-					PerM	3	1			
-					SSAHA2	7	7			
-21856737	Comparative analysis of algorithms for next-generation sequencing read alignment.	Fig. 1. (a)	Accuracy @ 0.100	Fig. 5. (b)	Bowtie	6	2	6		
-					BWA	4	4			
-					mrFAST	5	5			
-					mrsFAST	3	3			
-					Novoalign	2	6			
-					SOAP2	1	1			
-21113338	Multiple sequence alignment: a major challenge to large-scale phylogenetics.	Table 2	 Missing branch rate (%) - Avg error	Table 3 - sum all times	SATe	1	8	8		
-					ML(MAFFT)	2	4			
-					ML(MAFFT-PartTree)	3	2			
-					ML(Prank+GT)	4	7			
-					ML(Muscle)	5	5			
-					ML(ClustalW)	6	3			
-					ML(ClustalW-quicktree)	7	1			
-					ML(Opal)	8	6			
-23842808	Naive binning improves phylogenomic analyses.	Fig. 5 (50 genes)	Average FN rate	Section: 3.1 Computational issues	CA-ML	1	1.5			
-					starBEAST	2	5			
-					BUCKy-con	4	3.5			
-					BUCKy-pop	3	3.5			
-					MP-EST	5	1.5			
-15840834	All are not equal: a benchmark of different homology modeling programs.	Table 2	No. of RMSD >3 Å from backbone	Table 2	3D-JIGSAW	3	10	10		
-					Builder	7	5			
-					Modeller6v2-10	5	9			
-					Modeller6v2	9	6			
-					Modeller7v7	10	7			
-					nest	4	4			
-					SCWRL3	1.5	1.5			
-					SCWRL-CONS	1.5	1.5			
-					SegMod/ENCAD	6	3			
-					SWISS-MODEL	8	8			
-19179695	Barking up the wrong treelength: the impact of gap penalty on alignment and tree accuracy.	Fig. 8 (b)	Tree error fraction	Fig. 9.	POY	7	6	7		
-					POYstar	2	7			
-					Probtree	1	5			
-					ML(MAFFT)	3	3			
-					ML(ClustalW)	4	1			
-					MPS(ClustalW)	6	4			
-					MPJ(ClustalW)	5	2			
+PubMed ID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	speedRank	numMethods	Data set (if applicable)	Bias	Acc comment	Speed comment
+17151342	Exploring genomic dark matter: A critical assessment of the performance of homology search methods on noncoding RNA	Fig. 2A	median rank(MCC)	Fig. 2C	Rsearch	1	11	12			Verified	Verified
+					Infernal	2	12				Verified	Verified
+					Ravenna	3	9				Verified	Verified
+					SAM	4	8				Verified	Verified
+					hmmer	6.5	6				Verified	Verified
+					wu-blast	6.5	7				Verified	Verified
+					ssearch	6.5	5				Verified	Verified
+					fasta	6.5	2				Verified	Verified
+					ncbi-blast	9	3				Verified	Verified
+					paralign	10	1				Verified	Verified
+					rsmatch	11	10				Verified	Verified
+					erpin	12	4				Verified	Verified
+		Fig. 2B	median rank(MCC)	Fig. 2C	rsearch	2	11	12			Verified	Verified
+					infernal	1	12				Verified	Verified
+					ravenna	3	9				Verified	Verified
+					SAM	4	8				Verified	Verified
+					hmmer	5.5	6				Fixed	Verified
+					wu-blast	10	7				Verified	Verified
+					ssearch	5.5	5				Fixed	Verified
+					fasta	8	2				Verified	Verified
+					ncbi-blast	8	3				Verified	Verified
+					paralign	8	1				Verified	Verified
+					rsmatch	11	10				Verified	Verified
+					erpin	12	4				Verified	Verified
+		Fig. 3A	median rank(MCC)	Fig. 3C	ssearch	3	5	5			Fixed	Verified
+					fasta	1	3				Verified	Verified
+					wu-blast	3	1				Fixed	Verified
+					ncbi-blast	3	4				Fixed	Verified
+					paralign	5	2				Verified	Verified
+		Fig. 3B	median rank(MCC)	Fig. 3C	ssearch	1	5	5			Verified	Verified
+					fasta	3	3				Verified	Verified
+					wu-blast	3	1				Verified	Verified
+					ncbi-blast	3	4				Verified	Verified
+					paralign	5	2				Verified	Verified
+20047664	A simulation study comparing supertree and combined analysis methods using SMIDGen	Fig. 3c/f	Average topological error rate	Table 3, 1000 taxa, 20% SF, 1 SG.	wMRP-MP	5	5	5			Verified	Verified
+ 					MRP-MP	4	2				Verified	Verified
+					CA-MP	3	3				Verified	Verified
+					MRP-ML	2	1				Verified	Verified
+					CA-ML	1	4				Verified	Verified
+25198770	GABenchToB: A Genome Assembly Benchmark Tuned on Bacteria and Benchtop Sequencers	Fig. 2A S.aureus (COL) Mis2x150bp	NGA50	Fig. 3A	abyss	4	4	9	S.aureus (COL) Mis2x150bp	No	Fixed	Verified
+					clc	7.5	1				Fixed	Verified
+					soap2	3	2				Fixed	Verified
+					velvet	2	3				Fixed	Verified
+					spades	1	6				Fixed	Verified
+					celera	7.5	9				Fixed	Verified
+					newbler	5	7				Fixed	Verified
+					seqman	9	5				Fixed	Verified
+					mira	6	8				Fixed	Verified
+		Fig. 2B S.aureus (COL) Mis2x150bp	Misassemblies	Fig. 3A	abyss	6	4	9			Verified	Verified
+					clc	4	1				Verified	Verified
+					soap2	7	2				Verified	Verified
+					velvet	3	3				Verified	Verified
+					spades	1	6				Verified	Verified
+					celera	9	9				Verified	Verified
+					newbler	8	7				Verified	Verified
+					seqman	2	5				Verified	Verified
+					mira	5	8				Verified	Verified
+		Fig. 2A E.coli (SAKAI) Mis2x150bp	NGA50	Fig. 3A	abyss	4	4	9	E.coli (SAKAI) Mis2x150bp		Fixed	Verified
+					clc	4	1				Fixed	Verified
+					soap2	4	3				Fixed	Verified
+					velvet	4	2				Fixed	Verified
+					spades	1	6				Fixed	Verified
+					celera	4	9				Fixed	Verified
+					newbler	8	5				Fixed	Verified
+					seqman	7	7				Fixed	Verified
+					mira	9	8				Fixed	Verified
+		Fig. 2B E.coli (SAKAI) Mis2x150bp	Misassemblies	Fig. 3A	abyss	4	4	9			Verified	Verified
+					clc	3	1				Verified	Verified
+					soap2	9	3				Verified	Verified
+					velvet	6	2				Verified	Verified
+					spades	1	6				Verified	Verified
+					celera	5	9				Verified	Verified
+					newbler	8	5				Verified	Verified
+					seqman	2	7				Verified	Verified
+					mira	7	8				Verified	Verified
+		Fig. 2A S.aureus (COL) Mis2x250bp	NGA50	Fig. 3A	abyss	7	4	9	S.aureus (COL) Mis2x250bp		Fixed	Verified
+					clc	4	1				Fixed	Verified
+					soap2	8	2				Fixed	Verified
+					velvet	6	3				Fixed	Verified
+					spades	3	7				Fixed	Verified
+					celera	5	9				Fixed	Verified
+					newbler	1	5				Fixed	Verified
+					seqman	9	6				Fixed	Verified
+					mira	2	8				Fixed	Verified
+		Fig. 2B S.aureus (COL) Mis2x250bp 	Misassemblies	Fig. 3A	abyss	4.5	4	9			Verified	Verified
+					clc	3	1				Verified	Verified
+					soap2	6	2				Verified	Verified
+					velvet	7	3				Verified	Verified
+					spades	1.5	7				Verified	Verified
+					celera	4.5	9				Verified	Verified
+					newbler	9	5				Verified	Verified
+					seqman	1.5	6				Verified	Verified
+					mira	8	8				Verified	Verified
+		Fig. 2A E.coli (SAKAI) Mis2x250bp	NGA50	Fig. 3A	abyss	5	4	9	E.coli (SAKAI) Mis2x250bp		Fixed	Verified
+					clc	2	1				Fixed	Verified
+					soap2	9	3				Fixed	Verified
+					velvet	8	2				Fixed	Verified
+					spades	2	7				Fixed	Verified
+					celera	6	9				Fixed	Verified
+					newbler	2	5				Fixed	Verified
+					seqman	7	6				Fixed	Verified
+					mira	4	8				Fixed	Verified
+		Fig. 2B E.coli (SAKAI) Mis2x250bp	Misassemblies	Fig. 3A	abyss	5	4	9			Verified	Verified
+					clc	2	1				Verified	Verified
+					soap2	9	3				Verified	Verified
+					velvet	8	2				Verified	Verified
+					spades	1	7				Verified	Verified
+					celera	3	9				Verified	Verified
+					newbler	6	5				Verified	Verified
+					seqman	4	6				Verified	Verified
+					mira	7	8				Verified	Verified
+		Fig. 2A M.tuberculosis (H37) Mis2x250bp	NGA50	Fig. 3A	abyss	6	5	9	M.tuberculosis (H37) Mis2x250bp		Fixed	Verified
+					clc	4	1				Fixed	Verified
+					soap2	5	3				Fixed	Verified
+					velvet	7.5	2				Fixed	Verified
+					spades	3	9				Fixed	Verified
+					celera	1	7				Fixed	Verified
+					newbler	2	4				Fixed	Verified
+					seqman	7.5	6				Fixed	Verified
+					mira	9	8				Fixed	Verified
+		Fig. 2B M.tuberculosis (H37) Mis2x250bp	Misassemblies	Fig. 3A	abyss	3	5	9			Verified	Verified
+					clc	2	1				Verified	Verified
+					soap2	9	3				Verified	Verified
+					velvet	8	2				Verified	Verified
+					spades	4	9				Verified	Verified
+					celera	5	7				Verified	Verified
+					newbler	7	4				Verified	Verified
+					seqman	1	6				Verified	Verified
+					mira	6	8				Verified	Verified
+		Fig. 2A S.aureus (COL) PGM200bp	NGA50	Fig. 3A	abyss	5	4	9	S.aureus (COL) PGM200bp		Fixed	Verified
+					clc	4	1.5				Fixed	Verified
+					soap2	9	1.5				Fixed	Verified
+					velvet	7	3				Fixed	Verified
+					spades	2	8				Fixed	Verified
+					celera	6	7				Fixed	Verified
+					newbler	3	5				Fixed	Verified
+					seqman	8	6				Fixed	Verified
+					mira	1	9				Fixed	Verified
+		Fig. 2B S.aureus (COL) PGM200bp	Misassemblies	Fig. 3A	abyss	1	4	9			Verified	Verified
+					clc	6	1.5				Verified	Verified
+					soap2	5	1.5				Verified	Verified
+					velvet	2.5	3				Verified	Verified
+					spades	7	8				Verified	Verified
+					celera	4	7				Verified	Verified
+					newbler	2.5	5				Verified	Verified
+					seqman	9	6				Verified	Verified
+					mira	8	9				Verified	Verified
+		Fig. 2A E.coli (SAKAI) PGM200bp	NGA50	Fig. 3A	abyss	7.5	4	9	E.coli (SAKAI) PGM200bp		Fixed	Verified
+					clc	4	1				Fixed	Verified
+					soap2	9	2				Fixed	Verified
+					velvet	7.5	3				Fixed	Verified
+					spades	1	8				Fixed	Verified
+					celera	5.5	6				Fixed	Verified
+					newbler	2	5				Fixed	Verified
+					seqman	5.5	7				Fixed	Verified
+					mira	3	9				Fixed	Verified
+		Fig. 2B E.coli (SAKAI) PGM200bp	Misassemblies	Fig. 3A	abyss	2	4	9			Verified	Verified
+					clc	5	1				Verified	Verified
+					soap2	1	2				Verified	Verified
+					velvet	7	3				Verified	Verified
+					spades	6	8				Verified	Verified
+					celera	3	6				Verified	Verified
+					newbler	4	5				Verified	Verified
+					seqman	9	7				Verified	Verified
+					mira	8	9				Verified	Verified
+		Fig. 2A S.aureus (COL) PGM400bp	NGA50	Fig. 3A	abyss	7	4	9	S.aureus (COL) PGM400bp		Fixed	Verified
+					clc	5	2				Fixed	Verified
+					soap2	9	3				Fixed	Verified
+					velvet	8	1				Fixed	Verified
+					spades	3	8				Fixed	Verified
+					celera	4	7				Fixed	Verified
+					newbler	1	5				Fixed	Verified
+					seqman	6	6				Fixed	Verified
+					mira	2	9				Fixed	Verified
+		Fig. 2B S.aureus (COL) PGM400bp	Misassemblies	Fig. 3A	abyss	1	4	9			Verified	Verified
+					clc	4	2				Verified	Verified
+					soap2	9	3				Verified	Verified
+					velvet	6	1				Verified	Verified
+					spades	5	8				Verified	Verified
+					celera	2	7				Verified	Verified
+					newbler	3	5				Verified	Verified
+					seqman	8	6				Verified	Verified
+					mira	7	9				Verified	Verified
+		Fig. 2A E.coli (SAKAI) PGM400bp	NGA50	Fig. 3A	abyss	7	4	9	E.coli (SAKAI) PGM400bp		Fixed	Verified
+					clc	6	1.5				Fixed	Verified
+					soap2	9	3				Fixed	Verified
+					velvet	8	1.5				Fixed	Verified
+					spades	2	6				Fixed	Verified
+					celera	5	7				Fixed	Verified
+					newbler	4	5				Fixed	Verified
+					seqman	3	8				Fixed	Verified
+					mira	1	9				Fixed	Verified
+		Fig. 2B E.coli (SAKAI) PGM400bp	Misassemblies	Fig. 3A	abyss	2	4	9			Verified	Verified
+					clc	4	1				Verified	Verified
+					soap2	9	3				Verified	Verified
+					velvet	8	2				Verified	Verified
+					spades	5	6				Verified	Verified
+					celera	1	7				Verified	Verified
+					newbler	3	5				Verified	Verified
+					seqman	7	8				Verified	Verified
+					mira	6	9				Verified	Verified
+		Fig. 2A M.tuberculosis (H37) PGM400bp	NGA50	Fig. 3A	abyss	7.5	4	9	M.tuberculosis (H37) PGM400bp		Fixed	Verified
+					clc	6	1				Fixed	Verified
+					soap2	9	2				Fixed	Verified
+					velvet	7.5	3				Fixed	Verified
+					spades	2	7				Fixed	Verified
+					celera	4	6				Fixed	Verified
+					newbler	3	5				Fixed	Verified
+					seqman	5	8				Fixed	Verified
+					mira	1	9				Fixed	Verified
+		Fig. 2B M.tuberculosis (H37) PGM400bp	Misassemblies	Fig. 3A	abyss	1	4	9			Verified	Verified
+					clc	6	1				Verified	Verified
+					soap2	5	2				Verified	Verified
+					velvet	2	3				Verified	Verified
+					spades	7	7				Verified	Verified
+					celera	4	6				Verified	Verified
+					newbler	3	5				Verified	Verified
+					seqman	8	8				Verified	Verified
+					mira	9	9				Verified	Verified
+21483869	A Comprehensive Benchmark Study of Multiple Sequence Alignment Methods: Current Challenges and Future Perspectives	Figure 3	Column Score (CS)	Figure 3	ClustalW	9	6	9		Yes	Verified	Verified
+					Muscle	8	5				Verified	Verified
+					Muscle(maxiters=2)	7	3				Verified	Verified
+					dialign-tx	6	7				Verified	Verified
+					kalign	5	1				Verified	Verified
+					mafft(fftns2)	4	2				Verified	Fixed
+					probcons	3	9				Verified	Verified
+					tcoffee	2	8				Verified	Verified
+					mafft(linsi)	1	4				Verified	Verified
+24526711	A benchmark for comparison of cell tracking algorithms.	Supplementary-Table 1 Final Ranking	Final/Combined C2DL-MSC	Supplementary-Table 1 RANKINGS (Real videos)	COM-US	5	1	5	C2DL-MSC	yes	Verified	Verified
+					HEID-GE	2	4				Verified	Verified
+					KTH-SE	1	2				Verified	Verified
+					PRAG-CZ	4	3				Verified	Verified
+					UPM-ES	3	5				Verified	Verified
+			Final/Combined C3DH-H157		COM-US	4	2	4	C3DH-H157		Verified	Verified
+					HEID-GE	3	4				Verified	Verified
+					KTH-SE	2	3				Verified	Verified
+					PRAG-CZ	1	1				Verified	Verified
+			Final/Combined C3DL-MDA231		COM-US	3	2	4	C3DL-MDA231		Verified	Verified
+					HEID-GE	2	4				Verified	Verified
+					KTH-SE	1	3				Verified	Verified
+					PRAG-CZ	4	1				Verified	Verified
+			Final/Combined N2DH-GOWT1		COM-US	6	1	6	N2DH-GOWT1		Verified	Verified
+					HEID-GE	3	4				Verified	Verified
+					LEID-NL	4	5				Verified	Verified
+					KTH-SE	1	2				Verified	Verified
+					PRAG-CZ	2	3				Verified	Verified
+					UPM-ES	5	6				Verified	Verified
+			Final/Combined N2DL-Hela		COM-US	5	1	5	N2DL-Hela		Verified	Verified
+					HEID-GE	2	4				Verified	Verified
+					KTH-SE	1	2				Verified	Verified
+					PRAG-CZ	3	3				Verified	Verified
+					UPM-ES	4	5				Verified	Verified
+			Final/Combined N3DH-CHO		COM-US	5	1	5	N3DH-CHO		Verified	Verified
+					HEID-GE	1	4				Verified	Verified
+					LEID-NL	3	5				Verified	Verified
+					KTH-SE	2	3				Verified	Verified
+					PRAG-CZ	4	2				Verified	Verified
+			Final/Combined N2DH-SIM		COM-US	6	1	6	N2DH-SIM		Verified	Verified
+					HEID-GE	3	4				Verified	Verified
+					LEID-NL	1	5				Verified	Verified
+					KTH-SE	2	2				Verified	Verified
+					PRAG-CZ	5	3				Verified	Verified
+					UPM-ES	4	6				Verified	Verified
+			Final/Combined N3DH-SIM		COM-US	4	2	5	N3DH-SIM		Verified	Verified
+					HEID-GE	3	4				Verified	Verified
+					LEID-NL	1	5				Verified	Verified
+					KTH-SE	2	3				Verified	Verified
+					PRAG-CZ	5	1				Verified	Verified
+24839440	Objective and Comprehensive Evaluation of Bisulfite Short Read Mapping Tools	Fig. 6	Mapping efficiency	Fig. 3	BSMAP	3	2	5			Verified	Verified
+					BS-Seeker	5	3				Verified	Verified
+					Bismark	1	4				Verified	Verified
+					BRAT-BW	4	1				Verified	Verified
+					BiSS	2	5				Verified	Verified
+17062146	The accuracy of several multiple sequence alignment programs for proteins	Fig. 1	average accuracy values (all refs)	Fig. 1	ClustalW	6	6	10			Verified	Verified
+					Dialign2.2	9	8				Verified	Verified
+					TCoffee	3	10				Verified	Verified
+					POA	10	4				Verified	Verified
+					Mafft(FFTNS2)	7	1				Verified	Verified
+					Muscle	4	3				Verified	Verified
+					Mafft(LINSi)	2	5				Verified	Verified
+					ProbCons	1	9				Verified	Verified
+					Dialign-T	8	7				Verified	Verified
+					Kalign	5	2				Verified	Verified
+		Fig. 1	average accuracy values (Simprot)	Fig. 1	ClustalW	7	6	10			Not sure where rankings are coming from	Not sure where rankings are coming from
+					Dialign2.2	9	8				Not sure where rankings are coming from	Not sure where rankings are coming from
+					Dialign-T	8	7				Not sure where rankings are coming from	Not sure where rankings are coming from
+					Kalign	6	2				Not sure where rankings are coming from	Not sure where rankings are coming from
+					Mafft(FFTNS2)	3	1				Not sure where rankings are coming from	Not sure where rankings are coming from
+					Mafft(LINSi)	2	5				Not sure where rankings are coming from	Not sure where rankings are coming from
+					Muscle	5	3				Not sure where rankings are coming from	Not sure where rankings are coming from
+					POA	10	4				Not sure where rankings are coming from	Not sure where rankings are coming from
+					ProbCons	1	9				Not sure where rankings are coming from	Not sure where rankings are coming from
+					TCoffee	4	10				Not sure where rankings are coming from	Not sure where rankings are coming from
+21423806	A practical comparison of de novo genome assembly software tools for next-generation sequencing technologies	Fig. 6A	Swinepox-SE N50	Fig. 2A	SSAKE	1	4.5	9			Not sure where rankings are coming from	Verified
+					VCAKE	8	9				Not sure where rankings are coming from	Verified
+					QSRA	6	4.5				Not sure where rankings are coming from	Verified
+					SHARCGS	5	4.5				Not sure where rankings are coming from	Verified
+					Edena-strict	4	4.5				Not sure where rankings are coming from	Verified
+					Edena-nonstrict	2	4.5				Not sure where rankings are coming from	Verified
+					Velvet	9	4.5				Not sure where rankings are coming from	Verified
+					SOAPdenovo	7	4.5				Not sure where rankings are coming from	Verified
+					Taipan	3	4.5				Not sure where rankings are coming from	Verified
+		Fig. 6B	E. coli N50	Fig. 2A	SSAKE	8	6	8			Not sure where rankings are coming from	Verified
+					VCAKE	7	8				Not sure where rankings are coming from	Verified
+					QSRA	6	7				Not sure where rankings are coming from	Verified
+					Edena-strict	3	4.5				Not sure where rankings are coming from	Verified
+					Edena-nonstrict	1	4.5				Not sure where rankings are coming from	Verified
+					Velvet	5	3				Not sure where rankings are coming from	Verified
+					SOAPdenovo	4	1.5				Not sure where rankings are coming from	Verified
+					Taipan	2	1.5				Not sure where rankings are coming from	Verified
+		Fig. 6C	Yeast N50	Fig. 2A	SSAKE	6	6				Not sure where rankings are coming from	Verified
+					VCAKE	7	8				Not sure where rankings are coming from	Verified
+					QSRA	5	7				Not sure where rankings are coming from	Verified
+					Edena-strict	3	4.5				Not sure where rankings are coming from	Verified
+					Edena-nonstrict	2	4.5				Not sure where rankings are coming from	Verified
+					Velvet	8	3				Not sure where rankings are coming from	Verified
+					SOAPdenovo	4	1				Not sure where rankings are coming from	Verified
+					Taipan	1	2				Not sure where rankings are coming from	Verified
+25511303	Comparisons of computational methods for differential alternative splicing detection using RNA-seq in plant 	Table 1	Mean of 15 AUC ranks (Table 1)	Supplementary Table S2	rDiff-param	5	1	8			Verified	Verified
+					DSGseq	2	2				Verified	Verified
+					DiffSplice	8	3				Verified	Verified
+					DEXSeq	1	4				Verified	Verified
+					MATS	6	5				Verified	Verified
+					SpComp	7	6				Verified	Verified
+					SeqGSEA	4	7				Verified	Verified
+					Cufflinks	3	8				Verified	Verified
+20617200	A Comprehensive Benchmark of Kernel Methods to Extract Protein–Protein Interactions from Literature	Table 2	AUC-AIMed	Table S9	SL	2	1	9			Verified	Not sure where rankings are coming from
+					ST	6.5	6				Verified	Not sure where rankings are coming from
+					SST	6.5	8				Verified	Not sure where rankings are coming from
+					PT	8	9				Verified	Not sure where rankings are coming from
+					SpT	9	7				Verified	Not sure where rankings are coming from
+					kBSPS	4	2				Verified	Not sure where rankings are coming from
+					cosine	5	4.5				Verified	Not sure where rankings are coming from
+					edit	3	4.5				Verified	Not sure where rankings are coming from
+					APG	1	3				Verified	Not sure where rankings are coming from
+		Table 2	AUC-BioInfer	Table S9	SL	2	1	9			Verified	Not sure where rankings are coming from
+					ST	4	6				Verified	Not sure where rankings are coming from
+					SST	7	8				Verified	Not sure where rankings are coming from
+					PT	6	9				Verified	Not sure where rankings are coming from
+					SpT	5	7				Verified	Not sure where rankings are coming from
+					kBSPS	3	2				Verified	Not sure where rankings are coming from
+					cosine	9	4.5				Verified	Not sure where rankings are coming from
+					edit	8	4.5				Verified	Not sure where rankings are coming from
+					APG	1	3				Verified	Not sure where rankings are coming from
+		Table 2	AUC-HPRD50	Table S9	SL	2	1	9			Verified	Not sure where rankings are coming from
+					ST	8	6				Verified	Not sure where rankings are coming from
+					SST	9	8				Verified	Not sure where rankings are coming from
+					PT	7	9				Verified	Not sure where rankings are coming from
+					SpT	6	7				Verified	Not sure where rankings are coming from
+					kBSPS	3	2				Verified	Not sure where rankings are coming from
+					cosine	5	4.5				Verified	Not sure where rankings are coming from
+					edit	4	4.5				Verified	Not sure where rankings are coming from
+					APG	1	3				Verified	Not sure where rankings are coming from
+		Table 2	AUC-IEPA	Table S9	SL	3	1	9			Verified	Not sure where rankings are coming from
+					ST	6	6				Verified	Not sure where rankings are coming from
+					SST	9	8				Verified	Not sure where rankings are coming from
+					PT	8	9				Verified	Not sure where rankings are coming from
+					SpT	5	7				Verified	Not sure where rankings are coming from
+					kBSPS	2	2				Verified	Not sure where rankings are coming from
+					cosine	7	4.5				Verified	Not sure where rankings are coming from
+					edit	4	4.5				Verified	Not sure where rankings are coming from
+					APG	1	3				Verified	Not sure where rankings are coming from
+		Table 2	AUC-LLL	Table S9	SL	4	1	9			Verified	Not sure where rankings are coming from
+					ST	6	6				Verified	Not sure where rankings are coming from
+					SST	8	8				Verified	Not sure where rankings are coming from
+					PT	7	9				Verified	Not sure where rankings are coming from
+					SpT	9	7				Verified	Not sure where rankings are coming from
+					kBSPS	2	2				Verified	Not sure where rankings are coming from
+					cosine	5	4.5				Verified	Not sure where rankings are coming from
+					edit	1	4.5				Verified	Not sure where rankings are coming from
+					APG	3	3				Verified	Not sure where rankings are coming from
+26778510	An evaluation of the accuracy and speed of metagenome analysis tools	Table 1	Pearson Correlation Coefficient	Table 1	CLARK	1	6	14			Verified	Verified
+					EBI	13	13				Verified	Verified
+					Genometa	8	8				Verified	Verified
+					GOTTCHA	14	7				Verified	Verified
+					Kraken	2	4				Verified	Verified
+					LMAT	5	9				Verified	Verified
+					MEGAN	12	10				Verified	Verified
+					MetaPhlAn	4	5				Verified	Verified
+					MetaPhyler	10	14				Verified	Verified
+					MG-RAST	7	12				Verified	Verified
+					mOTU	6	3				Verified	Verified
+					One Codex	3	2				Verified	Verified
+					QIIME	11	1				Verified	Verified
+					Taxator-tk	9	11				Verified	Verified
+		Table 2	MCC	Table 1	CLARK	1	6	14			Verified	Verified
+					EBI	14	13				Verified	Verified
+					Genometa	7	8				Verified	Verified
+					GOTTCHA	5	7				Verified	Verified
+					Kraken	3	4				Verified	Verified
+					LMAT	8	9				Verified	Verified
+					MEGAN	6	10				Verified	Verified
+					MetaPhlAn	10	5				Verified	Verified
+					MetaPhyler	11	14				Verified	Verified
+					MG-RAST	4	12				Verified	Verified
+					mOTU	12	3				Verified	Verified
+					One Codex	2	2				Verified	Verified
+					QIIME	13	1				Verified	Verified
+					Taxator-tk	9	11				Verified	Verified
+		Table 2	SEN	Table 1	CLARK	1	6	14			Verified	Verified
+					EBI	13	13				Verified	Verified
+					Genometa	9	8				Verified	Verified
+					GOTTCHA	7	7				Verified	Verified
+					Kraken	3	4				Verified	Verified
+					LMAT	5	9				Verified	Verified
+					MEGAN	6	10				Verified	Verified
+					MetaPhlAn	10	5				Verified	Verified
+					MetaPhyler	11	14				Verified	Verified
+					MG-RAST	4	12				Verified	Verified
+					mOTU	12	3				Verified	Verified
+					One Codex	2	2				Verified	Verified
+					QIIME	14	1				Verified	Verified
+					Taxator-tk	8	11				Verified	Verified
+		Table 2	SPEC	Table 1	CLARK	12	6	14			Verified	Verified
+					EBI	8	13				Verified	Verified
+					Genometa	11	8				Verified	Verified
+					GOTTCHA	3	7				Verified	Verified
+					Kraken	3	4				Verified	Verified
+					LMAT	14	9				Verified	Verified
+					MEGAN	10	10				Verified	Verified
+					MetaPhlAn	3	5				Verified	Verified
+					MetaPhyler	6.5	14				Verified	Verified
+					MG-RAST	9	12				Verified	Verified
+					mOTU	3	3				Verified	Verified
+					One Codex	6.5	2				Verified	Verified
+					QIIME	3	1				Verified	Verified
+					Taxator-tk	13	11				Verified	Verified
+		Figure 2	logOddsGenus	Table 1	CLARK	2	6	14			Verified	Verified
+					EBI	8	13				Verified	Verified
+					Genometa	11	8				Verified	Verified
+					GOTTCHA	14	7				Verified	Verified
+					Kraken	1	4				Verified	Verified
+					LMAT	4	9				Verified	Verified
+					MEGAN	7	10				Verified	Verified
+					MetaPhlAn	5	5				Verified	Verified
+					MetaPhyler	12	14				Verified	Verified
+					MG-RAST	10	12				Verified	Verified
+					mOTU	6	3				Verified	Verified
+					One Codex	3	2				Verified	Verified
+					QIIME	9	1				Verified	Verified
+					Taxator-tk	13	11				Verified	Verified
+		Figure 2	logOddsPhylum	Table 1	CLARK	1	6	14			Verified	Verified
+					EBI	10	13				Verified	Verified
+					Genometa	8	8				Verified	Verified
+					GOTTCHA	14	7				Verified	Verified
+					Kraken	2	4				Verified	Verified
+					LMAT	4	9				Verified	Verified
+					MEGAN	12	10				Verified	Verified
+					MetaPhlAn	6	5				Verified	Verified
+					MetaPhyler	11	14				Verified	Verified
+					MG-RAST	5	12				Verified	Verified
+					mOTU	7	3				Verified	Verified
+					One Codex	3	2				Verified	Verified
+					QIIME	9	1				Verified	Verified
+					Taxator-tk	13	11				Verified	Verified
+25521762	Assessment of de novo assemblers for draft genomes: a case study with fungal genomes.	Table 5	sum quality rows 1-4	Table 3 (mean rank)	ABySS	3	5	7			Verified	Verified
+					IDBA-UD	1	6				Verified	Verified
+					Minia	7	1				Verified	Verified
+					SOAP	5	3				Verified	Verified
+					SPAdes	2	7				Verified	Verified
+					Sparse	6	4				Verified	Verified
+					Velvet	4	2				Verified	Verified
+999999999	Estimating Kinetic Parameters for Essential Amino Acid Production in Arabidopsis Thaliana by Using Particle Swarm Optimization	Table 5	error rate	Table 5	SimulatedAnnealing	3	3	3			Verified	Verified
+					DownhillSimplex	2	2				Verified	Verified
+					PSO	1	1				Verified	Verified
+		Table 6	error rate	Table 6	SimulatedAnnealing	2	3				Verified	Verified
+					DownhillSimplex	3	2				Verified	Verified
+					PSO	1	1				Verified	Verified
+23593445	An improved swarm optimization for parameter estimation and biological model selection.	Table 1	Ave fitness (5% noise)	Table 1	DE	3	2	4			Verified	Verified
+					FA	1	4				Verified	Verified
+					CRO	2	3				Verified	Verified
+					S-CRO	4	1				Verified	Verified
+		Table 1	Ave fitness (10% noise)	Table 1	DE	2	2				Verified	Verified
+					FA	3	4				Verified	Verified
+					CRO	1	3				Verified	Verified
+					S-CRO	4	1				Verified	Verified
+		Table 1	Ave fitness (15% noise)	Table 1	DE	3	2				Verified	Verified
+					FA	1	4				Verified	Verified
+					CRO	2	3				Verified	Verified
+					S-CRO	4	1				Verified	Verified
+21525877	Evaluation of next-generation sequencing software in mapping and assembly.	Table 2	Reads mapped correctly (SE)	Table 2 (SE)	Bowtie	3	3	8			Verified	Verified
+					BWA	2	5				Verified	Verified
+					Mosaik	5	4				Verified	Verified
+					PASS	8	2				Verified	Verified
+					RMAP	7	6				Verified	Verified
+					SeqMap	6	7				Verified	Verified
+					SHRiMP	1	8				Verified	Verified
+					SOAP	4	1				Verified	Verified
+		Table 2	Reads mapped correctly (PE)	Table 2 (PE)	Bowtie	7	2	7			Verified	Verified
+					BWA	1	4				Verified	Verified
+					Mosaik	4	3				Verified	Verified
+					RMAP	6	5				Verified	Verified
+					SHRiMP	3	7				Verified	Verified
+					SOAP	5	1				Verified	Verified
+					SSAHA2	2	6				Verified	Verified
+24708189	Comparison of mapping algorithms used in high-throughput sequencing: application to Ion Torrent data.	Figure 3	F-measure (@ 4% error rate)	Figure 2 (RD_400)	Bowtie2	5	2	14			Verified	Verified
+					BWA	12	11				Verified	Verified
+					BWASW	9	4.5				Verified	Verified
+					GSNAP	11	12				Verified	Verified
+					MOSAIK	2	9.5				Verified	Verified
+					Novoalign	6	14				Verified	Verified
+					PASS	13.5	7				Verified	Verified
+					segemehl	1	13				Verified	Verified
+					SHRIMP2	3	7				Verified	Verified
+					SMALT	4	3				Verified	Verified
+					SNAP	10	1				Verified	Verified
+					SRmapper	13.5	4.5				Verified	Verified
+					SSAHA2	7	9.5				Verified	Verified
+					TMAP	8	7				Verified	Verified
+18287116	Empirical comparison of ab initio repeat finding programs.	Table 1	Sensitivity (Chromosome segment) 	Table 1 (Chromosome segment)	RepeatGluer	1	3	4			Verified	Verified
+					RepeatScout	3	4				Verified	Verified
+					RepeatFinder	2	2				Verified	Verified
+					PILER	4	1				Verified	Verified
+		Table 1	Sensitivity (Chromosome) 	Table 1 (Chromosome)	RepeatScout	2	3	3			Verified	Verified
+					RepeatFinder	1	2				Verified	Verified
+					PILER	3	1				Verified	Verified
+24602402	Assessing the efficiency of multiple sequence alignment programs.	Additional file 2	RV50 - BB_SP* (Average)	Additional file 3 (RV50 - BB)	CLUSTALW	9	1	9			Verified	Verified
+					CLUSTAL OMEGA	5	6				Verified	Verified
+					DIALIGN-TX	7	5				Verified	Verified
+					MAFFT	1	4				Verified	Verified
+					MUSCLE	6	2				Verified	Should be 3
+					POA	8	3				Verified	Should be 2
+					Probalign	2.5	7				Verified	Verified
+					Probcons	2.5	8				Verified	Verified
+					T-Coffee	4	9				Verified	Verified
+24086547	Comparing memory-efficient genome assemblers on stand-alone and cloud infrastructures.	Table 4.	N50	Table 4.	Diginorm-Velvet	1	4	8			Verified	Verified
+					DiMA	6	5				Verified	Verified
+					Gossamer	8	7				Verified	Verified
+					Minia	5	1				Verified	Verified
+					SGA	4	8				Verified	Verified
+					SparseAssembler	3	3				Verified	Verified
+					Velvet	2	2				Verified	Verified
+					ZeMA	7	6				Verified	Verified
+		Table 5.	N50	Table 5.	Diginorm-Velvet	2	3	7			Verified	Verified
+					DiMA	5	4				Verified	Verified
+					Gossamer	7	7				Verified	Verified
+					Minia	6	5				Verified	Verified
+					SparseAssembler	3	1				Verified	Verified
+					Velvet	1	6				Verified	Verified
+					ZeMA	4	2				Verified	Verified
+18793413	Critical assessment of alignment procedures for LC-MS proteomics and metabolomics measurements.	Table 3	Recall(align) - fraction 00	Table 5 (P1)	msInspect	7	4	7			Verified	Verified
+					MZmine	3	2				Verified	Verified
+					OpenMS	1	6				Verified	Verified
+					SpecArray	6	7				Verified	Verified
+					XAlign	2	5				Verified	Verified
+					XCMS (without retention time)	4	1				Verified	Verified
+					XCMS (with correction)	5	3				Verified	Verified
+		Table 3	Precision(align) - fraction 00	Table 5 (P1)	msInspect	7	4	7			Verified	Verified
+					MZmine	3	2				Verified	Verified
+					OpenMS	1	6				Verified	Verified
+					SpecArray	4	7				Verified	Verified
+					XAlign	2	5				Verified	Verified
+					XCMS (without retention time)	6	1				Verified	Verified
+					XCMS (with correction)	5	3				Verified	Verified
+23393030	Comparative study of de novo assembly and genome-guided assembly strategies for transcriptome reconstruction based on RNA-Seq	Table 1 (brain)	Accuracy (%)	Figure 2A (brain)	inchworm	1	1	4			Verified	Verified
+					oases	3	2				Verified	Verified
+					trans-ABySS	4	3				Verified	Verified
+					trinity	2	4				Verified	Verified
+		Table 1 (esc)	Accuracy (%)	Figure 2A (esc)	inchworm	2	1	4			Verified	Verified
+					oases	4	2				Verified	Verified
+					trans-ABySS	1	3				Verified	Verified
+					trinity	3	4				Verified	Verified
+		Table 1 (spombe)	Accuracy (%)	Figure 2A (spombe)	inchworm	2	1	4			Verified	Verified
+					oases	3	2				Verified	Verified
+					trans-ABySS	1	3				Verified	Verified
+					trinity	4	4				Verified	Verified
+22132132	RAxML and FastTree: comparing two methods for large-scale maximum likelihood phylogeny estimation.	Figure 3	Missing branch rate (TrueAln)	Figure 3 (TrueAln)	RAxML	1	3				Verified	Verified
+					FastTree	2	1				Verified	Verified
+					RAxML-Limited	3	2				Verified	Verified
+15701525	Comprehensive evaluation of protein structure alignment methods: scoring by geometric measures.	Table 1	AUROC (native score)	Table 5	CE	3	4	6			Verified	Verified
+					DALI	1.5	5				Verified	Verified
+					LSQMAN	6	2				Verified	Verified
+					SSAP	4	6				Verified	Verified
+					SSM	5	1				Verified	Verified
+					STRCUTAL	1.5	3				Verified	Verified
+22152123	Fast and accurate methods for phylogenomic analyses.	Figure 5	FN rate (representative methods)	Figure 1 (50 genes)	BUCKy(MrBayes)	1	6	6			Verified	Verified
+					BUCKy(MrBayes-spa)	2	5				Verified	Verified
+					BUCKy(RAxML)	3	4				Verified	Verified
+					phylonet(FT)	4.5	1.5				Verified	Verified
+					greedy(FT)	4.5	1.5				Verified	Verified
+					igtp-duploss(FT)	6	3				Verified	Verified
+19046431	Comparison of methods for estimating the nucleotide substitution matrix.	Figure 2 (a)	Euclidean distance (L=5000) -- Lake excluded.	Figure 2 (b)	Barry	1	3	4			Verified	Verified
+					Goldman	4	2				Verified	Verified
+					Gojobori	2	1				Verified	Verified
+					Woodhams	3	4				Verified	Verified
+25760244	An assessment of bacterial small RNA target prediction programs.	Table 1.	AUC	Table 3.	CopraRNA	1	8	9			Verified	Verified
+					IntaRNA	2	6				Verified	Verified
+					RNAup	3	5				Verified	Verified
+					RNAplex	4	1.5				Verified	Verified
+					TargetRNA2	5	1.5				Verified	Verified
+					RNAhybrid	6	3				Verified	Verified
+					RNAduplex	7	7				Verified	Verified
+					RNAcofold	8	4				Verified	Verified
+					Pairfold	9	9				Verified	Verified
+23758764	Benchmarking short sequence mapping tools.	Table 2. (reported correct)	Sensitivity	Figure 14 (C. elegans)	Bowtie	2	1	9			Verified	Verified
+					Bowtie2	8	3				Verified	Verified
+					BWA	6	8				Verified	Verified
+					SOAP2	7	2				Verified	Verified
+					MAQ	5	5				Verified	Verified
+					RMAP	9	9				Verified	Verified
+					GSNAP	4	4				Verified	Verified
+					Novoalign	1	6				Verified	Verified
+					mrsFAST	3	7				Verified	Verified
+22172045	Performance analysis of novel methods for detecting epistasis.	Figure 7 (Sim4)	Sensitivity at 0.01 FPR	Table 2 (Sim 4)	AntEpiSeeker	2	4	5			Not sure which figure. Fig 7 (4) only has 4 entries	Verified
+					BOOST	1	1				Not sure which figure. Fig 7 (4) only has 4 entries	Verified
+					EpiMODE	4.5	5				Not sure which figure. Fig 7 (4) only has 4 entries	Verified
+					SNPRuler	3	2				Not sure which figure. Fig 7 (4) only has 4 entries	Verified
+					TEAM	4.5	3				Not sure which figure. Fig 7 (4) only has 4 entries	Verified
+25574120	Evaluating the accuracy and efficiency of multiple sequence alignment methods.	Figure 1	Alignment accuracy (SPS)	Figure 6	Clustal Omega	8	5	10			Verified	Verified
+					Dialign-TX	7	7				Verified	Verified
+					Kalign	4	4				Verified	Verified
+					MAFFT(FFT-NS-2)	9.5	2				Verified	Verified
+					MAFFT(L-INS-i)	3	8				Verified	Verified
+					Multalin	6	3				Verified	Verified
+					MUSCLE	5	1				Verified	Verified
+					ProbCons	1	10				Verified	Verified
+					SATe	2	6				Verified	Verified
+					T-Coffee	9.5	9				Verified	Verified
+22506536	Mapping reads on a genomic sequence: an algorithmic overview and a practical comparative analysis.	Table 5. 	number of mapped reads whose original position has been retrieved in the complete list of hits.	Table 5. (Indexing + Mapping time)	BFAST	6	4	7			Verified	Verified
+					Bowtie	1.5	2				Verified	Verified
+					BWA	1.5	3				Verified	Verified
+					GASSST	4	5				Verified	Verified
+					Novoalign	5	6				Verified	Verified
+					PerM	3	1				Verified	Verified
+					SSAHA2	7	7				Verified	Verified
+21856737	Comparative analysis of algorithms for next-generation sequencing read alignment.	Fig. 1. (a)	Accuracy @ 0.100	Fig. 5. (b)	Bowtie	6	2	6			Verified	Verified
+					BWA	4	4				Verified	Verified
+					mrFAST	5	5				Verified	Verified
+					mrsFAST	3	3				Verified	Verified
+					Novoalign	2	6				Verified	Verified
+					SOAP2	1	1				Verified	Verified
+21113338	Multiple sequence alignment: a major challenge to large-scale phylogenetics.	Table 2	 Missing branch rate (%) - Avg error	Table 3 - sum all times	SATe	1	8	8			Verified	Verified
+					ML(MAFFT)	2	4				Verified	Verified
+					ML(MAFFT-PartTree)	3	2				Verified	Verified
+					ML(Prank+GT)	4	7				Verified	Verified
+					ML(Muscle)	5	5				Verified	Verified
+					ML(ClustalW)	6	3				Verified	Verified
+					ML(ClustalW-quicktree)	7	1				Verified	Verified
+					ML(Opal)	8	6				Verified	Verified
+23842808	Naive binning improves phylogenomic analyses.	Fig. 5 (50 genes)	Average FN rate	Section: 3.1 Computational issues	CA-ML	1	1.5				Verified	Verified
+					starBEAST	2	5				Verified	Verified
+					BUCKy-con	4	3.5				Verified	Verified
+					BUCKy-pop	3	3.5				Verified	Verified
+					MP-EST	5	1.5				Verified	Verified
+15840834	All are not equal: a benchmark of different homology modeling programs.	Table 2	No. of RMSD >3 Å from backbone	Table 2	3D-JIGSAW	3	10	10			Verified	Verified
+					Builder	7	5				Verified	Verified
+					Modeller6v2-10	5	9				Verified	Verified
+					Modeller6v2	9	6				Verified	Verified
+					Modeller7v7	10	7				Verified	Verified
+					nest	4	4				Verified	Verified
+					SCWRL3	1.5	1.5				Verified	Verified
+					SCWRL-CONS	1.5	1.5				Verified	Verified
+					SegMod/ENCAD	6	3				Verified	Verified
+					SWISS-MODEL	8	8				Verified	Verified
+19179695	Barking up the wrong treelength: the impact of gap penalty on alignment and tree accuracy.	Fig. 8 (b)	Tree error fraction	Fig. 9.	POY	7	6	7			Verified	Verified
+					POYstar	2	7				Verified	Verified
+					Probtree	1	5				Verified	Verified
+					ML(MAFFT)	3	3				Verified	Verified
+					ML(ClustalW)	4	1				Verified	Verified
+					MPS(ClustalW)	6	4				Verified	Verified
+					MPJ(ClustalW)	5	2				Verified	Verified
+26862001	Comparative assessment of methods for the fusion transcripts detection from RNA-Seq data	Table 3	Sensitivity 	Table 3	Bellerophontes	5	4	8				
+					EricScript	2	2					
+					FusionCatcher	6	3					
+					FusionMap	4	1					
+					JAFFA	8	8					
+					MapSplice	1	7					
+					nFuse	3	5					
+					TopHat-Fusion	7	6					
+		Table 3	PPV	Table 3	Bellerophontes	6	4	8				
+					EricScript	2	2					
+					FusionCatcher	2	3					
+					JAFFA	4	8					
+					MapSplice	8	7					
+					nFuse	5	5					
+					TopHat-Fusion	2	6					
+22492192	A survey of error-correction methods for next-generation sequencing	Table 5: D1	Gain	Table 5	Coral	5	3	6				
+					HiTEC	2	5					
+					HSHREC	6	6					
+					Quake	3	4					
+					Reptile	1	1					
+					SOAPec	4	2					
+		Table 5: D2	Gain	Table 5	Coral	4	3	5				
+					HiTEC	1	4					
+					HSHREC	5	5					
+					Reptile	2	2					
+					SOAPec	3	1					
+		Table 5: D3 (B)	Gain	Table 5	Coral	6	1	7				
+					ECHO	2	7					
+					HiTEC	1	3					
+					HSHREC	7	5					
+					Quake	5	6					
+					Reptile	3	4					
+					SOAPec	4	2					
+		Table 5: D5	Gain	Table 5	Coral	3	3	4				
+					HSHREC	4	4					
+					Reptile	1	2					
+					SOAPec	2	1					
+		Table 5: D6	Gain	Table 5	Coral	3	2	4				
+					HSHREC	4	4					
+					Reptile	1	3					
+					SOAPec	2	1					
+		Table 5: D7	Gain	Table 5	Coral	3	2	4				
+					HSHREC	4	4					
+					Reptile	1	3					
+					SOAPec	2	1					
+21615913	A novel and well-defined benchmarking method for second generation read mapping	Figure 5: EMBL:SRR049254, any best	Normalized found intervals @ 5% error rate	Table S5	Bowtie	4.5	2	6				
+					BowtieStar	2	4					
+					Bwa	1	5					
+					Shrimp2	4.5	6					
+					Soap2	6	1					
+					Soap2Star	3	3					
+19126200	Comparison of public peak detection algorithms for MALDI mass spectrometry data analysis	Figure 5 (b)	Median average sensitivity	Table 2 (simulation data)	Cromwell	4	1	5				
+					CWT	1	4					
+					LIMPIC	2	3					
+					LMS	5	2					
+					PROcess	3	5					
+		Figure 6 (b)	Median average sensitivity	Table 2 (real data)	Cromwell	5	2					
+					CWT	1.5	4					
+					LIMPIC	1.5	1					
+					LMS	4	3					
+					PROcess	3	5					
+22574964	A comparative evaluation of sequence classification programs	Table 2	Mean Sensitivity	Table 2	CARMA	2	4	4				
+					MEGAN	1	3					
+					MetaPhyler	4	1					
+					MG-RAST	3	2					
+		Table 2	Mean Precision	Table 2	CARMA	1	4	4				
+					MEGAN	3	3					
+					MetaPhyler	4	1					
+					MG-RAST	2	2					
+		Table 6	Mean Sensitivity	Table 6	NBC	1	3					
+					PhyloPythiaS	4	2					
+					PhymmBL	2	4					
+					RAIphy	3	1					
+		Table 6	Mean Sensitivity	Table 6	NBC	1	3					
+					PhyloPythiaS	3	2					
+					PhymmBL	2	4					
+					RAIphy	4	1					
+22287634	Performance comparison and evaluation of software tools for microRNA deep-sequencing data analysis	Figure 6	Mean accuracy	Figure 2 (summed over H. sapiens, G. gallus & C. elegans)	miRExpress	1	1	4				
+					mireap	4	2					
+					miRDeep	3	3.5					
+					MIReNA	2	3.5					
+25777524	WGBSSuite: simulating whole-genome bisulphite sequencing data and benchmarking differential DNA methylation analysis tools	Figure 2	AUC	Figure 2	BSmooth	1	2	4				
+					Fisher exact test	4	4					
+					MethylKit	3	1					
+					MethylSig	2	3					
+26220471	Evaluation of variant detection software for pooled next-generation sequence data	Figure 1B	Balanced accuracy	Table 3	CRISP	2	1	5				
+					GATK	1	5					
+					LoFreq	3	2.5					
+					SNVer	4	2.5					
+					VarScan	5	4					

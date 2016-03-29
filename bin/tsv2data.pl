@@ -6,7 +6,6 @@ use strict;
 
 #TODO: add relative age & relative cites & relative IF/H5, & relative corresponding author impact (H/M), ??????? 
 
-#Read method info:
 my %methodInfo; 
 my @methodInfoKeys = qw(yearPublished IF H5 cites hindex mindex); 
 # head -n 1 Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ methodInfo.tsv | tr "\t" "\n" | nl
@@ -19,6 +18,7 @@ my @methodInfoKeys = qw(yearPublished IF H5 cites hindex mindex);
 #      7	Corresponding author: H-index
 #      8	Corresponding author: M-index
 #      9	fullCite
+#Read method info:
 open(IN0, "< Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ methodInfo.tsv");
 while(my $in = <IN0>){
     next if $in =~ /^method/; 
@@ -121,15 +121,16 @@ my %ranks;
 my %methodCounts;
 my %benchMethod;
 my ($testId,$pmid,$accuracySource,$accuracyMetric,$speedSource)=("","","","","");
+my (@permAccuracy, @permSpeed) = ((),());
 
 open(IN1, "< Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ Data.tsv"); 
 open(UT0, "> rawRankSpeedData.tsv");
 print UT0 "testId\taccuracyRank\tspeedRank\tmethod\n";
 while(my $in = <IN1>){
-    next if $in =~ /^pubmedID/; 
+    next if $in =~ /^pubmed/i; 
     $in =~ s/[^[:ascii:]]//g; #strip of fucking unicode chars
     chomp($in);
-    $in =~  s/\r//g;
+    $in =~  s/\r//g; #Grrrrr
     my @in = split(/\t/, $in); 
     #fix method name:
     $in[5] =~  s/[ -=\/0-9]//g;
@@ -138,6 +139,9 @@ while(my $in = <IN1>){
     if (isNumeric($in[8])){
         $max=$in[8];
         $numBench++;
+	
+	
+	
     }
     
     #print "$in[5]/$in[6]:$in[7] max($in[8])\n";
@@ -166,9 +170,6 @@ while(my $in = <IN1>){
         if($pmid && length($accuracySource) && length($accuracyMetric) && length($speedSource) ){
 	    $testId = "$pmid:$accuracySource:$accuracyMetric:$speedSource";
 	    push(@{$benchMethod{$testId}}, $in[5]);
-#	    if($testId =~ /17151342:Fig2A:medianrankMCC:Fig2C/){
-#		print "17151342:Fig2A:medianrankMCC:Fig2C meth[$in[5]]\n";
-#	    }
 	}
 	        
         if (not defined $ranks{$in[5]}){
@@ -176,18 +177,22 @@ while(my $in = <IN1>){
             $ranks{$in[5]} = [0.0,0.0, 0, 0]; 
             $numBench++;
         }
-        
+
+        #ranks: key: methodName, 0: sum of normalised accuracy rank, 1: sum of normalised speed rank, 2: number of times method benchmarked, 3: benchmark number
         $ranks{$in[5]}[0] += ($in[6]-1)/($max-1); #normalised accuracy rank
         $ranks{$in[5]}[1] += ($in[7]-1)/($max-1); #normalised speed rank
         $ranks{$in[5]}[2]++;
         $ranks{$in[5]}[3]  = $numBench;
 	
-	#print UT0 "testId\tnormAccuracyRank\tnormSpeedRank\tmethod\n";
-	printf UT0 "$testId\t%0.2f\t%0.2f\t$in[5]\n", ($in[6]-1)/($max-1), ($in[7]-1)/($max-1);
+	#            testId   normAccuracyRank   normSpeedRank   method
+	printf UT0 "$testId\t%0.3f\t%0.3f\t$in[5]\n", $ranks{$in[5]}[0], $ranks{$in[5]}[1];#($in[6]-1)/($max-1), ($in[7]-1)/($max-1);
     }
     else {
         print "\tWTF:[$in]\n"
     }
+    
+    
+    
 }
 close(IN1);
 close(UT0);
@@ -230,8 +235,8 @@ my $methInfo = join("\t", @methodInfoKeys);
 print UT "sumRanks\taccuracyRank\tspeedRank\tmethod\tnumTests\t$methInfo\trelAge\trelCites\n";
 
 foreach my $meth (sort keys %ranks){ 
-    
-    printf UT "%0.2f\t%0.2f\t%0.2f\t%s\t%d", $ranks{$meth}[0]/$ranks{$meth}[2] + $ranks{$meth}[1]/$ranks{$meth}[2],  $ranks{$meth}[0]/$ranks{$meth}[2], $ranks{$meth}[1]/$ranks{$meth}[2], $meth, $ranks{$meth}[2];     
+    #ranks: key: methodName, 0: sum of normalised accuracy rank, 1: sum of normalised speed rank, 2: number of times method benchmarked, 3: benchmark number
+    printf UT "%0.3f\t%0.3f\t%0.3f\t%s\t%d", $ranks{$meth}[0]/$ranks{$meth}[2] + $ranks{$meth}[1]/$ranks{$meth}[2],  $ranks{$meth}[0]/$ranks{$meth}[2], $ranks{$meth}[1]/$ranks{$meth}[2], $meth, $ranks{$meth}[2];     
     
     foreach my $methInfo (@methodInfoKeys){
 	if(not defined($methodInfo{$meth}{$methInfo} )){

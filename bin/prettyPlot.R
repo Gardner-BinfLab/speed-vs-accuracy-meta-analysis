@@ -9,8 +9,130 @@ k <- 11
 my.cols <- rev(brewer.pal(k, "RdYlBu"))
 d <-read.table("meanRankSpeedData.tsv", header=T)
 dr<-read.table( "rawRankSpeedData.tsv", header=T)
-#reg1  <- lm(d$speedRank~d$accuracyRank)
+reg1  <- lm(d$speedRank~d$accuracyRank)
 #reg1c <- coefficients(reg1)
+summary(reg1)
+
+regM <- lm(accuracyRank ~ speedRank + IF + H5 + cites + hindex + mindex + relAge + relCites, data=d)
+summary(regM)
+
+######################################################################
+testCorners <- function(){
+#Test all corners: Fast & inaccurate, slow & accurate, ...
+cat("Test all corners")
+for(delta in seq(0,0.6,by=0.005)){
+#delta<-0.25
+          fANDa <- length(d$accuracyRank[(d$speedRank <=   delta) & (d$accuracyRank <=   delta)])
+          fANDi <- length(d$accuracyRank[(d$speedRank <=   delta) & (d$accuracyRank >= 1-delta)])
+          sANDa <- length(d$accuracyRank[(d$speedRank >= 1-delta) & (d$accuracyRank <=   delta)])
+          sANDi <- length(d$accuracyRank[(d$speedRank >= 1-delta) & (d$accuracyRank >= 1-delta)])
+
+          corners <-
+          matrix(c(sANDa, fANDa, sANDi, fANDi), nrow = 2, dimnames =
+                          list(c("Slow", "Fast"),
+                          c("Accurate", "Inaccurate")))
+corners
+	  ft <- fisher.test(corners)#, alternative = "less") 
+          cs <-  chisq.test(corners)
+          if(ft$p < 0.1 || cs$p.value < 0.1){
+                    cat(delta,"\tfet.P = ",ft$p, "\todds-ratio =", ft$estimate, "\tcst.P = ",cs$p.value, "\tX-squared =", cs$statistic, "\tN =", sANDa+fANDa+sANDi+fANDi,"\n")
+          }
+}
+
+cat("Fast & Inaccurate")
+#Fast & Inaccurate vs the rest?
+for(delta in seq(0,0.6,by=0.005)){
+#delta<-0.25
+         nfANDni <- length(d$accuracyRank[(d$speedRank >   delta) & (d$accuracyRank  < 1-delta)])
+          fANDi  <- length(d$accuracyRank[(d$speedRank <=  delta) & (d$accuracyRank >= 1-delta)])
+          fANDni <- length(d$accuracyRank[(d$speedRank <=  delta) & (d$accuracyRank  < 1-delta)])
+         nfANDi  <- length(d$accuracyRank[(d$speedRank >   delta) & (d$accuracyRank >= 1-delta)])
+
+          corners <-
+          matrix(c(nfANDni, fANDni, nfANDi, fANDi), nrow = 2, dimnames =
+                          list(c("!Fast", "Fast"),
+                          c("!Inaccurate", "Inaccurate")))
+corners
+          ft <- fisher.test(corners, alternative = "greater")
+          cs <-  chisq.test(corners)
+          if(ft$p < 0.05 || cs$p.value < 0.05){
+                    cat(delta,"\tfet.P = ",ft$p, "\todds-ratio =", ft$estimate, "\tcst.P = ",cs$p.value, "\tX-squared =", cs$statistic, "\tN =", nfANDni+fANDni+nfANDi+fANDi,"\n")
+		    #rect(xleft, ybottom, xright, ytop)
+		    rect(delta, 1, 0, 1-delta)
+          }
+}
+
+#Fast & accurate vs the rest?
+cat("Fast & accurate")
+for(delta in seq(0,0.6,by=0.005)){
+#delta<-0.25
+         nfANDna <- length(d$accuracyRank[(d$speedRank >   delta) & (d$accuracyRank  >   delta)])
+          fANDa  <- length(d$accuracyRank[(d$speedRank <=  delta) & (d$accuracyRank <=   delta)])
+          fANDna <- length(d$accuracyRank[(d$speedRank <=  delta) & (d$accuracyRank  >   delta)])
+         nfANDa  <- length(d$accuracyRank[(d$speedRank >   delta) & (d$accuracyRank <=   delta)])
+
+          corners <-
+          matrix(c(nfANDna, fANDna, nfANDa, fANDa), nrow = 2, dimnames =
+                          list(c("!Fast", "Fast"),
+                          c("!Accurate", "Accurate")))
+corners
+          ft <- fisher.test(corners, alternative = "less")
+          cs <-  chisq.test(corners)
+          if(ft$p < 0.05 || cs$p.value < 0.05){
+                    cat(delta,"\tfet.P = ",ft$p, "\todds-ratio =", ft$estimate, "\tcst.P = ",cs$p.value, "\tX-squared =", cs$statistic, "\tN =", nfANDni+fANDni+nfANDi+fANDi,"\n")
+		    #rect(xleft, ybottom, xright, ytop)
+		    rect(delta, delta, 0, 0)
+          }
+}
+
+
+#Slow & accurate vs the rest?
+cat("Slow & accurate")
+for(delta in seq(0,0.6,by=0.005)){
+#delta<-0.25
+         nsANDna <- length(d$accuracyRank[(d$speedRank <  1-delta) & (d$accuracyRank >    delta)])
+          sANDa  <- length(d$accuracyRank[(d$speedRank >= 1-delta) & (d$accuracyRank <=   delta)])
+          sANDna <- length(d$accuracyRank[(d$speedRank >= 1-delta) & (d$accuracyRank >    delta)])
+         nsANDa  <- length(d$accuracyRank[(d$speedRank <  1-delta) & (d$accuracyRank <=   delta)])
+
+          corners <-
+          matrix(c(nsANDna, sANDna, nsANDa, sANDa), nrow = 2, dimnames =
+                          list(c("!Slow", "Slow"),
+                          c("!Accurate", "Accurate")))
+corners
+          ft<-fisher.test(corners)#, alternative = "less")
+          cs <-  chisq.test(corners)
+          if(ft$p < 0.05 || cs$p.value < 0.05){
+                    cat(delta,"\tfet.P = ",ft$p, "\todds-ratio =", ft$estimate, "\tcst.P = ",cs$p.value, "\tX-squared =", cs$statistic, "\tN =", nfANDni+fANDni+nfANDi+fANDi,"\n")
+		    #rect(xleft, ybottom, xright, ytop)
+		    rect(1.0, delta, 1-delta, 0)
+          }
+}
+
+#Slow & inaccurate vs the rest?
+cat("Slow & Inaccurate")
+for(delta in seq(0,0.6,by=0.005)){
+#delta<-0.3
+         nsANDni <- length(d$accuracyRank[(d$speedRank <  1-delta) & (d$accuracyRank <  1-delta)])
+          sANDi  <- length(d$accuracyRank[(d$speedRank >= 1-delta) & (d$accuracyRank >= 1-delta)])
+          sANDni <- length(d$accuracyRank[(d$speedRank >= 1-delta) & (d$accuracyRank <  1-delta)])
+         nsANDi  <- length(d$accuracyRank[(d$speedRank <  1-delta) & (d$accuracyRank >= 1-delta)])
+
+          corners <-
+          matrix(c(nsANDni, sANDni, nsANDi, sANDi), nrow = 2, dimnames =
+                          list(c("!Slow", "Slow"),
+                          c("!Inaccurate", "Inaccurate")))
+corners
+          ft <- fisher.test(corners, alternative = "greater")
+          cs <-  chisq.test(corners)
+          if(ft$p < 0.05 || cs$p.value < 0.05){
+                    cat(delta,"\tfet.P = ",ft$p, "\todds-ratio =", ft$estimate, "\tcst.P = ",cs$p.value, "\tX-squared =", cs$statistic, "\tN =", nfANDni+fANDni+nfANDi+fANDi,"\n")
+		    #rect(xleft, ybottom, xright, ytop)
+		    rect(1.0, 1.0, 1-delta, 1-delta)
+          }
+}
+
+}
 
 ######################################################################
 plotMe <- function(r) {
@@ -26,7 +148,7 @@ citesA   <-cor.test(1-d$accuracyRank, as.numeric(d$cites),    method = "spearman
 IFA      <-cor.test(1-d$accuracyRank, as.numeric(d$IF),       method = "spearman")
 
 op<-par(mfrow=c(1,2),cex=1.1,las=2)
-barplot(t(c(mindexA$estimate, hindexA$estimate, H5A$estimate, relAgeA$estimate, speedA$estimate, citesA$estimate, IFA$estimate)), names=c("author.M", "author.H", 'journal.H5', "relative\nage", "speed", "#citations", 'journal.IF'), ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlations with accuracy rank")
+barplot(t(c(mindexA$estimate, hindexA$estimate, speedA$estimate, relAgeA$estimate, H5A$estimate, citesA$estimate, IFA$estimate)), names=c("author.M", "author.H", "speed", "relative\nage", 'journal.H5', "#citations", 'journal.IF'), ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlates with accuracy rank")
 lines(c(-100,100),c(0,0))
 
 par(mar = c(5,4,4,5) + .1)
@@ -41,12 +163,13 @@ points(d$speedRank[d$hindex > th], d$accuracyRank[d$hindex > th], pch='o',cex=1.
 th <- as.numeric(quantile(as.numeric(d$cites), probs=0.75,na.rm=T))
 points(d$speedRank[d$cites > th], d$accuracyRank[d$cites > th], pch='x',cex=1.0)
 text(1.0, 1.1, "* = hi profile journal; o = hi profile author; x = hi cited",  pos=4, cex=0.5)
-
+testCorners()
 boxit2()
 
 }
 
 ######################################################################
+
 plotMeOld <- function(r) {
        
 if(r[1]>0 & r[2]>0){
@@ -87,7 +210,7 @@ relCites<-cor.test(2-d$accuracyRank-d$speedRank, as.numeric(d$relCites), method 
 aac <- ((as.numeric(d$yearPublished)>0) & (as.numeric(d$cites) > 0))
 citesPerYear<-cor.test(2-d$accuracyRank-d$speedRank, as.numeric(d$cites[aac])/(1+2015-as.numeric(d$yearPublished)), method = "spearman")
 
-barplot(t(c(hindex$estimate, H5$estimate, mindex$estimate, relAge$estimate, cites$estimate, IF$estimate)), names=c("author.H", 'journal.H5', "author.M", "relative\nage", "#citations", 'journal.IF'), ylab="Spearman's rho",ylim=c(-0.1,0.1), main="Correlations with speed+accuracy")
+barplot(t(c(hindex$estimate, H5$estimate, mindex$estimate, relAge$estimate, cites$estimate, IF$estimate)), names=c("author.H", 'journal.H5', "author.M", "relative\nage", "#citations", 'journal.IF'), ylab="Spearman's rho",ylim=c(-0.1,0.1), main="Correlates with speed+accuracy")
 lines(c(-100,100),c(0,0))
 
 }
@@ -171,7 +294,6 @@ text( 1.2,-0.2, "slow+accurate",pos=4, cex=0.5)
 
 }
 
-######################################################################
 
 pdf(file=    "../figures/Figure1.pdf", width = 11,  height = 5)
 plotMe( c(1,1) )
@@ -213,7 +335,7 @@ hist(log10(d$H5), breaks=30, xlab="journal.H5",main="Journal H5 index (GoogleSch
 tcks<-c(10,25,50,100,250,500); axis(1,at=log10(tcks), tcks)
 hist(log10(d$hindex), breaks=30, xlab="author.H",main="Corresponding Author\47s H-index",xaxt = "n",xlim=c(0.6,2.2))
 tcks<-c(1,5,10,25,50,100,150); axis(1,at=log10(tcks), tcks)
-hist(d$mindex, breaks=30, xlab="author.M",main="Corresponding Author\47s M-index") #,xaxt = "n",xlim=c(-0.15,1))
+hist(d$mindex, breaks=30, xlab="author.M",main="Corresponding Author\47s M-index",xlim=c(0,10)) #,xaxt = "n")
 #axis(1,at=log10(c(0.5,1,2,3,4,5,10)), c(0.5,1,2,3,4,5,10))
 hist(d$relAge, breaks=30, xlab="Relative age",main="Relative age")
 dev.off()
@@ -313,12 +435,24 @@ lines(lowess(log10(d$IF[notNA]), d$accuracyRank[notNA], f = .2), col = 2, lwd=5)
 tcks<-c(0.5,1,2.5,5,10,25,50); axis(1,at=log10(tcks), tcks)
 axis(2,at=(0:5)/5)
 
+text(log10(2.576),  1.25, "BMC Bioinf.",    pos=4, srt=90, cex=0.75)
+text(log10(4.333),  1.25, "JMB",            pos=4, srt=90, cex=0.75)
+text(log10(4.981),  1.25, "Bioinformatics", pos=4, srt=90, cex=0.75)
+text(log10(9.112),  1.25, "NAR",            pos=4, srt=90, cex=0.75)
+text(log10(14.630), 1.25, "Genome res.",    pos=4, srt=90, cex=0.75)
+text(log10(32.072), 1.25, "Nature methods", pos=4, srt=90, cex=0.75)
+
 smoothScatter(log10(as.numeric(d$cites)), d$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="mean normalised accuracy rank", xlab="# citations",xlim=c(0,5),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n",main="Accuracy vs. #citations") 
 notNA <- !is.na(d$cites)
 lines(lowess(log10(d$cites[notNA]), d$accuracyRank[notNA], f = .2), col = 2, lwd=5)
 axis(1,at=0:5, c(1,10,100,"1,000","10,000","100,000"))
 axis(2,at=(0:5)/5)
+
+smoothScatter(dr$speedRank, dr$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="normalised accuracy rank", xlab="normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n",main="Accuracy vs. Speed") 
+lines(lowess(d$speedRank, d$accuracyRank, f = .2), col = 2, lwd=5)
+axis(1,at=(0:5)/5)
+axis(2,at=(0:5)/5)
+
 dev.off()
 
 
-######################################################################

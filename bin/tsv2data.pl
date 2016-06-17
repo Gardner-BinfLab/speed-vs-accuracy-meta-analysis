@@ -119,9 +119,9 @@ close(IN0);
 my ($max,$numBench)=(1,0);
 my %ranks;
 my %methodCounts;
-my %benchMethod;
 my ($testId,$pmid,$accuracySource,$accuracyMetric,$speedSource)=("","","","","");
-my (@permAccuracy, @permSpeed) = ((),());
+my (%benchAccuracy, %benchSpeed, %benchMethod);
+
 
 open(IN1, "< Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ Data.tsv"); 
 open(UT0, "> rawRankSpeedData.tsv");
@@ -169,23 +169,30 @@ while(my $in = <IN1>){
 	
         if($pmid && length($accuracySource) && length($accuracyMetric) && length($speedSource) ){
 	    $testId = "$pmid:$accuracySource:$accuracyMetric:$speedSource";
+	    
+	    my $accNorm = ($in[6]-1)/($max-1);
+	    my $spdNorm = ($in[7]-1)/($max-1);
 	    push(@{$benchMethod{$testId}}, $in[5]);
-	}
-	        
-        if (not defined $ranks{$in[5]}){
-            #sum(accuracy) sum(speed) numEntries whichBenchmark
-            $ranks{$in[5]} = [0.0,0.0, 0, 0]; 
-            $numBench++;
-        }
-
-        #ranks: key: methodName, 0: sum of normalised accuracy rank, 1: sum of normalised speed rank, 2: number of times method benchmarked, 3: benchmark number
-        $ranks{$in[5]}[0] += ($in[6]-1)/($max-1); #normalised accuracy rank
-        $ranks{$in[5]}[1] += ($in[7]-1)/($max-1); #normalised speed rank
-        $ranks{$in[5]}[2]++;
-        $ranks{$in[5]}[3]  = $numBench;
+	    push(@{$benchAccuracy{$testId}}, $accNorm);
+	    push(@{$benchSpeed{   $testId}}, $spdNorm);
 	
-	#            testId   normAccuracyRank   normSpeedRank   method
-	printf UT0 "$testId\t%0.3f\t%0.3f\t$in[5]\n", $ranks{$in[5]}[0], $ranks{$in[5]}[1];#($in[6]-1)/($max-1), ($in[7]-1)/($max-1);
+	        
+	    if (not defined $ranks{$in[5]}){
+		#sum(accuracy) sum(speed) numEntries whichBenchmark
+		$ranks{$in[5]} = [0.0,0.0, 0, 0]; 
+		$numBench++;
+	    }
+	    
+	    #ranks: key: methodName, 0: sum of normalised accuracy rank, 1: sum of normalised speed rank, 2: number of times method benchmarked, 3: benchmark number
+	    $ranks{$in[5]}[0] += $accNorm; #normalised accuracy rank
+	    $ranks{$in[5]}[1] += $spdNorm; #normalised speed rank
+	    $ranks{$in[5]}[2]++;
+	    $ranks{$in[5]}[3]  = $numBench;
+	    
+	    
+	    #            testId   normAccuracyRank   normSpeedRank   method
+	    printf UT0 "$testId\t%0.3f\t%0.3f\t$in[5]\n", $accNorm, $spdNorm;
+	}
     }
     else {
         print "\tWTF:[$in]\n"
@@ -197,12 +204,36 @@ while(my $in = <IN1>){
 close(IN1);
 close(UT0);
 
-#COMPUTE RELATIVE AGE & CITATION COUNT FOR EACH METHOD IN EACH BENCHMARK/TEST:
-#GAH. This block is fucking filthy and farts like a dog. Problem is methods may have ages, but not cites, ... need to treat each stat seperately. Or learn how to deal with tonnes of missing values:
+my $numPermutations = 1000;
+my (%benchAccuracyPerms, %benchSpeedPerms, %ranksPerms);
+#PERMUTATIONS & RELATIVE VALUES FOR EACH BENCHMARK:
 my (%datesRelRanks, %citesRelRanks);
 foreach my $bench (keys %benchMethod){ 
     my %dates=(); 
     my %cites=(); 
+    
+    #GENERATE XXX PERMUTATIONS OF ACCURACY & SPEED RANKS
+    for (my $p=0; $p<$numPermutations; $p++){
+	
+	my $pAccP = permuteA( @{$benchAccuracy{$bench}} ); 
+	my $pSpdP = permuteA( @{$benchSpeed{$bench}} ); 
+	my $testIdP = $bench . ":$p";
+	push(@{$benchAccuracyPerms{$testIdP}}, @{$pAccP});
+	push(@{$benchSpeedPerms{   $testIdP}}, @{$pSpdP});
+	
+	my $cnt=0;
+	foreach my $meth (@{$benchMethod{$bench}}){
+	    $ranksPerms{"$meth:$p"}[0] += $pAccP->[$cnt]; #normalised accuracy rank
+	    $ranksPerms{"$meth:$p"}[1] += $pSpdP->[$cnt]; #normalised speed rank
+	    $cnt++;
+	}
+
+    }
+
+
+    #COMPUTE RELATIVE AGE & CITATION COUNT FOR EACH METHOD IN EACH BENCHMARK/TEST:
+    #GAH. This block is fucking filthy and farts like a dog. Problem is methods may have ages, but not cites, ... 
+    #need to treat each stat seperately. Or learn how to deal with tonnes of missing values:
     foreach my $meth (@{$benchMethod{$bench}}){
 	
 	#printf "[$meth]\ty[%0.2f]y[%s]\tc[%0.2f]c[%s]\t[$bench]\n", $methodInfo{$meth}{'yearPublished'}, $methodInfo{$meth}{'yearPublished'}, $methodInfo{$meth}{'cites'}, $methodInfo{$meth}{'cites'};
@@ -234,9 +265,20 @@ open(UT, "> meanRankSpeedData.tsv");
 my $methInfo = join("\t", @methodInfoKeys); 
 print UT "sumRanks\taccuracyRank\tspeedRank\tmethod\tnumTests\t$methInfo\trelAge\trelCites\n";
 
+open( UTPA, "> meanRankAccuracyPerms.tsv");
+print UTPA "method\tpermutation\taccuracyRank\n";
+open( UTPS, "> meanRankSpeedPerms.tsv");
+print UTPS "method\tpermutation\tspeedRank\n";
+
 foreach my $meth (sort keys %ranks){ 
     #ranks: key: methodName, 0: sum of normalised accuracy rank, 1: sum of normalised speed rank, 2: number of times method benchmarked, 3: benchmark number
-    printf UT "%0.3f\t%0.3f\t%0.3f\t%s\t%d", $ranks{$meth}[0]/$ranks{$meth}[2] + $ranks{$meth}[1]/$ranks{$meth}[2],  $ranks{$meth}[0]/$ranks{$meth}[2], $ranks{$meth}[1]/$ranks{$meth}[2], $meth, $ranks{$meth}[2];     
+    printf UT "%0.3f\t%0.3f\t%0.3f\t%s\t%d", $ranks{$meth}[0]/$ranks{$meth}[2] + $ranks{$meth}[1]/$ranks{$meth}[2],  $ranks{$meth}[0]/$ranks{$meth}[2], $ranks{$meth}[1]/$ranks{$meth}[2], $meth, $ranks{$meth}[2];
+    
+    #PRINT PERMUTATIONS OF ACCURACY & SPEED RANKS
+    for (my $p=0; $p<$numPermutations; $p++){
+	printf UTPA "%s\t%d\t%0.3f\n", "$meth:$p", $p, $ranksPerms{"$meth:$p"}[0]/$ranks{$meth}[2];
+	printf UTPS "%s\t%d\t%0.3f\n", "$meth:$p", $p, $ranksPerms{"$meth:$p"}[1]/$ranks{$meth}[2];
+    }
     
     foreach my $methInfo (@methodInfoKeys){
 	if(not defined($methodInfo{$meth}{$methInfo} )){
@@ -262,6 +304,8 @@ foreach my $meth (sort keys %ranks){
     printf UT "\n";
 }
 close(UT);
+close(UTPA);
+close(UTPS);
 
 system("R CMD BATCH --no-save ../bin/prettyPlot.R");
 
@@ -369,6 +413,22 @@ sub normaliseA {
     }
     
     return \@a;
+}
+
+######################################################################
+#return permuted values in an array -- use Fisher - Yates: 
+sub permuteA {
+    my @a = @_; 
+    my $length = scalar(@a); 
+    
+    #http://docstore.mik.ua/orelly/perl/cookbook/ch04_18.htm
+    for (my $i = 0; $i < $length; $i++){
+	my $r = int(rand($i + 1)); ## had been using $length. Apparently this is biased! 
+	next if ($i == $r);
+	($a[$i], $a[$r]) = ($a[$r], $a[$i]); 
+    }
+    
+    return \@a; 
 }
 
 

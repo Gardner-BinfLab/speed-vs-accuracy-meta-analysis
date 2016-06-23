@@ -204,7 +204,7 @@ while(my $in = <IN1>){
 close(IN1);
 close(UT0);
 
-my $numPermutations = 1000;
+my $numPermutations = 10000;
 my (%benchAccuracyPerms, %benchSpeedPerms, %ranksPerms);
 #PERMUTATIONS & RELATIVE VALUES FOR EACH BENCHMARK:
 my (%datesRelRanks, %citesRelRanks);

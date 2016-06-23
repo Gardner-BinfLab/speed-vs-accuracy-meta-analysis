@@ -46,10 +46,78 @@
 XXXX
 
 
+
+
+
 \clearpage
 \newpage
 
 \onecolumn
+
+\section*{R code for Figure~1A\&B}
+
+{\tiny
+\begin{verbatim}
+
+#read data
+d <-read.table("meanRankSpeedData.tsv", header=T)
+
+#initialize matrices
+dNames <- c("IF", "H5", "relAge",       "yearPublished", "cites", "relCites",       "mindex",  "hindex",  "accuracyRank",  "speedRank" )
+pNames <- c("JIF", "JH5", "Rel. age", "Year",          "Cites", "Rel. cites", "M-index", "H-index", "Accuracy",      "Speed")
+pvalMatrix<-matrix(1, length(dNames), length(dNames))
+rhoMatrix <-matrix(0, length(dNames), length(dNames))
+sigMatrix <-matrix("",length(dNames), length(dNames))
+
+colnames(pvalMatrix)<-pNames
+rownames(pvalMatrix)<-pNames
+colnames(rhoMatrix) <-pNames
+rownames(rhoMatrix) <-pNames
+colnames(sigMatrix) <-pNames
+rownames(sigMatrix) <-pNames
+
+#loop through pairwise combinations, record rho and P-values 
+for(i in 1:length(dNames)){
+      for(j in 1:length(dNames)){
+	    spear<-cor.test(d[,dNames[i] == colnames(d)], d[,dNames[j] == colnames(d)], method = "spearman", exact = T)   #, alternative = "less")
+	    pvalMatrix[i,j] <- spear$p.value 
+	    rhoMatrix[i,j]  <- spear$estimate
+	    if(spear$p.value < 0.05){
+		sigMatrix[i,j]  <- "X"
+	    }
+      }
+}
+
+#generate plots
+pdf(file=    "../figures/spearmanHeatmap.pdf", width = 7,  height = 6)
+par(mar = c(8,4,4,4) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
+heatmap.2(rhoMatrix, cellnote=sigMatrix,notecex=1.5,notecol="black", col=redblue(40), density.info="none", trace="none", dendrogram=c("column"), symm=F,symkey=T,symbreaks=T,
+	scale="none", key.title = "", srtRow=45, adjRow=c(0, 1), srtCol=45, adjCol=c(1,1), breaks=(-20:20)/20,
+margins = c(8, 8), cexRow=1.5, cexCol=1.5)
+dev.off()
+
+relCitesA<-cor.test(1-d$accuracyRank, as.numeric(d$relCites),     method = "spearman")
+hindexA  <-cor.test(1-d$accuracyRank, as.numeric(d$hindex),       method = "spearman")
+mindexA  <-cor.test(1-d$accuracyRank, as.numeric(d$mindex),       method = "spearman")
+H5A      <-cor.test(1-d$accuracyRank, as.numeric(d$H5),           method = "spearman")
+relAgeA  <-cor.test(1-d$accuracyRank, as.numeric(d$relAge),       method = "spearman")
+speedA   <-cor.test(1-d$accuracyRank, as.numeric(d$speedRank),    method = "spearman")
+citesA   <-cor.test(1-d$accuracyRank, as.numeric(d$cites),        method = "spearman")
+IFA      <-cor.test(1-d$accuracyRank, as.numeric(d$IF),           method = "spearman")
+yearA    <-cor.test(1-d$accuracyRank, as.numeric(d$yearPublished),method = "spearman")
+
+pdf(file=    "../figures/spearmanBarplot.pdf", width = 5,  height = 3)
+op<-par(mfrow=c(1,1),cex=1.0,las=2)
+barplot(t(c(mindexA$estimate, hindexA$estimate, relAgeA$estimate, H5A$estimate, speedA$estimate, citesA$estimate, relCitesA$estimate, yearA$estimate, IFA$estimate)),
+	names=c("M-index", "H-index", "Rel. age", 'JH5', "Speed", "Cites", "Rel. cites", "Year", "JIF"), ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlates with accuracy rank")
+lines(c(-100,100),c(0,0))
+dev.off()
+\end{verbatim}
+}
+
+
+\clearpage
+\newpage
 
 \begin{figure}[H]
 \centering

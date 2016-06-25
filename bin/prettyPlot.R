@@ -109,12 +109,6 @@ heatmap.2(rhoMatrix, cellnote=sigMatrix,notecex=1.5,notecol="black", col=redblue
 margins = c(8, 8), cexRow=1.5, cexCol=1.5)
 dev.off()
 
-png(file=    "../figures/spearmanHeatmap.png", width = 420,  height = 360)
-par(mar = c(8,4,4,4) + .1, cex=0.5) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(rhoMatrix, cellnote=sigMatrix,notecex=1.5,notecol="black", col=redblue(75), density.info="none", trace="none", dendrogram=c("row"), symm=F,symkey=T,symbreaks=T, scale="none", cexRow=0.95, cexCol=0.95, key.title = "Spearman\'s rho") 
-dev.off()
-
-
 ############
 #BARPLOT OF SPEARMAN RHO VALUES:
 

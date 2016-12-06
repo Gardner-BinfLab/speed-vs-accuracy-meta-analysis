@@ -1,4 +1,4 @@
-logOdds	traingFreq	backgroundFreq
+logOdds	traingFreq	backgroundFreq	word
 -8.00	0.0000	0.0026	associated
 -7.77	0.0000	0.0022	patients
 -7.68	0.0000	0.0020	binding

@@ -5,6 +5,12 @@
 \usepackage{caption}
 \graphicspath{{../figures/}}
 
+\newcommand{\beginsupplement}{%
+        \setcounter{table}{0}
+        \renewcommand{\thetable}{S\arabic{table}}%
+        \setcounter{figure}{0}
+        \renewcommand{\thefigure}{S\arabic{figure}}%
+     }
 
 \definecolor{color1}{RGB}{0,0,90} % Color of the article title and sections
 \definecolor{color2}{RGB}{0,20,20} % Color of the boxes behind the abstract and headings
@@ -26,7 +32,7 @@
 %	ABSTRACT
 %----------------------------------------------------------------------------------------
 
-\Abstract{.}
+\Abstract{In the below we provide additional results for our investigation of computational biology benchmarks.}
 
 \begin{document}
 
@@ -41,6 +47,8 @@
 %----------------------------------------------------------------------------------------
 
 \onecolumn
+\beginsupplement
+
 
 
 \section*{Literature mining} % The \section*{} command stops section numbering
@@ -48,86 +56,56 @@
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.55\textwidth]{}
-\caption{}
-\label{fig:S1}
+\includegraphics[height=0.7\textheight]{litMiningFlowDiagram-edited.pdf}
+\caption{In order to improve the identification of benchmark articles
+  that rank both accuracy and speed we developed a tool for ranking
+  PubMed articles based upon word association scores (measured in
+  ‘bits’). In brief, keywords were extracted from titles and abstracts
+  for both training (in this case benchmark articles) and background
+  articles (articles published between 2013 and 2015 with
+  “bioinformatics” in the title or abstract). Log-odds ratios were
+  computed for each keyword (measured in ‘bits’). Candidate articles
+  that matched a hand-selected list of keywords associated with
+  benchmarks were then scored and ranked with a “sum of bits”
+  score. High ranking articles were then inspected, those that met our
+  criteria were added to the training set, those that didn’t were
+  added to the background set of articles.}
+\label{fig:flow}
 \end{figure}
 
 
 
+\begin{figure}[H] \centering
+\includegraphics[width=1.05\textwidth]{wordScores.pdf} \caption{The 40
+  highest and lowest scoring words that are associated with
+  bioinformatic benchmark articles from the training benchmark articles,
+  compared to the background articles. The log-odds ratios (measured
+  in bits) are indicated on the y-axis. }
+\label{fig:wordScores} \end{figure}
 
-\clearpage
-\newpage
 
-\section*{R code for Figure~1A\&B}
+%% \clearpage
+%% \newpage
 
-{\tiny
-\begin{verbatim}
+%% \section*{R code ...}
 
-#read data
-d <-read.table("meanRankSpeedData.tsv", header=T)
+%% {\tiny
+%% \begin{verbatim}
 
-#initialize matrices
-dNames <- c("IF", "H5", "relAge",       "yearPublished", "cites", "relCites",       "mindex",  "hindex",  "accuracyRank",  "speedRank" )
-pNames <- c("JIF", "JH5", "Rel. age", "Year",          "Cites", "Rel. cites", "M-index", "H-index", "Accuracy",      "Speed")
-pvalMatrix<-matrix(1, length(dNames), length(dNames))
-rhoMatrix <-matrix(0, length(dNames), length(dNames))
-sigMatrix <-matrix("",length(dNames), length(dNames))
-
-colnames(pvalMatrix)<-pNames
-rownames(pvalMatrix)<-pNames
-colnames(rhoMatrix) <-pNames
-rownames(rhoMatrix) <-pNames
-colnames(sigMatrix) <-pNames
-rownames(sigMatrix) <-pNames
-
-#loop through pairwise combinations, record rho and P-values 
-for(i in 1:length(dNames)){
-      for(j in 1:length(dNames)){
-	    spear<-cor.test(d[,dNames[i] == colnames(d)], d[,dNames[j] == colnames(d)], method = "spearman", exact = T)   #, alternative = "less")
-	    pvalMatrix[i,j] <- spear$p.value 
-	    rhoMatrix[i,j]  <- spear$estimate
-	    if(spear$p.value < 0.05){
-		sigMatrix[i,j]  <- "X"
-	    }
-      }
-}
-
-#generate plots
-pdf(file=    "../figures/spearmanHeatmap.pdf", width = 7,  height = 6)
-par(mar = c(8,4,4,4) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(rhoMatrix, cellnote=sigMatrix,notecex=1.5,notecol="black", col=redblue(40), density.info="none", trace="none", dendrogram=c("column"), symm=F,symkey=T,symbreaks=T,
-	scale="none", key.title = "", srtRow=45, adjRow=c(0, 1), srtCol=45, adjCol=c(1,1), breaks=(-20:20)/20,
-margins = c(8, 8), cexRow=1.5, cexCol=1.5)
-dev.off()
-
-relCitesA<-cor.test(1-d$accuracyRank, as.numeric(d$relCites),     method = "spearman")
-hindexA  <-cor.test(1-d$accuracyRank, as.numeric(d$hindex),       method = "spearman")
-mindexA  <-cor.test(1-d$accuracyRank, as.numeric(d$mindex),       method = "spearman")
-H5A      <-cor.test(1-d$accuracyRank, as.numeric(d$H5),           method = "spearman")
-relAgeA  <-cor.test(1-d$accuracyRank, as.numeric(d$relAge),       method = "spearman")
-speedA   <-cor.test(1-d$accuracyRank, as.numeric(d$speedRank),    method = "spearman")
-citesA   <-cor.test(1-d$accuracyRank, as.numeric(d$cites),        method = "spearman")
-IFA      <-cor.test(1-d$accuracyRank, as.numeric(d$IF),           method = "spearman")
-yearA    <-cor.test(1-d$accuracyRank, as.numeric(d$yearPublished),method = "spearman")
-
-pdf(file=    "../figures/spearmanBarplot.pdf", width = 5,  height = 3)
-op<-par(mfrow=c(1,1),cex=1.0,las=2)
-barplot(t(c(mindexA$estimate, hindexA$estimate, relAgeA$estimate, H5A$estimate, speedA$estimate, citesA$estimate, relCitesA$estimate, yearA$estimate, IFA$estimate)),
-	names=c("M-index", "H-index", "Rel. age", 'JH5', "Speed", "Cites", "Rel. cites", "Year", "JIF"), ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlates with accuracy rank")
-lines(c(-100,100),c(0,0))
-dev.off()
-\end{verbatim}
-}
+%% \end{verbatim}
+%% }
 
 
 \clearpage
 \newpage
+
+\section*{Data mining} % The \section*{} command stops section numbering
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.55\textwidth]{supplementary-figures-small.pdf}
-\caption{The distributions for the metrics used in this study. These
+\includegraphics[width=0.75\textwidth]{supplementary-figures-small.pdf}
+\caption{The distributions for the measures we expected to be
+  predictive of software quality used in this study. These
 are, reading from left to right, top to bottom: Accuracy -- the mean
 normalised accuracy rank for each benchmarked method; Speed -- the
 mean normalised speed rank for each benchmarked method; Cites -- the number of
@@ -141,14 +119,21 @@ manuscripts describing a method, data from GoogleScholar User Profiles;
 M-index -- the M-index (H-index/(\#years since first publication)) for the
 highest profile corresponding author from the manuscripts describing a method,
 data from GoogleScholar User Profiles;}
-\label{fig:S1}
+\label{fig:metricDistributions}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.45\textwidth]{spearmanBarplot.pdf}
 \includegraphics[width=0.45\textwidth]{spearmanBarplotSpeed.pdf}
-\caption{...}
+\caption{The correlation between method accuracy (on the left) and
+  method speed (on the right) and measures we expected to be
+  predictive of software quality. E.g. author reputation measures
+  (H-index, M-index), journal reputation (JH5 and JIF), number of
+  users (citations and relative citations) or the recency of methods
+  (year and relative age).  The correlations were estimated using
+  Spearman's $\rho$. The signficant relationships are indicated with a
+  ``*''. }
 \label{fig:S2}
 \end{figure}
 
@@ -156,34 +141,50 @@ data from GoogleScholar User Profiles;}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.5\textwidth]{smoothScatter-speed-vs-accuracy.pdf}
-\caption{...}
-\label{fig:S2}
+\caption{A smoothed color density representation of a scatterplot of
+  normalised speed ranks and normalised accuracy ranks. Dark red
+  regions are indicative of of a high density of points, blue shades
+  indicate the reverse. The expected inverse relationship between
+  speed and accuracy is indicated with a dashed black line, points
+  above this line could be considered comparatively fast and accurate,
+  points below are the reverse. A locally weighted regression (lowess)
+  curve is shown in red.}
+\label{fig:smoothScatterAccSpeed}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.85\textwidth]{smoothScatters.pdf}
-\caption{...}
-\label{fig:S3}
+\caption{A smoothed color density representation of a scatterplot of
+  journal impact factors (JIF) on the left and number of citations on
+  the right vs normalised accuracy ranks. As above, dark red regions
+  are indicative of of a high density of points, blue shades indicate
+  the reverse. The JIF for journals that are major publishers of
+  bioinformatic software are indicated on the left. }
+\label{fig:smoothScatters}
 \end{figure}
 
 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.45\textwidth]{relAge-speedAcc.pdf}
-\includegraphics[width=0.45\textwidth]{relAge-SpeedVsAccuracy-heatmap.pdf}\\
 \includegraphics[width=0.45\textwidth]{hindex-SpeedVsAccuracy-heatmap.pdf}
-\caption{...}
-\label{fig:S4}
+\includegraphics[width=0.45\textwidth]{cites-SpeedVsAccuracy-heatmap.pdf}
+\caption{Heatmaps of normalised speed ranks and normalised accuracy
+  ranks, both $x$ and $y$ dimensions are discretised into a $10 \times
+  10$ matrix. The shading indicates median H-indices for corresponding
+  authors (darker shade indicates a higher H) in the figure on the
+  left. The shading indicates median citations (on a log scale), for
+  software tools in the figure on the right. }
+\label{fig:heatmaps}
 \end{figure}
 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.85\textwidth]{wordScores.pdf}
-\caption{...}
-\label{fig:S5}
+\includegraphics[width=0.95\textwidth]{relAge-SpeedVsAccuracy-heatmap-edited.pdf}
+\caption{{\bf A.} Violin plots for the relative age distribution for software tools in each of the 5 2x2 cells indicated in B. The five boxes correspond to the four extreme corners of the speed vs accuracy spectrum (i.e. slow and inaccurate, slow and accurate, fast and inaccurate, fast and accurate) and the central box (medium speed and medium accuracy). {\bf B.} A heatmap indicating the relative age of software in a range of relative accuracy and speed rankings. Blue colours indicate an abundance of older software tools in an accuracy and speed category, while light colours indicate younger software in an accuracy and speed category. }
+\label{fig:ageplot}
 \end{figure}
 
 

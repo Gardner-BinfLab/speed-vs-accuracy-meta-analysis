@@ -247,9 +247,12 @@ speed=& c_0+c_{1}\times accuracy+c_{2}\times JIF+c_{3}\times H5+\\
 For each benchmark of three or more methods, we extracted the published accuracy and speed ranks. In order to identify if there is an enrichment of certain accuracy and speed pairings we constructed a permutation test. The individual accuracy and speed ranks were reassigned to methods in a random fashion and each new accuracy and speed rank pairing was recorded. For each benchmark this procedure was repeated 10,000 times. These permuted rankings were normalised and compared to the real rankings to produce the ‘x’ points in Figure~\ref{fig:allfactors}B and the heatmap and histograms in Figure~\ref{fig:speedaccuracy}. The heatmap in Figure~\ref{fig:speedaccuracy} is based upon Z-scores ($Z=\frac{x-\bar{x}}{\sigma}$). For each cell in a $10\times 10$ grid a Z-score is computed to illustrate the abundance or lack of methods in a cell relative to the permuted data.
 
 \section*{Data availability}
-The raw datasets are available here:\\
+Raw datasets, software and documents are available under a CC-BY license:\\
 \fussy
 \url{https://docs.google.com/spreadsheets/d/14xIY2PHNvxmV9MQLpbzSfFkuy1RlzDHbBOCZLJKcGu8/edit?usp=sharing}\\
+and here:\\
+\fussy
+\url{https://dx.doi.org/10.6084/m9.figshare.4299320.v1}\\
 \sloppy
 Additional documentation, code, figures and raw data is available here:\\
 \fussy
@@ -259,27 +262,17 @@ Additional documentation, code, figures and raw data is available here:\\
 \section*{Acknowledgements}
 The authors acknowledge the valued contribution of invaluable discussions with Anne-Laure Boulesteix, Shinichi Nakagawa, Suetonia Palmer and Jason Tylianakis. Michael A. Black,  Murray Cox, Raquel Norel, Alexandros Stamatakis, Jens Stoye,Tandy Warnow, provided valuable feedback on drafts of the manuscript. 
 
+PPG, FAG and NEW are supported by a Rutherford Discovery Fellowship,
+administered by the Royal Society of New Zealand. NEW is supported by
+a PhD scholarship from the University of Canterbury.
+
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
 %----------------------------------------------------------------------------------------
 \bibliographystyle{unsrt}
 \bibliography{references.bib}
 
-<<<<<<< HEAD
-=======
-\begin{figure*}
-\includegraphics[scale=0.7]{figure1.pdf}
-\caption{\textbf{A.} A heatmap indicating the relationships between proposed predictors of software quality. Spearman’s rho is used to infer correlations between metrics such as the H and M indices of corresponding authors, number of citations, journal impact factors and H5 indices, the year and relative age of software and the mean relative rankings of software speed and accuracy. Red colours indicate a high positive correlation, blue colours indicate a high negative correlation. Correlations with a P-value less than 0.05 are indicated with a ‘X’. The dashed rectangular area is illustrated in more detail in \textbf{B}, the bold square is shown in more detail in \textbf{Figure 2}.The dendrogram was computed using the default ‘heatmap.2 function in R, which computes a Euclidean distance matrix and a complete-linkage hierarchical clustering. \textbf{B.} A barplot illustrating the correlation as measured by Spearman’s rho between and normalised accuracy ranks and potential factors that may be predictive of accuracy. In order to give an appreciation of the difference between the observed effect-sizes and significant effect sizes, we generated 10,000 permuted accuracy ranks for each benchmark and recorded Spearman’s rho for the significant correlations (P<0.05). These values are marked with “x”s in the barplot.}
-\label{fig:allfactors}
-\end{figure*}
 
-\begin{figure*}
-\includegraphics[scale=0.55]{figure2.pdf}
-\caption{A heatmap indicating the relative paucity or abundance of software in the range of possible accuracy and speed rankings. Red colours indicate an abundance of software tools in an accuracy and speed category, while blue colours indicate scarcity of software in an accuracy and speed category. The abundance is quantified using a Z-score computation for each bin, this is derived from 10,000 random permutations of the speed and accuracy ranks from each benchmark. Mean normalised ranks of accuracy and speed have been binned into 100 classes (a $10\times10$ grid) that range from comparatively slow/inaccurate to comparatively fast/accurate. Z-scores with a P-value less than 0.05 are indicated with a ‘X’.}
-\label{fig:speedaccuracy}
-\end{figure*}
-
->>>>>>> af77dde3952f584a29a72a4718cfc00e97ff3493
 \end{document}
 
 

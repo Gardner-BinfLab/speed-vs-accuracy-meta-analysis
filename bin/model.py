@@ -742,7 +742,6 @@ def run_priority_queue_simulation(number_of_agents, last_date,
 
     published_agents = [stud for (date, number, stud) in agents if publishing == stud.published]
     #print("Finished sim")
-    extract_data(published_agents)
     for stud in agents:
         if stud[2].published is False and stud[2] not in to_rank:
             to_rank.append(stud[2])
@@ -765,20 +764,6 @@ def extract_ranks(agents):
     accuracy_ranked.sort(key=lambda x: x.get_accuracy())
     for stud in agents:
         BINS[accuracy_ranked.index(stud)][speed_ranked.index(stud)] += 1
-
-def extract_data(agents):
-    """
-    Extracts the iteration, wasted iteration, speed and accuracy value
-    from each agent and writes them to disk (for speed and accuracy)
-    or prints them to the terminal (for used and wasted iterations)
-    """
-    with open("results"+str(PUBLISHING)+".tsv", 'w') as out_file:
-        for i, stud in enumerate(agents):
-            write_out = "{}\t{}\t{}\t{}\t{}\n"\
-            .format(i, stud.get_start_speed(), stud.get_start_accuracy()
-                    , stud.get_speed(), stud.get_accuracy())
-            out_file.write(write_out)
-
 
 def extract_ROC(stud):
     """

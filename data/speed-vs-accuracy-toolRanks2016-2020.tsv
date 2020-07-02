@@ -1,0 +1,522 @@
+PubMed ID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	speedRank	numMethods	Data set (if applicable)	Bias	Acc comment	Speed comment
+31465436	A benchmark of computational CRISPR-Cas9 guide design methods.	Table 2	Precision	Table 3(550k)	FlashFry	1	6	11				
+					WU-CRISPR	2	7					
+					CRISPR-DO	3	4					
+					CHOPCHOP	4	3					
+					SSC	5	1					
+					sgRNAScorer2	6	11					
+					CRISPOR	7	9					
+					TUSCAN	8	5					
+					PhytoCRISP-Ex	9	10					
+					mm10db	10	2					
+					Cas-Designer	11	8					
+30717772	A comparative evaluation of hybrid error correction methods for error-prone long reads.	Table S2a(S. cerevisiae 20x)	Accuracy	Table S5a(S. cerevisiae 20x)	Jabba	1	1	10				
+					pacBioToCA	2	6					
+					ECTools	3	8					
+					Nanocorr	4	10					
+					HALC	5	4					
+					LoRDEC	6	3					
+					FMLRC	7	2					
+					proovread	8	7					
+					CoLoRMap	9	5					
+					LSC	10	9					
+		Table S2b(S. cerevisiae 20x)	Accuracy	Table S5b(S. cerevisiae 20x)	Jabba	1	2					
+					pacBioToCA	2	6					
+					ECTools	3	8					
+					Nanocorr	4	9					
+					HALC	5	3					
+					FMLRC	6	1					
+					LoRDEC	7	5					
+					proovread	8	7					
+					CoLoRMap	9	4					
+					LSC	10	10					
+30936559	A comparison of single-cell trajectory inference methods.	Supplementary Figure 3a	Mean Overall score	Supplementary Figure 4b	angle	7	2	48				
+					calista	45	41					
+					cellrouter	38	27					
+					celltrails	34	37					
+					celltreegibbs	44	42					
+					celltreemaptpx	19	33					
+					celltreevem	28	24					
+					component1	11	1					
+					dpt	27	7					
+					elpigraph	32	20					
+					elpigraphlinear	18	12					
+					elpigraphcycle	21	14					
+					embeddr	10	19					
+					fateid	4	21					
+					forks	37	5					
+					gpfates	39	43					
+					grandprix	40	40					
+					matcher	16	11					
+					merlot	41	44					
+					mfa	24	30					
+					monocleddrtree	13	28					
+					monocleica	17	36					
+					mpath	30	39					
+					mst	8	3					
+					ouija	47	46					
+					ouijaflow	33	17					
+					paga	5	13					
+					pagatree	2	15					
+					pcreode	14	22					
+					phenopath	20	25					
+					pseudogp	43	47					
+					raceid_stemid	31	29					
+					recat	35	32					
+					scimitar	48	48					
+					scorpius	3	6					
+					scoup	46	45					
+					scuba	23	34					
+					sincell	29	26					
+					slice	15	35					
+					slicer	42	23					
+					slingshot	1	10					
+					stemnet	12	9					
+					topslam	22	38					
+					tscan	6	8					
+					urd	36	31					
+					wanderlust	25	16					
+					waterfall	9	4					
+					wishbone	26	18					
+31874603	A systematic evaluation of copy number alterations detection methods on real SNP array and deep sequencing data.	Table 3 	Average Recall rate	Fig. 13	CNVnorm	1.5	7	9				
+					FREEC	1.5	1.5					
+					BICseq	3	1.5					
+					CNVseq	4	8					
+					Varscan	5	9					
+					ReadDepth	6	3					
+					CNVnator	7	4.5					
+					rSWseg	8	4.5					
+					RDXplorer	9	6					
+31639029	Accuracy assessment of fusion transcript detection via read-mapping and de novo fusion transcript assembly-based methods.	Fig. 4a	Rank median accuracy	Fig. 4b	Arriba	2	3	23				
+					ChimeraScan	18	15					
+					ChimPipe	5	14					
+					deFuse	22	12					
+					EricScript	23	8					
+					FusionCatcher	4	6					
+					FusionHunter	19	9					
+					InFusion	9	20					
+					JAFFA-Assembly	17	13					
+					JAFFA-Direct	16	10					
+					JAFFA-Hybrid	20	21					
+					MapSplice	10	17					
+					nFuse	21	7					
+					Pizzly	14	1					
+					PRADA	15	11					
+					SOAP-fuse	7	16					
+					STARChip	11	2					
+					STAR-Fusion	1	5					
+					STAR-SEQR	3	4					
+					TopHat-Fusion	12	18					
+					TrinityFusion-C	6	19					
+					TrinityFusion-D	13	23					
+					TrinityFusion-UC	8	22					
+28569140	An evaluation of copy number variation detection tools for cancer using whole exome sequencing data.	Table 4	mean(sqrt(sens*spc))	Fig. 4	ExomeCNV	1	3	5				
+					VarScan2	2	4					
+					CONTRA	3	2					
+					ADTEx	4	5					
+					cn.MOPS	5	1					
+28052134	Assessment of Common and Emerging Bioinformatics Pipelines for Targeted Metagenomics.	Fig 7.	Genus F-measure	Fig 9 (real, walltime)	BMP	4	4	5				
+					CLARK	1	2					
+					kraken	3	1					
+					mothur	5	5					
+					QIIME-SS	2	3					
+32183840	Benchmarking of computational error-correction methods for next-generation sequencing data.	Figure S10a&b.	sum(gain)	Figure S11a.	Bless	1	3	10				
+					Musket	2	6					
+					Lighter	3	2					
+					Fiona	4	9					
+					SGA	5	7.5					
+					BFC	6	4					
+					RECKONER	7	1.5					
+					Coral	8	7.5					
+					Racer	9	5					
+					Pollux	10	10					
+31984131	Benchmarking of long-read assemblers for prokaryote whole genome sequencing.	Figure 1a	fully complete+complete chromosome	Figure 1d	Canu	4	7	7				
+					Flye	2	6					
+					Miniasm-Minipolish	3	4					NB: NECAT slightly slower than Miniasm, confirmed in Fig2. 
+					NECAT	5	5					
+					Raven	1	3					
+					Redbean	6	2					
+					Shasta	7	1					
+28739658	Benchmarking Relatedness Inference Methods with Genome-Wide Data from Thousands of Relatives.	Figure1	(mean(%correctRelated)+%correctUnrelated)/2	Table 1	IBDseq	1	7	12			manually extracted data from figure 1, see spreadsheet in data directory.  	
+					HaploScore	2	10					
+					RefinedIBD	3	12					
+					ERSA	4	11					
+					germline	5	9					
+					PC-Relate	6	4					
+					PREST-plus	7	5					
+					FASTLbd	8	8					
+					PLINK	9	1					
+					REAP	10	3					
+					RelateAdmix	11	6					
+					KING	12	2					
+27256311	Benchmarking the next generation of homology inference tools.	Fig3a	AUC1000	Fig4	CS-BLAST	1	6	7				
+					HHSEARCH	3	7					
+					PHMMER	2	4					
+					NCBI-BLAST	4	3					
+					USEARCH	5	1					
+					UBLAST	7	5					
+					FASTA	6	2					
+		Fig3b	AUC1000	Fig4	CS-BLAST	2	6	7				
+					HHSEARCH	3	7					
+					PHMMER	1	4					
+					NCBI-BLAST	4	3					
+					USEARCH	5	1					
+					UBLAST	7	5					
+					FASTA	6	2					
+		Fig3c	AUC1000	Fig4	CS-BLAST	1	6	7				
+					HHSEARCH	3	7					
+					PHMMER	2	4					
+					NCBI-BLAST	4	3					
+					USEARCH	5	1					
+					UBLAST	7	5					
+					FASTA	6	2					
+30658573	Comparative analysis of differential gene expression analysis tools for single-cell RNA sequencing data.	Fig2	AUC-ROC		SCDE	10	6	11				
+					MAST	8	3					
+					scDD	5	11					
+					EMDomics	4	7					
+					D3E	6	10					
+					Monocle2	9	4					
+					SINCERA	11	1					
+					edgeR	7	2					
+					DESeq2	3	5					
+					DEsingle	2	9					
+					SigEMD	1	8					
+32138645	Comparative study of whole exome sequencing-based copy number variation detection tools.	Table 4	Sensitivity	Fig6	CNVkit	1	4	4				
+					cn.MOPS	2	1					
+					ExomeCopy	3	2					
+					CoNIFER	4	3					
+		Table 4	Specificity	Fig6	cn.MOPS	1	1	4				
+					CoNIFER	2	3					
+					CNVkit	3	4					
+					ExomeCopy	4	2					
+28808243	Comparison of error correction algorithms for Ion Torrent PGM data: application to hepatitis B virus.	Figure 2a	median(gain)	Manuscript text	Karect	5	1	5				
+					Blue	2	2					
+					Pollux	1	3					
+					Coral	4	4					
+					Fiona	3	5					
+28934964	Comprehensive benchmarking and ensemble approaches for metagenomic classifiers.	Fig1a	F1	Fig7	BlastMegan	1	10	11				
+					GOTTCHA	2	4					
+					DiamondMegan	3	8					
+					MetaPhlan	4	1					
+					Kraken	5	3					
+					LMAT	6	5					
+					MetaFlow	7	6					
+					PhyloSift	8	9					
+					CLARK-S	9	7					
+					CLARK	10	2					
+					NBC	11	11					
+31324872	Comprehensive evaluation and characterisation of short read general-purpose structural variant calling software.	Fig3	PPV(all calls)	Supp Fig 12(wall)	breakdancer	8	1	9				
+					socrates	6	2					
+					hydra	7	3					
+					manta	2	4					
+					gridss	5	5					
+					delly	4	6					
+					pindel	9	7					
+					cortex	3	8					
+					crest	1	9					
+31159850	Comprehensive evaluation of structural variation detection algorithms for whole genome sequencing.	Fig2a	F-measure	Fig. 5a	1-2-3-SV	29	31	50				Some extra methods were in the timing figure, these were ignored. Also, MetaSV & CNVnator had no times on the plot, so were given the maximum rank. 
+					AS-GENSENG	45.5	41					Raw data was not included for either figure, so ranks were extracted manually based upon bar heights.
+					BICseq2	32	14.5					
+					BreakDancer	24.5	2.5					
+					BreakSeek	38	44					
+					BreakSeq2	50	7					
+					CLEVER	30.5	36.5					
+					CNVnator	26.5	49.5					
+					Control-FREEC	49	36.5					
+					CREST	36.5	43					
+					DELLY	16	32					
+					ERDS	17.5	27					
+					FermiKit	14	46					
+					forestSV	24.5	33					
+					GASVPro	41	24					
+					GenomeSTRiP	22	28.5					
+					GRIDSS	1	23					
+					Hydra	41	2.5					
+					iCopyDAV	45.5	16					
+					indelMINER	43.5	11					
+					inGAP-sv	6	14.5					
+					laSV	47	48					
+					Lumpy	4.5	8.5					
+					Manta	2.5	39.5					
+					MATCHCLIP	11.5	13					
+					Meerkat	11.5	19.5					
+					MetaSV	14	49.5					
+					OncoSNP-Seq	43.5	39.5					
+					PBHoney-NGM	36.5	47					
+					pbsv	34.5	18					
+					PennCNV-Seq	26.5	42					
+					Pindel	9	45					
+					PRISM	22	38					
+					RAPTR	33	12					
+					readDepth	39	5					
+					Sniffles	10	1					
+					Socrates	28	10					
+					SoftSearch	19	30					
+					SoftSV	7	35					
+					SoloDel	48	21					
+					Sprites	2.5	22					
+					SvABA	14	26					
+					SVDetect	34.5	25					
+					SVelter	20	28.5					
+					SVfinder	41	17					
+					SVseq2	4.5	34					
+					TIDDIT	22	5					
+					Ulysses	17.5	19.5					
+					VariationHunter	30.5	5					
+					Wham	8	8.5					
+31136576	Comprehensively benchmarking applications for detecting copy number variation.	Fig 2a (50x)	TPR	Fig 3a (50x)	Canvas	9	1	10			Error in key for fig2a (Canvas key & figure colours don't match) 	
+					cn.MOPS	10	3.5					
+					CNVnator	2	3.5					
+					Control-FREEC	8	8					
+					GROM-RD	3	6					
+					iCopyDAV	7	9					
+					LUMPY	1	7					
+					RDXplorer	5	10					
+					ReadDepth	6	2					
+					RSICNV	4	5					
+		Fig 2b (50x)	FDR	Fig 3a (50x)	Canvas	1	1	10				
+					cn.MOPS	4	3.5					
+					CNVnator	10	3.5					
+					Control-FREEC	8	8					
+					GROM-RD	5	6					
+					iCopyDAV	6	9					
+					LUMPY	2	7					
+					RDXplorer	9	10					
+					ReadDepth	3	2					
+					RSICNV	7	5					
+31077315	De novo transcriptome assembly: A comprehensive cross-species comparison of short-read RNA-Seq assemblers.	Table 2	Summarized metric (0,1)-score	Table 3 (median runtime)	Trans-ABySS	1	10	10				
+					Trinity	2	8					
+					SPAdes-rna	3	2					
+					SOAP-Trans	4	1					
+					SPAdes-sc	5	3					
+					Bridger	6	7					
+					Shannon	7	6					
+					IDBA-Tran	8	4					
+					BinPacker	9	5					
+					Oases	10	9					
+31015787	Estimating the <i>k</i>-mer Coverage Frequencies in Genomic Datasets: A Comparative Assessment of the State-of-the-art.	Table 6	F0 Error% (k=25)	Table A2 (k = 25)	DSK	1	2	5				
+					ntCard	2	1					
+					KmerGenie	3	5					
+					Khmer	4	4					
+					KmerStreame	5	3					
+30329135	Evaluating Statistical Multiple Sequence Alignment in Comparison to Other Alignment Methods on Protein Data Sets.	S2-supplementary_information. Table: Summary - Protein Data	Total SP-Score (recall)	TABLE 3.	BAli-Phy	10	12	12			NB: Kalign & MAFFT Homologs were removed, as no timing data is provided for these in Table 3	
+					Clustal	9	4					
+					Contralign	3	8					
+					DiAlign	11	1					
+					MAFFT-G-INS-i	6	5					
+					MUSCLE	8	3					
+					PRANK	12	9					
+					PRIME	7	2					
+					Probalign	5	6					
+					PROBCONS	4	7					
+					PROMALS	1	10					
+					T-COFFEE	2	11					
+		S2-supplementary_information. Table: Summary - Protein Data	Total Modeler Score (precision)	TABLE 3.	BAli-Phy	1	12	12			NB: Kalign & MAFFT Homologs were removed, as no timing data is provided for these in Table 3	
+					Clustal	8	4					
+					Contralign	5	8					
+					DiAlign	10	1					
+					MAFFT-G-INS-i	7	5					
+					MUSCLE	11	3					
+					PRANK	12	9					
+					PRIME	9	2					
+					Probalign	6	6					
+					PROBCONS	4	7					
+					PROMALS	3	10					
+					T-COFFEE	2	11					
+31080946		Table 2b, All 	AP (adjacency precision)	Figure 4b (500)	CG	1	2	4				
+					ChiSquare	3	3					
+					FisherZ	2	1					
+					MultinomialLRT	4	4					
+		Table 2b, All 	AP (adjacency recall)	Figure 4b (500)	CG	3	2	4				
+					ChiSquare	2	3					
+					FisherZ	4	1					
+					MultinomialLRT	1	4					
+26628557	Evaluation of preprocessing, mapping and postprocessing algorithms for analyzing whole genome bisulfite sequencing data.	Figure 2B. Mott trimming	Sensitivity 	Table 3. single+paired	Bismark-bowtie-l28	4	4				Bismark (Bowtie2, L20) appears to be missing from the figure. 	
+					Bismark-bowtie-l50	6	3					
+					Bismark-bowtie2-L22	4	6					
+					BRAT-BW	7	2					
+					BSMAP	2	1					
+					GSNAP	4	7					
+					LAST	1	5					
+		Figure 2B. Mott trimming	Error rate 	Table 3. single+paired	Bismark-bowtie-l28	4.5	4					
+					Bismark-bowtie-l50	3	3					
+					Bismark-bowtie2-L22	4.5	6					
+					BRAT-BW	1	2					
+					BSMAP	6	1					
+					GSNAP	7	7					
+					LAST	2	5					
+29568413	Performance evaluation method for read mapping tool in clinical panel sequencing.	Fig. 3	AU-ROC	Fig. 4 (median)	BatAlign	7	4.5	8				Used a ruler to estimate median runtime. :-/
+					Bowtie2	1	4.5					
+					BWA-MEM	2	3					
+					BWA-PSSM	3	6					
+					CUSHAW3	4	7.5					
+					Kart	5	1					
+					NextGenMap	6	7.5					
+					NovoAlign	8	2					
+31907445	Benchmarking algorithms for gene regulatory network inference from single-cell transcriptomic data	Supplementary Figure 5	Median AUROC (mCAD Network, 0 Dropout Rate)	Supplementary Figure 7 (#GENES=500)	GENIE	7	7.5	11				SCNS missing from the time figure, therefore removed from ranks. 
+					GRISL	1	7.5					
+					GRNBoost	10	6					
+					GRNVBEM	11	10					
+					LEAP	5	2					
+					PIDC	7	3					
+					PPCOR	9	1					
+					SCODE	2	5					
+					SCRIBE	7	9					
+					SINCERITIES	4	4					
+					SINGE	3	11					
+27941783	Simulation-based comprehensive benchmarking of RNA-seq aligners.	Supplementary Figure 2	 percentage of bases aligned correctly (human, T3)	Supplementary Figure 15.  (human, T3)	ContextMap2	6	7	13				CLC is missing from the time figure, therefore removed from ranks. 
+					CRAC	8	5					
+					GSNAP	2	11					
+					HISAT	12	1					
+					HISAT2	10	2					
+					MapSplice2	4	6					
+					Novoalign	1	8					
+					Olego	11	13					
+					RUM	5	12					
+					SOAPSPLICE	7	9					
+					STAR	3	4					
+					SUBREAD	9	3					
+					TOPHAT2	13	10					
+		Supplementary Figure 2	 percentage of bases aligned correctly (malaria, T3)	Supplementary Figure 15. (malaria, T3)	ContextMap2	7	10	13				CLC is missing from the time figure, therefore removed from ranks. 
+					CRAC	6	5					
+					GSNAP	2	13					
+					HISAT	12	1					
+					HISAT2	11	2					
+					MapSplice2	3	6					
+					Novoalign	1	4					
+					Olego	10	7					
+					RUM	5	9					
+					SOAPSPLICE	8	12					
+					STAR	4	11					
+					SUBREAD	9	3					
+					TOPHAT2	13	8					
+31948481	A Benchmark of Batch-Effect Correction Methods for Single-Cell RNA Sequencing Data	Additional file 8	Sum of "final_rank" values 	Fig. 21c	ComBat	11	3	13				Time ranks were estimated from the shades of the points. 
+					fastMNN	8	4.5					
+					Harmony	1	1					
+					LIGER	2	9.5					
+					limma	13	2					
+					MMD-ResNet	12	9.5					
+					MNN-Correct	9	11					
+					Scanorama	5	6.5					
+					scGen	4	12					
+					scMerge	6	8					
+					Seurat2	7	6.5					
+					Seurat3	3	4.5					
+					ZINB-WaVE	10	13					
+26862001	Comparative assessment of methods for the fusion transcripts detection from RNA-Seq data	Table 3	Sensitivity 	Table 3	Bellerophontes	5	4	8				
+					EricScript	2	2					
+					FusionCatcher	6	3					
+					FusionMap	4	1					
+					JAFFA	8	8					
+					MapSplice	1	7					
+					nFuse	3	5					
+					TopHat-Fusion	7	6					
+		Table 3	PPV	Table 3	Bellerophontes	6	4	8				
+					EricScript	2	2					
+					FusionCatcher	2	3					
+					JAFFA	4	8					
+					MapSplice	8	7					
+					nFuse	5	5					
+					TopHat-Fusion	2	6					
+26778510	An evaluation of the accuracy and speed of metagenome analysis tools	Table 1	Pearson Correlation Coefficient	Table 1	CLARK	1	6	14				
+					EBI	13	13					
+					Genometa	8	8					
+					GOTTCHA	14	7					
+					Kraken	2	4					
+					LMAT	5	9					
+					MEGAN	12	10					
+					MetaPhlAn	4	5					
+					MetaPhyler	10	14					
+					MG-RAST	7	12					
+					mOTU	6	3					
+					One Codex	3	2					
+					QIIME	11	1					
+					Taxator-tk	9	11					
+		Table 2	MCC	Table 1	CLARK	1	6	14				
+					EBI	14	13					
+					Genometa	7	8					
+					GOTTCHA	5	7					
+					Kraken	3	4					
+					LMAT	8	9					
+					MEGAN	6	10					
+					MetaPhlAn	10	5					
+					MetaPhyler	11	14					
+					MG-RAST	4	12					
+					mOTU	12	3					
+					One Codex	2	2					
+					QIIME	13	1					
+					Taxator-tk	9	11					
+		Table 2	SEN	Table 1	CLARK	1	6	14				
+					EBI	13	13					
+					Genometa	9	8					
+					GOTTCHA	7	7					
+					Kraken	3	4					
+					LMAT	5	9					
+					MEGAN	6	10					
+					MetaPhlAn	10	5					
+					MetaPhyler	11	14					
+					MG-RAST	4	12					
+					mOTU	12	3					
+					One Codex	2	2					
+					QIIME	14	1					
+					Taxator-tk	8	11					
+		Table 2	SPEC	Table 1	CLARK	12	6	14				
+					EBI	8	13					
+					Genometa	11	8					
+					GOTTCHA	3	7					
+					Kraken	3	4					
+					LMAT	14	9					
+					MEGAN	10	10					
+					MetaPhlAn	3	5					
+					MetaPhyler	6.5	14					
+					MG-RAST	9	12					
+					mOTU	3	3					
+					One Codex	6.5	2					
+					QIIME	3	1					
+					Taxator-tk	13	11					
+		Figure 2	logOddsGenus	Table 1	CLARK	2	6	14				
+					EBI	8	13					
+					Genometa	11	8					
+					GOTTCHA	14	7					
+					Kraken	1	4					
+					LMAT	4	9					
+					MEGAN	7	10					
+					MetaPhlAn	5	5					
+					MetaPhyler	12	14					
+					MG-RAST	10	12					
+					mOTU	6	3					
+					One Codex	3	2					
+					QIIME	9	1					
+					Taxator-tk	13	11					
+		Figure 2	logOddsPhylum	Table 1	CLARK	1	6	14				
+					EBI	10	13					
+					Genometa	8	8					
+					GOTTCHA	14	7					
+					Kraken	2	4					
+					LMAT	4	9					
+					MEGAN	12	10					
+					MetaPhlAn	6	5					
+					MetaPhyler	11	14					
+					MG-RAST	5	12					
+					mOTU	7	3					
+					One Codex	3	2					
+					QIIME	9	1					
+					Taxator-tk	13	11					
+26220471	Evaluation of variant detection software for pooled next-generation sequence data	Figure 1B	Balanced accuracy	Table 3	CRISP	2	1	5				
+					GATK	1	5					
+					LoFreq	3	2.5					
+					SNVer	4	2.5					
+					VarScan	5	4					
+25777524	WGBSSuite: simulating whole-genome bisulphite sequencing data and benchmarking differential DNA methylation analysis tools	Figure 2	AUC	Figure 2	BSmooth	1	2	4				
+					Fisher exact test	4	4					
+					MethylKit	3	1					
+					MethylSig	2	3					
+25760244	An assessment of bacterial small RNA target prediction programs.	Table 1.	AUC	Table 3.	CopraRNA	1	8	9				
+					IntaRNA	2	6					
+					RNAup	3	5					
+					RNAplex	4	1.5					
+					TargetRNA2	5	1.5					
+					RNAhybrid	6	3					
+					RNAduplex	7	7					
+					RNAcofold	8	4					
+					Pairfold	9	9					

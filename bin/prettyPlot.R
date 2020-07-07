@@ -3,13 +3,18 @@
 #Rscript ../bin/prettyPlot.R
 #R CMD BATCH ../bin/prettyPlot.R
 
+#check which of these are still in use:
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+                                        #    install.packages("BiocManager")
+#BiocManager::install("multtest")
+#install.packages(c("MASS", "RColorBrewer", "fields", "gplots", "gplots", "hash", "vioplot"))
 
 library(MASS)  # in case it is not already loaded 
 library(RColorBrewer)
 library(fields)
 library(gplots)
-library(metap)
-library("CombinePValue")
+#library(metap)
+#library("CombinePValue")
 library(gplots)
 library("hash")
 library("vioplot")
@@ -24,7 +29,6 @@ dr<-read.table( "rawRankSpeedData.tsv", header=T)
 
 ######################################################################
 #TESTING IF SPEED inv. ACCURACY IS TRUE:
-
 reg1  <- lm(d$accuracyRank ~ d$speedRank)
 #reg1c <- coefficients(reg1)
 summary(reg1)
@@ -33,11 +37,11 @@ regM <- lm(accuracyRank ~ speedRank + IF + H5 + cites + hindex + mindex + relAge
 summary(regM)
 
 
-cbind(d$accuracyRank, d$speedRank, d$IF, d$H5, d$cites, d$hindex, d$mindex, d$relAge, d$relCites)
-pca<-prcomp(na.omit(cbind(d$accuracyRank, d$speedRank, d$IF, d$H5, d$cites, d$hindex, d$mindex, d$relAge, d$relCites, 2016-d$yearPublished+1)), center = TRUE,scale=TRUE)
+xx<-cbind(d$accuracyRank, d$speedRank, d$IF, d$H5, d$cites, d$hindex, d$mindex, d$relAge, d$relCites,2016-d$yearPublished+1)
+colnames(xx)<-c("accuracy","speed","JIF","JH5","cites","hindex","mindex","relAge","relCites","age")
+pca<-prcomp(na.omit(xx), center = TRUE,scale=TRUE)
 pca
 summary(pca)
-
 
 
 ##########################
@@ -70,13 +74,13 @@ for(id in keys){
 #transform weights -- higher weights have less overlap with other rankings/benchmarks:
 weights<-1000/(weights+1)
 
-sumz(p_values)
+##sumz(p_values)
 #sumz =  -0.1317993 p =  0.5524285 
 
-sumz(p_values, weights = weights)
+##sumz(p_values, weights = weights)
 #sumz =  0.2372642 p =  0.4062259
 
-meanp(p_values)
+##meanp(p_values)
 #z =  -0.2294146  p =  0.5907266 
 
 #library("CombinePValue")
@@ -90,8 +94,8 @@ meanp(p_values)
 #FIGURE 1 A & B
 #All vs All Spearman Heatmap
 
-dNames <- c("IF", "H5", "relAge",       "yearPublished", "cites", "relCites",       "mindex",  "hindex",  "accuracyRank",  "speedRank" )
-pNames <- c("JIF", "JH5", "Rel. age", "Year",          "Cites", "Rel. cites", "M-index", "H-index", "Accuracy",      "Speed")
+dNames <- c( "IF",  "H5",   "relAge", "yearPublished", "cites",   "relCites",  "mindex",  "hindex", "accuracyRank",  "speedRank")
+pNames <- c("JIF", "JH5", "Rel. age",          "Year", "Cites", "Rel. cites", "M-index", "H-index",     "Accuracy",      "Speed")
 pvalMatrix<-matrix(1, length(dNames), length(dNames))
 rhoMatrix <-matrix(0, length(dNames), length(dNames))
 sigMatrix <-matrix("",length(dNames), length(dNames))
@@ -102,7 +106,7 @@ colnames(rhoMatrix) <-pNames
 rownames(rhoMatrix) <-pNames
 colnames(sigMatrix) <-pNames
 rownames(sigMatrix) <-pNames
-
+sigCount <- 0
 for(i in 1:length(dNames)){
       for(j in 1:length(dNames)){
 	    spear<-cor.test(d[,dNames[i] == colnames(d)], d[,dNames[j] == colnames(d)], method = "spearman", exact = T) 
@@ -110,6 +114,7 @@ for(i in 1:length(dNames)){
 	    rhoMatrix[i,j]  <- spear$estimate
 	    if(spear$p.value < 0.05){
 		sigMatrix[i,j]  <- "X"
+                sigCount <- sigCount + 1
 	    }
       }
 }
@@ -122,38 +127,37 @@ margins = c(8, 8), cexRow=1.5, cexCol=1.5,font=2)
 dev.off()
 
 ############
-#BARPLOT OF SPEARMAN RHO VALUES:
+#BARPLOT OF SPEARMAN RHO VALUES FOR ACCURACY:
+featuresA <- array(data = 0, dim = length(dNames)-1, dimnames = list(pNames[ dNames != 'accuracyRank' ]))
+featuresS <- array(data = 0, dim = length(dNames)-1, dimnames = list(pNames[ dNames != 'speedRank'    ]))
+ia<-1
+is<-1
+for(i in 1:length(dNames)){
+    if( dNames[i] != 'accuracyRank' ){
+        featuresA[ia]<-as.numeric(cor.test(d$accuracyRank, d[,dNames[i] == colnames(d)], method = "spearman")$estimate     )
+        ia<-ia+1
+     }
 
-relCitesA<-cor.test(1-d$accuracyRank, as.numeric(d$relCites),     method = "spearman")
-hindexA  <-cor.test(1-d$accuracyRank, as.numeric(d$hindex),       method = "spearman")
-mindexA  <-cor.test(1-d$accuracyRank, as.numeric(d$mindex),       method = "spearman")
-H5A      <-cor.test(1-d$accuracyRank, as.numeric(d$H5),           method = "spearman")
-relAgeA  <-cor.test(1-d$accuracyRank, as.numeric(d$relAge),       method = "spearman")
-speedA   <-cor.test(1-d$accuracyRank, as.numeric(d$speedRank),    method = "spearman")
-citesA   <-cor.test(1-d$accuracyRank, as.numeric(d$cites),        method = "spearman")
-IFA      <-cor.test(1-d$accuracyRank, as.numeric(d$IF),           method = "spearman")
-yearA    <-cor.test(1-d$accuracyRank, as.numeric(d$yearPublished),method = "spearman")
+    if( dNames[i] != 'speedRank' ){
+        featuresS[is]<-as.numeric(cor.test(d$speedRank,    d[,dNames[i] == colnames(d)], method = "spearman")$estimate     )
+        is<-is+1
+     }
+}
+featuresA <- sort(featuresA)
+featuresS <- sort(featuresS)
+
 
 pdf(file=    "../figures/spearmanBarplot.pdf", width = 5,  height = 5)
 op<-par(mfrow=c(1,1),cex=1.0,las=2)
-barplot(t(c(mindexA$estimate, hindexA$estimate, relAgeA$estimate, H5A$estimate, speedA$estimate, citesA$estimate, relCitesA$estimate, yearA$estimate, IFA$estimate)), names=c("M-index", "H-index", "Rel. age", 'JH5', "Speed", "Cites", "Rel. cites", "Year", "JIF"), ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlates with accuracy rank")
+#barplot(t(c(mindexA$estimate, hindexA$estimate, speedA$estimate, relAgeA$estimate, H5A$estimate, citesA$estimate, relCitesA$estimate, yearA$estimate, IFA$estimate)), names=c("M-index", "H-index", "Speed", "Rel. age", "JH5", "Cites", "Rel. cites", "Year", "JIF"), ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlates with accuracy")
+barplot(featuresA, ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlates with accuracy")
 lines(c(-100,100),c(0,0))
 dev.off()
 
-####
-relCitesS<-cor.test(1-d$speedRank, as.numeric(d$relCites),     method = "spearman")
-hindexS  <-cor.test(1-d$speedRank, as.numeric(d$hindex),       method = "spearman")
-mindexS  <-cor.test(1-d$speedRank, as.numeric(d$mindex),       method = "spearman")
-H5S      <-cor.test(1-d$speedRank, as.numeric(d$H5),           method = "spearman")
-relAgeS  <-cor.test(1-d$speedRank, as.numeric(d$relAge),       method = "spearman")
-accuracyS   <-cor.test(1-d$speedRank, as.numeric(d$accuracyRank),    method = "spearman")
-citesS   <-cor.test(1-d$speedRank, as.numeric(d$cites),        method = "spearman")
-IFS      <-cor.test(1-d$speedRank, as.numeric(d$IF),           method = "spearman")
-yearS    <-cor.test(1-d$speedRank, as.numeric(d$yearPublished),method = "spearman")
-
-pdf(file=    "../figures/spearmanBarplotSpeed.pdf", width = 5,  height = 3)
+pdf(file=    "../figures/spearmanBarplotSpeed.pdf", width = 5,  height = 5)
 op<-par(mfrow=c(1,1),cex=1.0,las=2)
-barplot(t(c(IFS$estimate, H5S$estimate, hindexS$estimate, citesS$estimate, mindexS$estimate, relCitesS$estimate, yearS$estimate, accuracyS$estimate, relAgeS$estimate)), names=c("JIF", "JH5", "H-index", "Cites", "M-index", "Rel. cites", "Year", "Accuracy", "Rel. age"), ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlates with speed rank")
+#barplot(t(c(IFS$estimate, H5S$estimate, hindexS$estimate, accuracyS$estimate, citesS$estimate, mindexS$estimate, relCitesS$estimate, yearS$estimate, relAgeS$estimate)), names=c("JIF", "JH5", "H-index", "Accuracy", "Cites", "M-index", "Rel. cites", "Year", "Rel. age"), ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlates with speed")
+barplot(featuresS, ylab="Spearman's rho",ylim=c(-0.1,0.1),main="Correlates with speed")
 lines(c(-100,100),c(0,0))
 dev.off()
 
@@ -180,23 +184,24 @@ slowInacc <- vector(mode = "numeric", length = numPerms)
 slowAcc   <- vector(mode = "numeric", length = numPerms)
 midBlock  <- vector(mode = "numeric", length = 4*numPerms)
 
-dNames <- c("mindex",  "hindex", "relAge", "H5", "speedRank", "cites", "relCites", "yearPublished", "IF" )
+dNames <- c("mindex", "speedRank",  "hindex", "relAge", "H5", "yearPublished", "IF", "relCites", "cites" )
 estimatesHash   <- hash( dNames, 0*(1:length(dNames))+1 )
 estimatesCounts <- hash( dNames, 0*(1:length(dNames))+1 )
 
 #counts
 ii <- 1;
 for(i in 0:(numPerms-1)){      
+#for(i in 0:(9990-1)){      
       h2dPerm <- hist2d( accPerms$accuracyRank[ accPerms$permutation == i], spdPerms$speedRank[ spdPerms$permutation == i], show=FALSE, same.scale=TRUE, nbins=gridRes)                 
       sumX  <-  h2dPerm$counts                   + sumX;	
       sumXX <- (h2dPerm$counts * h2dPerm$counts) + sumXX;	
-
-      #corners:
-      fastInacc[i] <- h2dPerm$counts[gridRes,1]
-      fastAcc[i]   <- h2dPerm$counts[1,1]
-      slowInacc[i] <- h2dPerm$counts[gridRes,gridRes]
-      slowAcc[i]   <- h2dPerm$counts[1,gridRes]
       
+      #corners:
+      fastInacc[i] <- h2dPerm$counts[      1,gridRes]
+      fastAcc[i]   <- h2dPerm$counts[gridRes,gridRes]
+      slowInacc[i] <- h2dPerm$counts[      1,      1]
+      slowAcc[i]   <- h2dPerm$counts[gridRes,      1]
+      #centre: -- only works for a 10x10 grid: 
       if(gridRes == 10){
       		 midBlock[ii] <- h2dPerm$counts[5,5]
 		 ii <- ii + 1
@@ -208,18 +213,19 @@ for(i in 0:(numPerms-1)){
 		 ii <- ii + 1
       }
 
-
       for(fname in dNames){
-      	       permCor      <-cor.test(1-accPerms$accuracyRank[ accPerms$permutation == i], as.numeric(d[,colnames(d)==fname]), method = "spearman")
-	       
+      	       permCor      <-cor.test(accPerms$accuracyRank[ accPerms$permutation == i], as.numeric(d[,colnames(d)==fname]), method = "spearman")	       
       	       if(permCor$p.value < 0.05){
 		     estimatesHash[[fname]][estimatesCounts[[fname]]]<-permCor$estimate
 		     estimatesCounts[[fname]]<-estimatesCounts[[fname]]+1
-
       	       }
        }
 
 }
+
+meanPerms   <- sumX/numPerms
+stddevPerms <- sqrt( (sumXX/numPerms) - (meanPerms*meanPerms)  )
+stddevPerms
 
 #really should save "estimatesHash" etc. to stop recomputing it.
 
@@ -227,16 +233,17 @@ for(i in 0:(numPerms-1)){
 #barplot with significant rho vals from permuted data shown:
 
 pdf(file=    "../figures/spearmanBarplot-withPerms.pdf", width = 5,  height = 5)
-xVals <- barplot(t(c(mindexA$estimate, hindexA$estimate, relAgeA$estimate, H5A$estimate, speedA$estimate, citesA$estimate, relCitesA$estimate, yearA$estimate, IFA$estimate)), plot=F)
+xVals <- barplot(t(c(mindexA$estimate, hindexA$estimate, speedA$estimate, relAgeA$estimate, H5A$estimate, citesA$estimate, relCitesA$estimate, yearA$estimate, IFA$estimate)), plot=F)
 op<-par(mfrow=c(1,1),cex=1.0,las=2)
-barplot(t(c(mindexA$estimate, hindexA$estimate, relAgeA$estimate, H5A$estimate, speedA$estimate, citesA$estimate, relCitesA$estimate, yearA$estimate, IFA$estimate)), names=c("M-index", "H-index", "Rel. age", 'JH5', "Speed", "Cites", "Rel. cites", "Year", "JIF"), ylab="Spearman's rho",ylim=c(-0.25,0.25),main="Correlates with accuracy rank")
+barplot(t(c(mindexA$estimate, speedA$estimate, hindexA$estimate, relAgeA$estimate, H5A$estimate, yearA$estimate, IFA$estimate, relCitesA$estimate, citesA$estimate)),
+        names=c("M-index", "Speed", "H-index", "Rel. age", "JH5", "Year", "JIF", "Rel. cites", "Cites"),
+        ylab="Spearman's rho",ylim=c(-0.25,0.25),main="Correlates with accuracy")
 lines(c(-100,100),c(0,0))
 
 for(i in 1:length(dNames)){      
       points(estimatesHash[[dNames[i]]]*0+xVals[i],estimatesHash[[dNames[i]]],pch="x",cex=1.0)
       cat(dNames[i],"\t",summary(estimatesHash[[dNames[i]]]),"\n")
 }
-
 dev.off()
 
 #convert figure1.pdf -background white -flatten  figure1.png
@@ -244,8 +251,8 @@ dev.off()
 ######################################################################
 
 
-stddevPerms <- sqrt( (numPerms * sumXX - (sumX*sumX)) / (numPerms*(numPerms-1)) )
-meanPerms   <- sumX/numPerms
+                                        #sqrt( (numPerms * sumXX - (sumX*sumX)) / (numPerms*(numPerms-1)) )
+
 
 zScores    <- 0*h2dNorm$counts
 empPval    <- 0*h2dNorm$counts
@@ -267,10 +274,12 @@ for(i in 1:gridRes){
 pValues<-pnorm(-abs(zScores))
 sigMatrix <-matrix("",gridRes, gridRes)
 
+sigCount <- 0
 for(i in 1:gridRes){
       for(j in 1:gridRes){
 	    if(pValues[i,j] < 0.05){
 		sigMatrix[i,j]  <- "X"
+                sigCount <- sigCount + 1
 	    }
       }
 }
@@ -278,18 +287,26 @@ for(i in 1:gridRes){
 rownames(zScores)<-character(gridRes)
 colnames(zScores)<-character(gridRes)
 
+binom.test(sigCount,gridRes^2, p = 0.05)
+
+
 ###################################
+      ## fastInacc[i] <- h2dPerm$counts[1,gridRes]
+      ## fastAcc[i]   <- h2dPerm$counts[gridRes,gridRes]
+      ## slowInacc[i] <- h2dPerm$counts[1,1]
+      ## slowAcc[i]   <- h2dPerm$counts[gridRes,1]
+
 
 pdf(file=    "../figures/zscores-SpeedVsAccuracyH.pdf", width = 8,  height = 10)
 par(mfrow=c(3,3),cex=1.4,las=1)
 mx <- max(c(slowAcc,fastAcc,slowInacc,fastInacc))
 hist(slowAcc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,12),ylim=c(0,3000),main="slo&acc",yaxt="n",xaxt="n")#Slow and accurate 
-arrows(h2dNorm$counts[1,gridRes],2000,h2dNorm$counts[1,gridRes],0,col="red",lwd=2,length=0.1,angle=30)
+arrows(h2dNorm$counts[gridRes,1],2000,h2dNorm$counts[gridRes,1],0,col="red",lwd=2,length=0.1,angle=30)
 axis(1,at=c(0,6,12))
 axis(2,at=(0:2)*1000)
 plot(1, type="n", axes=F, xlab="", ylab="")
 hist(fastAcc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,12),ylim=c(0,3000),main="fast&acc",yaxt="n",xaxt="n") #Fast and accurate 
-arrows(h2dNorm$counts[1,1],2000,h2dNorm$counts[1,1],0,col="red",lwd=2,length=0.1,angle=30)
+arrows(h2dNorm$counts[gridRes,gridRes],2000,h2dNorm$counts[gridRes,gridRes],0,col="red",lwd=2,length=0.1,angle=30)
 axis(1,at=c(0,6,12))
 axis(2,at=(0:2)*1000)
 plot(1, type="n", axes=F, xlab="", ylab="")
@@ -306,23 +323,26 @@ axis(2,at=c(0,5000,10000))
       }
 plot(1, type="n", axes=F, xlab="", ylab="")
 hist(slowInacc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,12),ylim=c(0,3000),main="slo&inacc",yaxt="n",xaxt="n") #Slow and inaccurate 
-arrows(h2dNorm$counts[gridRes,gridRes],2000,h2dNorm$counts[gridRes,gridRes],0,col="red",lwd=2,length=0.1,angle=30)
+arrows(h2dNorm$counts[1,1],2000,h2dNorm$counts[1,1],0,col="red",lwd=2,length=0.1,angle=30)
 axis(1,at=c(0,6,12))
 axis(2,at=(0:2)*1000)
 plot(1, type="n", axes=F, xlab="", ylab="")
 hist(fastInacc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,12),ylim=c(0,3000),main="fast&inacc",yaxt="n",xaxt="n") #Fast and inaccurate
-arrows(h2dNorm$counts[gridRes,1],2000,h2dNorm$counts[gridRes,1],0,col="red",lwd=2,length=0.1,angle=30)
+arrows(h2dNorm$counts[1,gridRes],2000,h2dNorm$counts[1,gridRes],0,col="red",lwd=2,length=0.1,angle=30)
 axis(1,at=c(0,6,12))
 axis(2,at=(0:2)*1000)
 dev.off()
 
 ###################################
 #FIGURE 2
+write.table(zScores[nrow(zScores):1,], file = "heatmapZ-scores.tsv", sep = "\t", eol = "\n", row.names = FALSE, col.names = FALSE)
 
 #colScale <- 20 #redblue(colScale), 
 colScale <- 11
 pdf(file=    "../figures/zscores-SpeedVsAccuracy.pdf", width = 10,  height = 10)
-heatmap.2(zScores[,nrow(zScores):1], cellnote=sigMatrix[,nrow(zScores):1],notecex=2.5,notecol="black", col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="none", trace="none", dendrogram="none", symm=F,symkey=T,symbreaks=T, breaks=seq(-3.5,3.5,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(2, 2), key.title = "Z", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=2.0)
+heatmap.2(zScores[nrow(zScores):1,],
+          cellnote=sigMatrix[nrow(zScores):1,],notecex=2.5,notecol="black", 
+          col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="none", trace="none", dendrogram="none", symm=F,symkey=T,symbreaks=T, breaks=seq(-3.5,3.5,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(2, 2), key.title = "Z", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=2.0)
 dev.off()
 
 #convert figure2.pdf -background white -flatten  figure2.png
@@ -333,7 +353,7 @@ dev.off()
 colScale <- 9
 pdf(file=    "../figures/relAge-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
 par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medRelAges[,nrow(medRelAges):1], col=rev(brewer.pal(n = colScale, name = "YlGnBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "Relative age", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+heatmap.2(medRelAges[nrow(medRelAges):1,], col=rev(brewer.pal(n = colScale, name = "YlGnBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "Relative age", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
 
 
@@ -342,7 +362,7 @@ dev.off()
 colScale <- 9
 pdf(file=    "../figures/hindex-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
 par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medHindex[,nrow(medHindex):1], col=brewer.pal(n = colScale, name = "BuGn"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medHindex, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "H-index", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+heatmap.2(medHindex[nrow(medHindex):1,], col=brewer.pal(n = colScale, name = "BuGn"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medHindex, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "H-index", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
 
 ###################################
@@ -350,7 +370,7 @@ dev.off()
 colScale <- 9
 pdf(file=    "../figures/cites-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
 par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medCites[,nrow(medCites):1], col=brewer.pal(n = colScale, name = "BuPu"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medCites, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Citations+1)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+heatmap.2(medCites[nrow(medCites):1,], col=brewer.pal(n = colScale, name = "BuPu"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medCites, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Citations+1)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
 
 
@@ -374,6 +394,16 @@ hist(d$mindex, breaks=30, xlab="M-index",main="",xlim=c(0,10)) #,xaxt = "n")
 hist(d$relAge, breaks=30, xlab="Relative age",main="")
 plot(1, type="n", axes=F, xlab="", ylab="")
 dev.off()
+
+
+pdf(file=    "../figures/supplementary-figures-pairs.pdf", width = 9,  height = 9)
+pairs(d[,c(2,3,6,7,8,9,10,11,12,13)])
+dev.off()
+
+
+######################################################################
+#DISTRIBUTION PLOTS FOR EACH METRIC, FOR THE SUPPLEMENT:
+
 
 ######################################################################
 #Comparing method relative ages of the slow+inaccurate and fast+accurate groups:
@@ -522,4 +552,11 @@ dev.off()
 
 ######################################################################
 
+png(file=    "../figures/citesVsAccuracy.png", width = 1000,  height = 1000)
+op<-par(mfrow=c(1,1),cex=2.0,las=2)
+plot(log10(d$cites),d$accuracyRank, pch=20, col="cornflowerblue", xlab="log10(# cites)", ylab="Normalised accuracy", main="Accuracy vs # Citations")
+abline(lm(d$accuracyRank~log10(d$cites)), col="red", lwd=3) # regression line (y~x) 
+lines(lowess(log10(d$cites),d$accuracyRank,delta=0.3), col="blue", lwd=3) # lowess line (x,y)
+text(3.75, 0.1, "Spearman\'s rho=0.07, p=0.29")
+dev.off()
 

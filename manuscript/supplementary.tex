@@ -20,10 +20,23 @@
 
 \PaperTitle{Supplementary results for: A meta-analysis of computational biology benchmarks reveals publication bias affects on speed and accuracy} % Article title
 
-\Authors{Paul P. Gardner\textsuperscript{1,2}*, James Paterson\textsuperscript{1,2}, Fatemeh Ashari Ghomi\textsuperscript{1,2}, Sinan Uğur Umu\textsuperscript{1,2}, Stephanie McGimpsey\textsuperscript{1,2}} % Authors
-\affiliation{\textsuperscript{1}\textit{School of Biological Sciences, University of Canterbury, Christchurch, New Zealand.}} % Author affiliation
-\affiliation{\textsuperscript{2}\textit{Biomolecular Interaction Centre and the Bio-Protection Research Centre, University of Canterbury, Christchurch, New Zealand.}}
-\affiliation{*\textbf{Corresponding author}: paul.gardner@canterbury.ac.nz} % Corresponding author
+%\Authors{Paul P. Gardner\textsuperscript{1,2}*, James Paterson\textsuperscript{1,2}, Fatemeh Ashari Ghomi\textsuperscript{1,2}, Sinan Uğur Umu\textsuperscript{1,2}, Stephanie McGimpsey\textsuperscript{1,2}} % Authors
+%\affiliation{\textsuperscript{1}\textit{School of Biological Sciences, University of Canterbury, Christchurch, New Zealand.}} % Author affiliation
+%\affiliation{\textsuperscript{2}\textit{Biomolecular Interaction Centre and the Bio-Protection Research Centre, University of Canterbury, Christchurch, New Zealand.}}
+%\affiliation{*\textbf{Corresponding author}: paul.gardner@canterbury.ac.nz} % Corresponding author
+
+\Authors{Paul P. Gardner\textsuperscript{1,2}*, James M. Paterson\textsuperscript{?}, Fatemeh Ashari-Ghomi\textsuperscript{?}, Sinan U. Umu\textsuperscript{?}, Stephanie McGimpsey\textsuperscript{3,4}, Aleksandra Pawlik\textsuperscript{5},
+Alex Gavryushkin\textsuperscript{6}, Michael A Black\textsuperscript{1}
+} % Authors
+
+\affiliation{\textsuperscript{1}\textit{Department of Biochemistry, University of Otago, Dunedin, New Zealand.}} % Author affiliation
+\affiliation{\textsuperscript{2}\textit{Biomolecular Interaction Centre, University of Canterbury, Christchurch, New Zealand.}}
+\affiliation{\textsuperscript{3}\textit{McConomy School of Dance, Derry, Ireland.}}
+\affiliation{\textsuperscript{4}\textit{Research for Good, Limavady, Ireland.}}
+\affiliation{\textsuperscript{5}\textit{New Zealand eScience Infrastructure, 49 Symonds St, Auckland, New Zealand.}}
+\affiliation{\textsuperscript{6}\textit{Department of Computer Science, University of Otago, Dunedin, New Zealand.}} % Author affiliation
+\affiliation{*\textbf{Corresponding author}: paul.gardner@otago.ac.nz} % Corresponding author
+
 
 \Keywords{computational biology --- accuracy --- benchmarks --- meta-analysis --- software development} % Keywords - if you don't want any simply remove all the text between the curly brackets
 \newcommand{\keywordname}{Keywords} % Defines the keywords heading name
@@ -101,24 +114,33 @@
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.75\textwidth]{supplementary-figures-small.pdf}
+\includegraphics[width=0.95\textwidth]{supplementary-figures-small.pdf}
 \caption{The distributions for the measures we expected to be
   predictive of software quality used in this study. These
 are, reading from left to right, top to bottom: Accuracy -- the mean
 normalised accuracy rank for each benchmarked method; Speed -- the
-mean normalised speed rank for each benchmarked method; Cites -- the number of
-citations to the most cited manuscript describing a method, data from GoogleScholar;
-JIF -- the Journal Impact Factor to the highest impact journal that has published
-a manuscript describing a method, data from 2014 Thompson-Reuters Citation Reports;
+mean normalised speed rank for each benchmarked method;
 JH5 -- the Journal H5 index to the highest impact journal that has published
-a manuscript describing a method, data from GoogleScholar 2015 Metrics;
+a manuscript describing a method, data from GoogleScholar 2020 Metrics;
+Cites -- the number of citations to the most cited manuscript describing a method, data from GoogleScholar;
 H-index -- the H-index for the highest profile corresponding author from the
 manuscripts describing a method, data from GoogleScholar User Profiles;
 M-index -- the M-index (H-index/(\#years since first publication)) for the
 highest profile corresponding author from the manuscripts describing a method,
-data from GoogleScholar User Profiles;}
+data from GoogleScholar User Profiles;
+Relative ages for different tools, for each benchmark tools were ranked based upon publication dates, these ranks were normalised to lie between 0 and 1.
+}
 \label{fig:metricDistributions}
 \end{figure}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{supplementary-figures-pairs.pdf}
+\caption{}
+\label{fig:metricPairs}
+\end{figure}
+
 
 \begin{figure}[H]
 \centering
@@ -136,31 +158,31 @@ data from GoogleScholar User Profiles;}
 \end{figure}
 
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.5\textwidth]{smoothScatter-speed-vs-accuracy.pdf}
-\caption{A smoothed color density representation of a scatterplot of
-  normalised speed ranks and normalised accuracy ranks. Dark red
-  regions are indicative of of a high density of points, blue shades
-  indicate the reverse. The expected inverse relationship between
-  speed and accuracy is indicated with a dashed black line, points
-  above this line could be considered comparatively fast and accurate,
-  points below are the reverse. A locally weighted regression (lowess)
-  curve is shown in red.}
-\label{fig:smoothScatterAccSpeed}
-\end{figure}
+%% \begin{figure}[H]
+%% \centering
+%% \includegraphics[width=0.5\textwidth]{smoothScatter-speed-vs-accuracy.pdf}
+%% \caption{A smoothed color density representation of a scatterplot of
+%%   normalised speed ranks and normalised accuracy ranks. Dark red
+%%   regions are indicative of of a high density of points, blue shades
+%%   indicate the reverse. The expected inverse relationship between
+%%   speed and accuracy is indicated with a dashed black line, points
+%%   above this line could be considered comparatively fast and accurate,
+%%   points below are the reverse. A locally weighted regression (lowess)
+%%   curve is shown in red.}
+%% \label{fig:smoothScatterAccSpeed}
+%% \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.85\textwidth]{smoothScatters.pdf}
-\caption{A smoothed color density representation of a scatterplot of
-  journal impact factors (JIF) on the left and number of citations on
-  the right vs normalised accuracy ranks. As above, dark red regions
-  are indicative of of a high density of points, blue shades indicate
-  the reverse. The JIF for journals that are major publishers of
-  bioinformatic software are indicated on the left. }
-\label{fig:smoothScatters}
-\end{figure}
+%% \begin{figure}[H]
+%% \centering
+%% \includegraphics[width=0.85\textwidth]{smoothScatters.pdf}
+%% \caption{A smoothed color density representation of a scatterplot of
+%%   journal impact factors (JIF) on the left and number of citations on
+%%   the right vs normalised accuracy ranks. As above, dark red regions
+%%   are indicative of of a high density of points, blue shades indicate
+%%   the reverse. The JIF for journals that are major publishers of
+%%   bioinformatic software are indicated on the left. }
+%% \label{fig:smoothScatters}
+%% \end{figure}
 
 
 
@@ -180,8 +202,19 @@ data from GoogleScholar User Profiles;}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.95\textwidth]{relAge-SpeedVsAccuracy-heatmap-edited.pdf}
-\caption{{\bf A.} Violin plots for the relative age distribution for software tools in each of the 5 2x2 cells indicated in B. The five boxes correspond to the four extreme corners of the speed vs accuracy spectrum (i.e. slow and inaccurate, slow and accurate, fast and inaccurate, fast and accurate) and the central box (medium speed and medium accuracy). {\bf B.} A heatmap indicating the relative age of software in a range of relative accuracy and speed rankings. Blue colours indicate an abundance of older software tools in an accuracy and speed category, while light colours indicate younger software in an accuracy and speed category. }
+%\includegraphics[width=0.95\textwidth]{relAge-SpeedVsAccuracy-heatmap-edited.pdf}
+\includegraphics[width=0.45\textwidth]{relAge-speedAcc.pdf}
+\includegraphics[width=0.45\textwidth]{relAge-SpeedVsAccuracy-heatmap.pdf}
+\caption{{\bf Left.} Violin plots for the relative age distribution
+  for software tools in each of the 5 2x2 cells indicated in B. The
+  five boxes correspond to the four extreme corners of the speed vs
+  accuracy spectrum (i.e. slow and inaccurate, slow and accurate, fast
+  and inaccurate, fast and accurate) and the central box (medium speed
+  and medium accuracy). {\bf Right.} A heatmap indicating the relative age
+  of software in a range of relative accuracy and speed rankings. Blue
+  colours indicate an abundance of older software tools in an accuracy
+  and speed category, while light colours indicate younger software in
+  an accuracy and speed category. }
 \label{fig:ageplot}
 \end{figure}
 

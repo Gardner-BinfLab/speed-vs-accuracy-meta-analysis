@@ -253,6 +253,7 @@ medRelAges <- 0*h2dNorm$counts
 medHindex  <- 0*h2dNorm$counts
 medCites   <- 0*h2dNorm$counts
 medCommits <- 0*h2dNorm$counts
+medContribs<- 0*h2dNorm$counts
 breaks <- seq(0,1, length=gridRes+1)
 
 for(i in 1:gridRes){
@@ -263,6 +264,7 @@ for(i in 1:gridRes){
 	    medHindex[i,j]  <- median(d2005$hindex[ breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]],na.rm=TRUE)
 	    medCites[i,j]   <- median(  log10(d2005$citations[  breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]]+1),na.rm=TRUE)
 	    medCommits[i,j]   <- median(  log10(d2005$commits[  breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]]+1),na.rm=TRUE)
+	    medContribs[i,j]   <- median(  log10(d2005$contributors[  breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]]+1),na.rm=TRUE)
       }
 }
 
@@ -363,7 +365,7 @@ dev.off()
 colScale <- 9
 pdf(file=    "../figures/relAge-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
 par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medRelAges[nrow(medRelAges):1,], col=rev(brewer.pal(n = colScale, name = "YlGnBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "Relative age", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+heatmap.2(medRelAges[nrow(medRelAges):1,], col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "Relative age", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
 
 
@@ -372,7 +374,7 @@ dev.off()
 colScale <- 9
 pdf(file=    "../figures/hindex-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
 par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medHindex[nrow(medHindex):1,], col=brewer.pal(n = colScale, name = "BuGn"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medHindex, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "H-index", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+heatmap.2(medHindex[nrow(medHindex):1,], col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medHindex, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "H-index", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
 
 ###################################
@@ -380,16 +382,22 @@ dev.off()
 colScale <- 9
 pdf(file=    "../figures/cites-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
 par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medCites[nrow(medCites):1,], col=brewer.pal(n = colScale, name = "BuPu"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medCites, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Citations+1)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+heatmap.2(medCites[nrow(medCites):1,], col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medCites, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Citations+1)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
-
 
 
 colScale <- 9
 pdf(file=    "../figures/commits-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
 par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medCommits[nrow(medCommits):1,], col=brewer.pal(n = colScale, name = "BuPu"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medCommits, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Commits+1)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+heatmap.2(medCommits[nrow(medCommits):1,], col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medCommits, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Commits)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
+
+colScale <- 9
+pdf(file=    "../figures/contributors-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
+par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
+heatmap.2(medContribs[nrow(medContribs):1,], col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medContribs, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Contributors)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+dev.off()
+
 
 
 
@@ -410,15 +418,15 @@ hist(d2005$mindex, breaks=30, xlab="M-index",main="",xlim=c(0,10),col="plum3")
 hist(d2005$relAge, breaks=30, xlab="Relative age",main="",col="plum3")
 hist(d2005$relCites, breaks=30, xlab="Relative number of citations",main="",col="plum3")
 hist(d2005$yearPublished, breaks=30, xlab="Year Published",main="",col="plum3")
-hist(d2005$version, breaks=30, xlab="Version",main="",col="plum3")
+hist(log10(d2005$version), breaks=30, xlab="Version",main="",col="plum3")
 hist(log10(d2005$commits), breaks=30, xlab="Commits",main="",xaxt = "n",col="plum3")
 axis(1,at=0:4, c(10^(0:4)))
 hist(log10(d2005$contributors), breaks=30, xlab="Contributors", main="",xaxt = "n",col="plum3")
 tcks<-c(1,10,25,50,100); axis(1,at=log10(tcks), tcks)
 dev.off()
 
-pairMat <- cbind(d2005$accuracyRank,d2005$speedRank,log10(d2005$H5),log10(d2005$citations),log10(d2005$hindex),log10(d2005$mindex),d2005$relAge,d2005$relCites,d2005$yearPublished,d2005$version,log10(d2005$commits),log10(d2005$contributors))
-colnames(pairMat)<-c("Accuracy","Speed","log10:\nJH5","log10:\nCitations","log10:\nH-index","log10:\nM-index","relAge","relCites","yearPublished", "Version", "log10:\nCommits", "log10:\nContributors")
+pairMat <- cbind(d2005$accuracyRank,d2005$speedRank,log10(d2005$H5),log10(d2005$citations),log10(d2005$hindex),log10(d2005$mindex),d2005$relAge,d2005$relCites,d2005$yearPublished,log10(d2005$version),log10(d2005$commits),log10(d2005$contributors))
+colnames(pairMat)<-c("Accuracy","Speed","log10:\nJH5","log10:\nCitations","log10:\nH-index","log10:\nM-index","relAge","relCites","yearPublished", "log10:\nVersion", "log10:\nCommits", "log10:\nContributors")
 
 pdf(file=    "../figures/supplementary-figures-pairs.pdf", width = 9,  height = 9)
 pairs(pairMat, main="Scatter plots of each feature", pch='.', col="plum3")

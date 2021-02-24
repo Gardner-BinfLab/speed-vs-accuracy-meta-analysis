@@ -18,25 +18,24 @@
 \JournalInfo{Supplementary Text} % Journal information ``Journal, Vol. XXI, No. 1, 1-5, 2015''
 \Archive{ } % Additional notes (e.g. copyright, DOI, review/research article)
 
-\PaperTitle{Supplementary results for: A meta-analysis of computational biology benchmarks reveals publication bias affects on speed and accuracy} % Article title
 
-%\Authors{Paul P. Gardner\textsuperscript{1,2}*, James Paterson\textsuperscript{1,2}, Fatemeh Ashari Ghomi\textsuperscript{1,2}, Sinan Uğur Umu\textsuperscript{1,2}, Stephanie McGimpsey\textsuperscript{1,2}} % Authors
-%\affiliation{\textsuperscript{1}\textit{School of Biological Sciences, University of Canterbury, Christchurch, New Zealand.}} % Author affiliation
-%\affiliation{\textsuperscript{2}\textit{Biomolecular Interaction Centre and the Bio-Protection Research Centre, University of Canterbury, Christchurch, New Zealand.}}
-%\affiliation{*\textbf{Corresponding author}: paul.gardner@canterbury.ac.nz} % Corresponding author
+\PaperTitle{Supplementary results for: A meta-analysis of bioinformatics software benchmarks reveals that publication-bias unduly influences software accuracy} % Article title
 
-\Authors{Paul P. Gardner\textsuperscript{1,2}*, James M. Paterson\textsuperscript{?}, Fatemeh Ashari-Ghomi\textsuperscript{?}, Sinan U. Umu\textsuperscript{?}, Stephanie McGimpsey\textsuperscript{3,4}, Aleksandra Pawlik\textsuperscript{5},
-Alex Gavryushkin\textsuperscript{6}, Michael A Black\textsuperscript{1}
+\Authors{Paul P. Gardner\textsuperscript{1,2}*, James M. Paterson\textsuperscript{3}, Stephanie McGimpsey\textsuperscript{4}, Fatemeh Ashari-Ghomi\textsuperscript{5}, Sinan U. Umu\textsuperscript{6}, Aleksandra Pawlik\textsuperscript{7},
+Alex Gavryushkin\textsuperscript{8}, Michael A Black\textsuperscript{1}
 } % Authors
 
 \affiliation{\textsuperscript{1}\textit{Department of Biochemistry, University of Otago, Dunedin, New Zealand.}} % Author affiliation
 \affiliation{\textsuperscript{2}\textit{Biomolecular Interaction Centre, University of Canterbury, Christchurch, New Zealand.}}
-\affiliation{\textsuperscript{3}\textit{McConomy School of Dance, Derry, Ireland.}}
-\affiliation{\textsuperscript{4}\textit{Research for Good, Limavady, Ireland.}}
-\affiliation{\textsuperscript{5}\textit{New Zealand eScience Infrastructure, 49 Symonds St, Auckland, New Zealand.}}
-\affiliation{\textsuperscript{6}\textit{Department of Computer Science, University of Otago, Dunedin, New Zealand.}} % Author affiliation
-\affiliation{*\textbf{Corresponding author}: paul.gardner@otago.ac.nz} % Corresponding author
+\affiliation{\textsuperscript{3}\textit{Department of Civil and Natural Resources Engineering, University of Canterbury, Christchurch, New Zealand.}}
+\affiliation{\textsuperscript{4}\textit{Parasites and Microbes, Wellcome Sanger Institute, Wellcome Genome Campus, Hinxton,
+8 Cambridgeshire, CB10 1RQ, UK.}}
+\affiliation{\textsuperscript{5}\textit{Research Group for Genomic Epidemiology, National Food Institute, Technical University of Denmark, Kongens Lyngby, Denmark.}}
+\affiliation{\textsuperscript{6}\textit{Department of Research, Cancer Registry of Norway, Oslo, Norway.}} % Author affiliation
+\affiliation{\textsuperscript{7}\textit{New Zealand eScience Infrastructure, 49 Symonds St, Auckland, New Zealand.}}
+\affiliation{\textsuperscript{8}\textit{Department of Computer Science, University of Otago, Dunedin, New Zealand.}} % Author affiliation
 
+\affiliation{*\textbf{Corresponding author}: paul.gardner@otago.ac.nz} % Corresponding author
 
 \Keywords{computational biology --- accuracy --- benchmarks --- meta-analysis --- software development} % Keywords - if you don't want any simply remove all the text between the curly brackets
 \newcommand{\keywordname}{Keywords} % Defines the keywords heading name
@@ -190,12 +189,12 @@ Relative ages for different tools, for each benchmark tools were ranked based up
 \centering
 \includegraphics[width=0.45\textwidth]{hindex-SpeedVsAccuracy-heatmap.pdf}
 \includegraphics[width=0.45\textwidth]{cites-SpeedVsAccuracy-heatmap.pdf}
-\caption{Heatmaps of normalised speed ranks and normalised accuracy
+\caption{{\bf Citation metrics and software tool speeds/accuracies.} Heatmaps of normalised speed ranks and normalised accuracy
   ranks, both $x$ and $y$ dimensions are discretised into a $10 \times
-  10$ matrix. The shading indicates median H-indices for corresponding
-  authors (darker shade indicates a higher H) in the figure on the
-  left. The shading indicates median citations (on a log scale), for
-  software tools in the figure on the right. }
+  10$ matrix. The shading indicates different median citation-based
+  feature scores (redder shade indicates a higher value).  The shading
+  indicate median H-indices ({\bf left}) and $log_{10}(citations)$
+  ({\bf right}). }
 \label{fig:heatmaps}
 \end{figure}
 
@@ -205,7 +204,7 @@ Relative ages for different tools, for each benchmark tools were ranked based up
 %\includegraphics[width=0.95\textwidth]{relAge-SpeedVsAccuracy-heatmap-edited.pdf}
 \includegraphics[width=0.45\textwidth]{relAge-speedAcc.pdf}
 \includegraphics[width=0.45\textwidth]{relAge-SpeedVsAccuracy-heatmap.pdf}
-\caption{{\bf Left.} Violin plots for the relative age distribution
+\caption{{\bf Relative software tool ages and speeds/accuracies.} {\bf Left.} Violin plots for the relative age distribution
   for software tools in each of the 5 2x2 cells indicated in B. The
   five boxes correspond to the four extreme corners of the speed vs
   accuracy spectrum (i.e. slow and inaccurate, slow and accurate, fast
@@ -219,11 +218,96 @@ Relative ages for different tools, for each benchmark tools were ranked based up
 \end{figure}
 
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{commits-SpeedVsAccuracy-heatmap.pdf}
+\includegraphics[width=0.45\textwidth]{contributors-SpeedVsAccuracy-heatmap.pdf}
+\caption{{\bf Version control use and software tool speeds/accuracies.}
+  Heatmaps of normalised speed ranks and normalised accuracy
+  ranks, both $x$ and $y$ dimensions are discretised into a $10 \times
+  10$ matrix. The shading indicates different median github-derived
+  feature scores (redder shade indicates a higher value).  The shading
+  indicate the number of commits ({\bf left}) and the number of code contributors
+  ({\bf right}).
+ }
+\label{fig:heatmapsCommits}
+\end{figure}
+
+
+The complete list of benchmarks used for this study
+\cite{pmid32183840,
+pmid32138645,
+pmid31948481,
+pmid31874603,
+pmid31984131,
+pmid31639029,
+pmid31465436,
+pmid31324872,
+pmid31159850,
+pmid31136576,
+pmid31080946,
+pmid31015787,
+pmid30936559,
+pmid30717772,
+pmid30658573,
+pmid29568413,
+pmid28934964,
+pmid28808243,
+pmid28739658,
+pmid28569140,
+pmid28052134,
+pmid27256311,
+pmid26862001,
+pmid26778510,
+pmid26628557,
+pmid26220471,
+pmid25777524,
+pmid25760244,
+pmid25574120,
+pmid25521762,
+pmid25511303,
+pmid25198770,
+pmid24839440,
+pmid24708189,
+pmid24602402,
+pmid24526711,
+pmid24086547,
+pmid23842808,
+pmid23758764,
+pmid23593445,
+pmid23393030,
+pmid22574964,
+pmid22506536,
+pmid22492192,
+pmid22287634,
+pmid22152123,
+pmid22172045,
+pmid22132132,
+pmid21856737,
+pmid21615913,
+pmid21525877,
+pmid21483869,
+pmid21423806,
+pmid21113338,
+pmid20617200,
+pmid20047664,
+pmid19179695,
+pmid19126200,
+pmid19046431,
+pmid18793413,
+pmid18287116,
+pmid17151342,
+pmid17062146,
+pmid15840834,
+pmid15701525,
+ng2013estimating}.
+
+
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
 %----------------------------------------------------------------------------------------
 \bibliographystyle{unsrt}
-\bibliography{paulall}
+\bibliography{supp-references}
 
 \end{document}
 

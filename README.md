@@ -37,7 +37,9 @@ cd $PROJECTHOME/speed-vs-accuracy-meta-analysis/data
 ../bin/pmArticleScore.pl  -t pubmed_result-training.xml -b pubmed_result-background.xml -c pubmed_result-2010-2015.xml -f background.txt -d checked-pmids.tsv -i ignore.tsv
 ../bin/pmArticleScore.pl  -t pubmed_result-training.xml -b pubmed_result-background.xml -c pubmed_result-2016-2020.xml -f background.txt -d checked-pmids.tsv -i ignore.tsv
 ```
+
 --- NB. The XML file sizes are large, and are not included in the repository.
+
 --- NNB. PubMed no longer supports the output format. 
 
 --- Manually screen the ranked literature articles, add PMIDs for articles that do not meet the selection criteria to "checked-pmids.tsv"
@@ -46,20 +48,25 @@ cd $PROJECTHOME/speed-vs-accuracy-meta-analysis/data
 
 --- Repeat until a sufficient sample size has been collected and/or no new benchmarks are recovered from the literature. 
 
-
 -- Step 2: join the rank tables with citation, age etc tables, reformat for reading in to R, run R plot and analysis script:
 
 ```
 cd $PROJECTHOME/speed-vs-accuracy-meta-analysis/data 
 ../bin/tsv2data.pl 
 ```
+
 --- Dependencies:
+
 ----PERL v5.30.0
+
 ----Perl library - Data::Dumper
+
 ----R version 4.0.3
+
 ----R libraries: MASS,  RColorBrewer, fields, gplots, hash, vioplot
 
 -- Step 3: compile latex documents:
+
 ```
 cd $PROJECTHOME/speed-vs-accuracy-meta-analysis/manuscripts
 pdflatex   manuscript-speed-accuracy.tex && bibtex ./manuscript-speed-accuracy && pdflatex   manuscript-speed-accuracy.tex && pdflatex   manuscript-speed-accuracy.tex && echo "DONE!" ; pdflatex  ./supplementary.tex && echo "DONE!"

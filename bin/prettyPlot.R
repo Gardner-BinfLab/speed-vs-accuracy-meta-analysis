@@ -62,7 +62,7 @@ summary(pca)
 #All vs All Spearman Heatmap
 
 dNames <- c("H5", "relAge",    "yearPublished", "citations", "relCites",   "mindex",  "hindex",  "accuracyRank",  "speedRank", "version", "commits", "contributors" )
-pNames <- c("JH5", "Rel. age", "Year",          "Citations", "Rel. cites", "M-index", "H-index", "Accuracy",      "Speed", "version", "commits", "contributors")
+pNames <- c("JH5", "Rel. age", "Year",          "Citations", "Rel. cites", "M-index", "H-index", "Accuracy",      "Speed",     "version", "commits", "contributors")
 pvalMatrix<-matrix(1, length(dNames), length(dNames))
 rhoMatrix <-matrix(0, length(dNames), length(dNames))
 sigMatrix <-matrix("",length(dNames), length(dNames))
@@ -75,12 +75,14 @@ colnames(sigMatrix)     <-pNames
 rownames(sigMatrix)     <-pNames
 sigCount     <- 0
 sigCount2015 <- 0
-for(i in 1:length(dNames)){
-      for(j in 1:length(dNames)){
+N <- length(dNames)
+for(i in 1:N){
+      for(j in 1:N){
 	    spear<-cor.test(d2005[,dNames[i] == colnames(d2005)], d2005[,dNames[j] == colnames(d2005)], method = "spearman", exact = T) 
-	    pvalMatrix[i,j] <- spear$p.value 
+	    pvalMatrix[i,j] <- p.adjust(spear$p.value,"BH", n=N*(N-1)/2-N)
 	    rhoMatrix[i,j]  <- spear$estimate
-	    if(spear$p.value < 0.05){
+	    #print(paste(c("P:", round(spear$p.value,3), "P.adj:", round(p.adjust(spear$p.value,"BH", n=N*(N-1)/2-N),3)), sep=""))
+	    if(p.adjust(spear$p.value,"BH", n=N*(N-1)/2-N) <= 0.05){ #spear$p.value < 0.05){
 		sigMatrix[i,j]  <- "X"
                 sigCount <- sigCount + 1
 	    }
@@ -179,10 +181,14 @@ slowInacc <- vector(mode = "numeric", length = 4*numPerms)
 slowAcc   <- vector(mode = "numeric", length = 4*numPerms)
 midBlock  <- vector(mode = "numeric", length = 4*numPerms)
 
-dNames <- c("mindex",  "hindex", "relAge", "H5", "speedRank", "citations", "relCites", "yearPublished", "version", "commits", "contributors")
+dNames <- c("mindex",  "hindex",  "relAge",  "H5", "speedRank", "citations", "relCites",   "yearPublished", "version", "commits", "contributors")
+pNames <- c("M-index", "H-index", "Rel. age","JH5","Speed",     "Citations", "Rel. cites", "Year",          "version", "commits", "contributors")
+
 estimatesHash   <- hash( dNames, 0*(1:length(dNames))+1 )
 estimatesCounts <- hash( dNames, 0*(1:length(dNames))+1 )
 
+rhoAccMatrix <-matrix(0, numPerms, length(dNames))
+colnames(rhoAccMatrix) <- namesA
 #counts
 ii <- 1;
 for(i in 0:(numPerms-1)){      
@@ -205,10 +211,11 @@ for(i in 0:(numPerms-1)){
 		 
 		 ii <- ii + 4
 	}
-
+	j <- 0
       for(fname in dNames){
-      	       
-      	       permCor      <-cor.test(accPerms$accuracyRank[ accPerms$permutation == i], as.numeric(d2005[,colnames(d2005)==fname]), method = "spearman")	       
+      	      j <- j+1 
+      	       permCor      <-cor.test(accPerms$accuracyRank[ accPerms$permutation == i], as.numeric(d2005[,colnames(d2005)==fname]), method = "spearman")
+	       rhoAccMatrix[i,j] <- permCor$estimate
       	       if(permCor$p.value < 0.05){
 		     estimatesHash[[fname]][estimatesCounts[[fname]]]<-permCor$estimate
 		     estimatesCounts[[fname]]<-estimatesCounts[[fname]]+1		     
@@ -239,6 +246,29 @@ for (i in 1:length(ixA)){
 }
 dev.off()
 
+
+#empirical P-values ( p = r/n):
+reorderedSpearmansA           <-spearmansA[ixA];
+reorderedSpearmansA.emp.pvals <-reorderedSpearmansA/reorderedSpearmansA
+for (i in 1:length(reorderedSpearmansA)){
+   reorderedSpearmansA.emp.pvals[i] <-   length(rhoAccMatrix[ rhoAccMatrix[,i]>reorderedSpearmansA[i]  ,i]) / numPerms
+}
+#correct for multiple testing:
+reorderedSpearmansA.emp.pvals <- p.adjust(reorderedSpearmansA.emp.pvals,"BH")
+
+pdf(file=    "../figures/spearmanBarplot-withPerms-violin.pdf", width = 5,  height = 5)
+op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(6,4,4,4) + .1)
+rhoAccMatrix <- rhoAccMatrix[,ixA]
+vioplot(rhoAccMatrix,ylim=c(-0.25,0.25), col="wheat")
+points(1:length(dNames), reorderedSpearmansA, col="red", pch="*", cex=2)
+for (i in 1:length(reorderedSpearmansA)){
+    if(reorderedSpearmansA.emp.pvals[i] <= 0.05){
+        points(i, reorderedSpearmansA[i], col="red", pch=10, cex=2)
+    }
+}
+dev.off()
+
+
 #convert figure1.pdf -background white -flatten  figure1.png
 
 ######################################################################
@@ -253,7 +283,6 @@ medRelAges <- 0*h2dNorm$counts
 medHindex  <- 0*h2dNorm$counts
 medCites   <- 0*h2dNorm$counts
 medCommits <- 0*h2dNorm$counts
-medContribs<- 0*h2dNorm$counts
 breaks <- seq(0,1, length=gridRes+1)
 
 for(i in 1:gridRes){
@@ -264,7 +293,6 @@ for(i in 1:gridRes){
 	    medHindex[i,j]  <- median(d2005$hindex[ breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]],na.rm=TRUE)
 	    medCites[i,j]   <- median(  log10(d2005$citations[  breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]]+1),na.rm=TRUE)
 	    medCommits[i,j]   <- median(  log10(d2005$commits[  breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]]+1),na.rm=TRUE)
-	    medContribs[i,j]   <- median(  log10(d2005$contributors[  breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]]+1),na.rm=TRUE)
       }
 }
 
@@ -365,7 +393,7 @@ dev.off()
 colScale <- 9
 pdf(file=    "../figures/relAge-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
 par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medRelAges[nrow(medRelAges):1,], col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "Relative age", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+heatmap.2(medRelAges[nrow(medRelAges):1,], col=rev(brewer.pal(n = colScale, name = "YlGnBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "Relative age", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
 
 
@@ -374,7 +402,7 @@ dev.off()
 colScale <- 9
 pdf(file=    "../figures/hindex-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
 par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medHindex[nrow(medHindex):1,], col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medHindex, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "H-index", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+heatmap.2(medHindex[nrow(medHindex):1,], col=brewer.pal(n = colScale, name = "BuGn"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medHindex, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "H-index", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
 
 ###################################
@@ -382,22 +410,16 @@ dev.off()
 colScale <- 9
 pdf(file=    "../figures/cites-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
 par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medCites[nrow(medCites):1,], col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medCites, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Citations+1)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+heatmap.2(medCites[nrow(medCites):1,], col=brewer.pal(n = colScale, name = "BuPu"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medCites, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Citations+1)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
+
 
 
 colScale <- 9
 pdf(file=    "../figures/commits-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
 par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medCommits[nrow(medCommits):1,], col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medCommits, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Commits)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+heatmap.2(medCommits[nrow(medCommits):1,], col=brewer.pal(n = colScale, name = "BuPu"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medCommits, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Commits+1)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
-
-colScale <- 9
-pdf(file=    "../figures/contributors-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
-par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
-heatmap.2(medContribs[nrow(medContribs):1,], col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medContribs, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Contributors)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
-dev.off()
-
 
 
 
@@ -418,15 +440,15 @@ hist(d2005$mindex, breaks=30, xlab="M-index",main="",xlim=c(0,10),col="plum3")
 hist(d2005$relAge, breaks=30, xlab="Relative age",main="",col="plum3")
 hist(d2005$relCites, breaks=30, xlab="Relative number of citations",main="",col="plum3")
 hist(d2005$yearPublished, breaks=30, xlab="Year Published",main="",col="plum3")
-hist(log10(d2005$version), breaks=30, xlab="Version",main="",col="plum3")
+hist(d2005$version, breaks=30, xlab="Version",main="",col="plum3")
 hist(log10(d2005$commits), breaks=30, xlab="Commits",main="",xaxt = "n",col="plum3")
 axis(1,at=0:4, c(10^(0:4)))
 hist(log10(d2005$contributors), breaks=30, xlab="Contributors", main="",xaxt = "n",col="plum3")
 tcks<-c(1,10,25,50,100); axis(1,at=log10(tcks), tcks)
 dev.off()
 
-pairMat <- cbind(d2005$accuracyRank,d2005$speedRank,log10(d2005$H5),log10(d2005$citations),log10(d2005$hindex),log10(d2005$mindex),d2005$relAge,d2005$relCites,d2005$yearPublished,log10(d2005$version),log10(d2005$commits),log10(d2005$contributors))
-colnames(pairMat)<-c("Accuracy","Speed","log10:\nJH5","log10:\nCitations","log10:\nH-index","log10:\nM-index","relAge","relCites","yearPublished", "log10:\nVersion", "log10:\nCommits", "log10:\nContributors")
+pairMat <- cbind(d2005$accuracyRank,d2005$speedRank,log10(d2005$H5),log10(d2005$citations),log10(d2005$hindex),log10(d2005$mindex),d2005$relAge,d2005$relCites,d2005$yearPublished,d2005$version,log10(d2005$commits),log10(d2005$contributors))
+colnames(pairMat)<-c("Accuracy","Speed","log10:\nJH5","log10:\nCitations","log10:\nH-index","log10:\nM-index","relAge","relCites","yearPublished", "Version", "log10:\nCommits", "log10:\nContributors")
 
 pdf(file=    "../figures/supplementary-figures-pairs.pdf", width = 9,  height = 9)
 pairs(pairMat, main="Scatter plots of each feature", pch='.', col="plum3")

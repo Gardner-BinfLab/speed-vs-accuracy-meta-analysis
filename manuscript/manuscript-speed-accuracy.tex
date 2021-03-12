@@ -34,7 +34,11 @@
 \def\numBenchmarks{134}
 %cat rawRankSpeedData2005-2020.tsv | cut -f 1 | grep -v ^testId$ | uniq -c | wc -l
 
-\PaperTitle{A meta-analysis of bioinformatics software benchmarks reveals that publication-bias unduly influences software accuracy} % Article title
+\PaperTitle{A meta-analysis of bioinformatics software benchmarks reveals major influences on software accuracy} 
+%Analysis of sixty software benchmarks shows the benefits of good software practice 
+%Assessing the state of the bioinformatic software landscape with a meta-analysis of benchmarks
+%Sustained software development, not citation metrics, is indicative of accurate bioinformatic software 
+%
 
 \Authors{Paul P. Gardner\textsuperscript{1,2}*, James M. Paterson\textsuperscript{3}, Stephanie McGimpsey\textsuperscript{4}, Fatemeh Ashari-Ghomi\textsuperscript{5}, Sinan U. Umu\textsuperscript{6}, Aleksandra Pawlik\textsuperscript{7},
 Alex Gavryushkin\textsuperscript{8}, Michael A Black\textsuperscript{1}
@@ -60,35 +64,36 @@ Alex Gavryushkin\textsuperscript{8}, Michael A Black\textsuperscript{1}
 %----------------------------------------------------------------------------------------
 
 %\Abstract{In the below we provide additional results for our investigation of computational biology benchmarks.}
-\Abstract{ Computational biology has provided widely used and powerful
+\Abstract{Computational biology provides widely used and powerful
   software tools for testing and making inferences about biological
   data. In the face of rapidly increasing volumes of data, heuristic
-  methods that trade software speed for accuracy must
-  be employed.  We are interested in testing for trade-offs between
-  speed and accuracy and for other factors that are indicative of accurate
+  methods that trade software speed for accuracy may
+  be employed.  We are have studied these trade-offs using the results of a large number of independent software benchmarks, 
+  and evaluated whether external factors are indicative of accurate
   software.
 
 We have extracted accuracy and speed ranks from independent benchmarks of
-computational biology software of different software tools, and evaluated the
-factors that are likely to influence accuracy e.g. speed, author
-reputation, journal impact, recency or developer efforts.
+different bioinformatic software tools, and evaluated whether the
+speed, author reputation, journal impact, recency and developer efforts are indicative of accuracy.
 
-We found that software speed, author reputation, journal impact, the
+We found that software speed, author reputation, journal impact, 
 number of citations and age are all unreliable predictors of software
 accuracy. This is unfortunate because citations, author and journal
-reputation are frequently used reasons for selecting software
-tools. Our results do show that accurate bioinformatic software tools
-are generally the product of many gradual improvements, often from
-multiple developers, based upon matching GitHub records with benchmark results. 
-In addition, we find
-that the field of bioinformatics has an excess of slow and inaccurate software
-tools, this is consistent across many sub-disciplines. Meanwhile, there are few tools that
+reputation are frequently cited reasons for selecting software
+tools. However, GitHub-derived records and high version numbers show that 
+the accurate bioinformatic software tools
+are generally the product of many improvements over time, often from
+multiple developers. 
+
+We also find
+that the field of bioinformatics has a large excess of slow and inaccurate software
+tools, and this is consistent across many sub-disciplines. Meanwhile, there are few tools that
 are middle-of-road in terms of accuracy and speed trade-offs. We
-hypothesise that a form of publication-bias unduly influences the
+hypothesise that a form of publication-bias influences the
 publication and development of bioinformatic software. In other
-words, software that is intermediate in terms of both speed and accuracy may be difficult to publish due to author,
-editor and reviewer practices. This leaves an unfortunate gap in the
-literature as the ideal tools may fall in the gap e.g. high accuracy tools are not always useful if years of CPU time are required, 
+words, software that is intermediate in terms of both speed and accuracy may be difficult to publish - possibly due to author,
+editor and reviewer practices. This leaves an unfortunate hole in the
+literature as the ideal tools may fall into this gap. For example, high accuracy tools are not always useful if years of CPU time are required, 
 while high speed is not useful if the results are also inaccurate.  }
 
 \begin{document}
@@ -132,22 +137,18 @@ while high speed is not useful if the results are also inaccurate.  }
 \section*{Background}
 Computational biology software is widely used and has produced some of
 the most cited publications in the entire scientific corpus
-\cite{Perez-Iratxeta2007-lv,Van_Noorden2014-kc,Wren2016-xy}. This
-highly-cited software includes implementations of methods for sequence
-alignment and homology inference
-\cite{Altschul1990-ht,Thompson1994-eu,Thompson1997-rl,Altschul1997-ga},
-phylogenetic analysis
-\cite{Felsenstein1985-lj,Saitou1987-zl,Posada1998-qq,Ronquist2003-yh,Tamura2007-ei},
-statistical analysis of survival patterns in biomedicine
-\cite{Kaplan1958-ju,Cox1972-nu}, biomolecular structure analysis
-\cite{Sheldrick1990-kc,Sheldrick2008-xy,Jones1991-ik,Laskowski1993-vi,Otwinowski1997-xj},
-visualization and data collection
-\cite{Kraulis1991-lt,Berman2000-to}. However, the popularity of a
+\cite{Perez-Iratxeta2007-lv,Van_Noorden2014-kc,Wren2016-xy}. These
+highly-cited software tools include implementations of methods for sequence
+alignment and homology inference \cite{Altschul1990-ht,Thompson1994-eu,Thompson1997-rl,Altschul1997-ga},
+phylogenetic analysis \cite{Felsenstein1985-lj,Saitou1987-zl,Posada1998-qq,Ronquist2003-yh,Tamura2007-ei}, 
+biomolecular structure analysis \cite{Sheldrick1990-kc,Sheldrick2008-xy,Jones1991-ik,Laskowski1993-vi,Otwinowski1997-xj}, and
+visualization and data collection \cite{Kraulis1991-lt,Berman2000-to}. 
+However, the popularity of a
 software tool does not necessarily mean that it is accurate or
 computationally efficient, instead usability, ease of installation,
-operating system and other factors may play a greater role in a software
+operating system support or other indirect factors may play a greater role in a software
 tool's popularity. Indeed, there have been several notable incidences where
-inaccurate software has caused considerable harm
+convenient, yet inaccurate software has caused considerable harm
 \cite{leveson1993investigation,cummings2020regulating,Herkert:2020}.
 %Fergusson covid predictions? 
 
@@ -158,28 +159,28 @@ dependence of biologists on software is also increasing
 solutions for automating biological data generation
 (e.g. next-generation sequencing, mass-spectroscopy, cell-tracking and
 species tracking), therefore the biological sciences have become
-increasingly dependent upon computational software for processing
+increasingly dependent upon software tools for processing
 large quantities of data \cite{Marx2013-zi}. As a consequence, the
 computational efficiency of data processing and analysis software is
 of great importance to decrease the energy, climate impact, and time costs of research
-\cite{Gombiner2011-md}. Furthermore, even small error rates can have
-major impacts on the number of false inferences as datasets become
-larger \cite{Storey2003-cv}.
+\cite{Gombiner2011-md}. Furthermore,  as datasets become
+larger even small error rates can have
+major impacts on the number of false inferences \cite{Storey2003-cv}.
 
-The gold-standard for determining accuracy is for independent
-researchers to conduct benchmarks, which can serve a useful role in
+The gold-standard for determining accuracy is for researchers independent
+of individual tool development to conduct benchmarking studies, these benchmarks can serve a useful role in
 reducing the over-optimistic reporting of software accuracy
 \cite{Boulesteix2010-te,Jelizarow2010-zf,Weber:2019} and the self-assessment trap
-\cite{Norel2011-cq,Buchka:2021}. Benchmark studies typically use a number of
-positive and negative control datasets, predictions from different software tools can then be
-partitioned into true or false groups and a variety of metrics can be
-used to evaluate the performance differences
+\cite{Norel2011-cq,Buchka:2021}. Benchmarking typically involves the use a number of
+positive and negative control datasets, so that predictions from different software tools can be
+partitioned into true or false groups, allowing a variety of metrics to be
+used to evaluate performance
 \cite{Egan1975-nd,Hall2012-kg,Weber:2019}.
 %Some benchmarks now use live, or
 %frequently updated, results to indicate the latest developments in
 %software performance
 %\cite{Bujnicki2001-xr,Puton2014-hy,Barton_undated-er}.
-The aim of these benchmarks is to independently identify tools that
+The aim of these benchmarks is to robustly identify tools that
 make acceptable compromises in terms of balancing speed with
 discriminating true and false predictions, and are therefore suited
 for wide adoption by the community.
@@ -191,60 +192,62 @@ this is a good problem to have, and points to a
 diversity of options from which practical solutions can be selected,
 having many possible options creates a dilemma for users. In the absence of
 any recent gold-standard benchmarks, how should scientific software be
-selected? In the following we presume that ``biological
-accuracy'' is the most desirable feature for a software tool. Biological
+selected? In the following we presume that the ``biological
+accuracy'' of predictions is the most desirable feature for a software tool. Biological
 accuracy is the degree to which predictions or measurements reflect
-the biological truths based on expert-derived curated datasets (see Methods for the  mathematical definition used here). In some
-fields biological accuracy is very difficult to ascertain, for
-example, in phylogenetics it is nearly impossible in most cases to know the
-true ancestral relationships between organisms. In situations like this,
-researchers may use simulated or high-confidence datasets.
+the biological truths based on expert-derived curated datasets (see Methods for the  mathematical definition used here). 
+%In some
+%fields biological accuracy is difficult to ascertain, for
+%example, in phylogenetics it is nearly impossible in most cases to know the
+%true ancestral relationships between organisms. In situations like this,
+%researchers may use simulated or high-confidence datasets to assess
+%software performance.
 
 A number of possible predictors of software quality are used by the
-community of computational biology software users \cite{Hannay2009-cf,Joppa2013-vj,Loman2015-bw}. Some accessible,
-quantifiable and frequently used proxies for identifying high quality
+community of computational biology software users \cite{Hannay2009-cf,Joppa2013-vj,Loman2015-bw}. 
+Some accessible, quantifiable and frequently used proxies for identifying high quality
 software include: \textbf{1. Recency:} recently published software
 tools may have built upon the results of past work, or be an update to
-an existing software. Therefore these may be more accurate and
+an existing tool. Therefore these may be more accurate and
 faster. \textbf{2. Wide adoption:} a software tool may be widely used
 because it is fast and accurate, or because it is well-supported and
-user-friendly. In fact, “large user base”, “word-of-mouth”,
-“wide-adoption”, "personal recommendation," and "recommendation from a
-close colleague," are frequent responses to surveys of “how do
-scientists select software?”
+user-friendly. In fact,``large user base'', ``word-of-mouth'',
+``wide-adoption'', ``personal recommendation'', and ``recommendation from a
+close colleague'', were frequent responses to surveys of ``how do
+scientists select software?''
 \cite{Hannay2009-cf,Joppa2013-vj,Loman2015-bw}. \textbf{3. Journal
-  impact:} high profile journals are run by editors and reviewers who
+impact:} high profile journals are run by editors and reviewers who
 carefully select and curate the best manuscripts. Therefore, high
 impact journals may be more likely to select manuscripts describing
 good software \cite{Garfield1955-wf}. \textbf{4. Author/Group
-  reputation:} the key to any project is the skills of the people
+reputation:} the key to any project is the skills of the people
 involved, including maintaining a high collective intelligence
 \cite{Joppa2013-vj,Woolley2010-ld,Cheruvelil2014-xn}. As a
 consequence, an argument could be made that well respected and
-high-profile authors will produce better software
+high-profile authors may write better software
 \cite{Hirsch2005-mt,Bornmann2008-il}. \textbf{5. Speed:} software tools
 frequently trade accuracy for speed. For example, heuristic
 software such as the popular homology search tool, BLAST, compromises
 the mathematical guarantee of optimal solutions for more speed
 \cite{Altschul1990-ht,Altschul1997-ga}. Some researchers may naively
-interpret this fact as slower software is likely to be more
+interpret this fact as implying that slower software is likely to be more
 accurate. But speed may also be influenced by the programming language
 \cite{Fourment2008-vl}, and the level of hardware optimisation
 \cite{Farrar2007-ky,Dematte2010-ph};
-however, the implementation generally has more of an impact (e.g. brute-force approaches versus
+However, the specific method of implementation generally has a greater impact (e.g., brute-force approaches versus
 rapid and sensitive pre-filtering
-\cite{Schaeffer1989-mu,Papadimitriou_undated-bo}).
+\cite{Schaeffer1989-mu,Papadimitriou_undated-bo,leiserson2020there}).
 %\todo{This paper
 %https://science.sciencemag.org/content/368/6495/eaam9744.full
 %shows a thousands-fold increase in speed when parallelisation
 %is implemented with things like cache, architecture, etc.
 %mind VS naive parallelisation as in Python, R, etc.}
 
-Other factors that are less quantifiable that influence whether a
-software tool is selected include: whether the documentation is good,
-user-friendly, word-of-mouth and ``used in a similar analysis''
-\cite{Loman2015-bw}. However, citation metrics may be a
-useful proxy for the above.
+%Other factors that are less quantifiable that influence whether a
+%%software tool is selected include: whether the documentation is good,
+%user-friendly, word-of-mouth and ``used in a similar analysis''
+%\cite{Loman2015-bw}. However, citation metrics may be a
+%useful proxy for the above.
 %This may also explain the reason why
 %some software continues to be used, in spite of poor relative
 %performance \cite{Wadi2016-dj}.
@@ -252,11 +255,11 @@ useful proxy for the above.
 %are directly linked to the top ranked features of successful software
 %projects, as based upon literature surveys \cite{nasir2011critical}.
 
-With the wide adoption of GitHub ($\approx 47\%$ of the
+With the wide adoption of GitHub ($47\%$ of the
 {\color{black}\numTools} tools included in this study could be
 linked to a GitHub repository), and consequently quantifiable data on software
-development such as the number of contributors to code, number of code
-changes and versions is also available
+development time and intensity indicators, such as the number of contributors to code, number of code
+changes and versions is available for these
 \cite{ray2014large,Dozmorov:2018,mangul2018comprehensive}.
 
 In the following study, we explore factors that may be indicative of
@@ -274,7 +277,7 @@ authors, journal impact and the number of citations.
 \section*{Results}
 We have collected relative accuracy and speed ranks for
 {\color{black}\numTools~} distinct software tools. This software has
-been developed for solving broad cross-section computational biology
+been developed for solving a broad cross-section of computational biology
 tasks.
 Each software tool was benchmarked in at least one of
 {\color{black}\numBenchmarkPubs~} publications that satisfy the Boulesteix
@@ -287,36 +290,31 @@ sensible.
 \begin{figure*}[htb!]
 \includegraphics[width=\textwidth]{figure1.pdf}
 \caption{\textbf{A.} A heatmap indicating the relationships between
-  proposed predictors of software quality. Spearman’s rho is used to
-  infer correlations between metrics such as the H- and M-indices of
-  corresponding authors, number of citations, journal impact factors
-  and H5 indices, the year and relative age of software and the mean
-  relative rankings of software speed and accuracy. Red colours
+  different features of bioinformatic software tools. Spearman’s rho is used to
+  infer correlations between metrics such as citations based metrics, the year and relative age of publication, 
+  version number, GitHub derived activity measures, and 
+  the mean
+  relative speed and accuracy rankings. Red colours
   indicate a positive correlation, blue colours indicate a negative
-  correlation. Correlations with an uncorrected P-value less than 0.05 are
-  indicated with a `$\vartimes$'. The dashed rectangular area is illustrated in
+  correlation. Correlations with an P-value less than 0.05 (corrected for multiple-testing using the Benjami-Hochberg method) are
+  indicated with a `$\vartimes$' symbol. The correlations with accuracy are illustrated in
   more detail in \textbf{B}, the relationship between speed and
   accuracy is shown in more detail in \textbf{Figure 2}.
   %The
   %dendrogram was computed using the default ‘heatmap.2 function in R,
   %which computes a Euclidean distance matrix and a complete-linkage
   %hierarchical clustering.
-  \textbf{B.} A barplot illustrating the correlation, as measured by
-  Spearman’s rho, between normalised accuracy ranks and software tool
-  features that may be predictive of accuracy. In order to give an
-  appreciation of the difference between the observed effect-sizes and
-  significant effect sizes, we generated 1000 permuted accuracy ranks
-  for each benchmark and recorded Spearman’s rho for the significant
-  correlations with an uncorrected P-value less than 0.05.
-  These values are marked with blues `$\vartimes$'s in the
-  barplot. Significant correlations are marked with red asterisks.}
+  \textbf{B.} Violin plots of Spearman's correlations between permuted accuracy ranks and 
+    different software tool features. 
+    The unpermuted correlations are indicated with a red asterix.
+    For each benchmark, 1,000 permuted sets of accuracy and speed ranks were generated, and the ranks were normalised to lie between 0 and 1 (see Methods for details).
+  Circled asterixs are significant (empirical P-value $< 0.05$, corrected for multiple-testing using the Benjami-Hochberg method).}
 \label{fig:allfactors}
 \end{figure*}
 
-
 For each of the publications describing these tools, we have (where
 possible) collected the journal's H5-index (\href{https://scholar.google.co.nz/citations?view\_op=top\_venues\&hl=en}{Google
-  Scholar Metrics}), the maximum H-index and
+Scholar Metrics}), the maximum H-index and
 corresponding M-indices \cite{Hirsch2005-mt} for the corresponding
 authors for each tool, and the number of times the publication(s)
 associated with a tool has been cited using Google Scholar (data
@@ -331,7 +329,7 @@ same benchmarks), journal H5 metrics, the total number of citations,
 the relative number of citations (compared to software in the same
 benchmarks) and the maximum H- and corresponding M-indices for the corresponding
 authors, version number, and numbers of commits and contributors.
-The results are presented in Figure~\ref{fig:allfactors}A. We find
+The results are presented in Figure~\ref{fig:allfactors}A\&B. We find
 significant associations between most of the citation-based metrics
 (journal H5, citations, relative citations, H-index and
 M-index). There is also a negative correlation between the year of
@@ -340,15 +338,17 @@ publication, the relative age and many of the citation-based metrics.
 Data on the
 number of updates to software tools from GitHub such as the number of versions,
 commits and contributors was significantly correlated with 
-accuracy (respective Spearman’s rhos = {\color{black}0.13, 0.22, 0.21,} respective uncorrected P-values = {\color{black}0.0027, 0.00079, 0.0013}). 
-These features were not correlated with speed however (see Figure~\ref{fig:allfactors}A).
-We also found that author reputation metrics, journal impacts and the age
+software accuracy (respective Spearman’s rhos = {\color{black}0.15, 0.22, 0.21,} and respective Benjamini \& Hochberg corrected P-values = {\color{black}0.029, 0.042, 0.063}), Figure~\ref{fig:allfactors}B. 
+The significance if these features was further confirmed with a permutation test (Figure~\ref{fig:allfactors}B).
+These features were not correlated with speed however (see Figure~\ref{fig:allfactors}A \& Supplementary Figure ????).
+We also found that reputation metrics such as citations, author and journal H-indices, and the age
 of tools were generally \textbf{not} correlated with either tool
-accuracy or speed (see Figure~\ref{fig:allfactors}). The strongest
-association was between accuracy and the relative
-number of citations (Spearman’s rho = {\color{black}0.092,
-P-value = 0.047}). But the effect size is only just over the
-significance threshold and may be the result of multiple-testing. 
+accuracy or speed (Figure~\ref{fig:allfactors}A\&B). 
+%The strongest
+%association was between accuracy and the relative
+%number of citations (Spearman’s rho = {\color{black}0.092,
+%P-value = 0.047}). But the effect size is only just over the
+%significance threshold and may be the result of multiple-testing. 
 
 %To further validate this result, we compute a correlation
 %between speed and accuracy for each benchmark and used weighted sum
@@ -359,21 +359,15 @@ In order to gain a deeper understanding of the distribution of
 available bioinformatic software tools on a speed versus accuracy
 landscape, we ran a permutation test. The ranks extracted
 from each benchmark were randomly permuted, generating 1,000
-randomized speed and accuracy ranks. In the cells of a $10\times10$
+randomized speed and accuracy ranks. In the cells of a $3\times3$
 grid spanning the normalised speed and accuracy ranks we computed a
 Z-score for the observed number of tools in a cell, compared to the
 expected distributions generated by 1,000 randomized ranks. The results
-of this are shown in Figure~\ref{fig:speedaccuracy}. We identified {\color{black}18}
-bins where there was a significant excess or dearth of tools. For
-example, there was an excess of “slow and inaccurate” software ({\color{black}Z=2.50,
-P-value=0.0063}). We find that the amount of software classed as “fast
-and accurate”, “fast and inaccurate” and "slow and accurate" are at approximately the
-expected proportions based upon the permutation test. 
-While there are very few tools placed in the middle of the ranks on accuracy and speed.
-The number of
-significant results is in excess, and is not due to multiple testing, as
-the probability of finding {\color{black}18} of 100 tests significant by chance is
-low (P-value = {\color{black}$2.2\times 10^{-6}$}, exact binomial test).
+of this are shown in Figure~\ref{fig:speedaccuracy}. We identified {\color{black}4}
+of 9 bins where there was a significant excess or dearth of tools. For
+example, there was an excess of ``slow and inaccurate'' software ({\color{black}Z=3.39,
+P-value=$3.5\times 10^{-4}$}), with more moderate excess of ``slow and accurate'' and ``fast and accurate'' software (Z=2.49 \& 1.7, P=$6.3\times 10^{-3}$ \& 0.04 respectively). We find that only the ``fast and inaccurate'' extreme class is at approximately the
+expected proportions based upon the permutation test (Figure 2B).
 
 % binom.test(sigCount,gridRes^2, p = 0.05)
 
@@ -381,32 +375,27 @@ low (P-value = {\color{black}$2.2\times 10^{-6}$}, exact binomial test).
 %\includegraphics[scale=0.55]{figure2.pdf}
 \centering
 \includegraphics[width=0.75\textwidth]{figure2.pdf}
-\caption{A heatmap indicating the relative paucity or abundance of
-  software in the range of possible accuracy and speed rankings. Red
+\caption{\textbf{A.} A heatmap indicating the relative paucity or abundance of
+  software in the range of possible accuracy and speed rankings. Redder
   colours indicate an abundance of software tools in an accuracy and
-  speed category, while blue colours indicate scarcity of software in
+  speed category, while bluer colours indicate scarcity of software in
   an accuracy and speed category. The abundance is quantified using a
-  Z-score computation for each bin, this is derived from 10,000 random
-  permutations of the speed and accuracy ranks from each
+  Z-score computation for each bin, this is derived from 1,000 random
+  permutations of speed and accuracy ranks from each
   benchmark. Mean normalised ranks of accuracy and speed have been
-  binned into 100 classes (a $10\times10$ grid) that range from
-  comparatively slow/inaccurate to comparatively
-  fast/accurate. Z-scores with a P-value less than 0.05 are indicated
-  with a ‘$\vartimes$’.}
+  binned into 9 classes (a $3\times 3$ grid) that range from
+  comparatively slow and inaccurate to comparatively
+  fast and accurate. Z-scores with a P-value less than 0.05 are indicated
+  with a ‘$\vartimes$’. \textbf{B.} The z-score distributions from the permutation tests (indicated with the wheat coloured violin plots) compared to 
+  the z-score for the observed values for each of the corner and middle square of the heatmap.}
 \label{fig:speedaccuracy}
 \end{figure*}
 
-There is a major reduction in the number of software tools that are
+The largest difference between the observed and expected software ranks is the reduction in the number of software tools that are
 classed as intermediate in terms of both speed and accuracy based on
-permutation tests (see Methods for details, Figure~\ref{fig:speedaccuracy}). The cells
-corresponding to the four central deciles are
-highlighted {\color{black}(Z = -1.9, -2.5, -2.9 and -1.1, P-values = 0.03, 0.006,
-0.002 and 0.14}, respectively, reading from top to bottom, left to
-right). We also tested the relative age of the software tools in
-the indicated corners and central regions of the speed vs
-accuracy plot. We found that the “slow and inaccurate” tools ($N=27$) were
-generally published earlier than ``fast and accurate'' tools ($N=23$) {\color{black}(W = 341, P=0.005,
-one-tailed Wilcoxon test)} (Figure S7).
+permutation tests (see Methods for details, Figure~\ref{fig:speedaccuracy}). The middle cell
+of Figure 2A and left-most violin plot of Figure 2B highlight this extreme, (Z=-6.38,
+P-value=$9.0\times 10^{-11}$). 
 
 \section*{Conclusion}
 
@@ -417,12 +406,12 @@ We have gathered data on the relative speeds and accuracies of
 the long-term support of software development \cite{siepel2019challenges}. The
 finding of a strong relationship between the number of commits and code contributors to
 GitHub (i.e. software updates) and accuracy, highlights the benefits of
-long-term development.
+long-term or at least intensive development.
 
 Our study finds little evidence to support that impact-based metrics
-have any relationship with software quality, this is unfortunate as these
+have any relationship with software quality, which is unfortunate, as these
 are frequently cited reasons for selecting software tools
-\cite{Loman2015-bw}. This implies that the high citation
+\cite{Loman2015-bw}. This implies that high citation
 rates for bioinformatic software
 \cite{Perez-Iratxeta2007-lv,Van_Noorden2014-kc,Wren2016-xy} is more a
 reflection of other factors such as user-friendliness or the Matthew Effect
@@ -431,7 +420,7 @@ reflection of other factors such as user-friendliness or the Matthew Effect
 We found the lack of a correlation between software speed and accuracy
 surprising.  The slower software tools are overrepresented at both
 high and low levels of accuracy (Figure~\ref{fig:speedaccuracy}).
-In addition, we find an under-representation of software that has
+In addition, there is an large under-representation of software that has
 intermediate levels of both accuracy and speed. A possible explanation
 for this is that bioinformatic software tools are bound by a form of
 publication-bias \cite{Boulesteix2015-am,Nissen:2016}. That is, the
@@ -439,11 +428,12 @@ probability that a study being published is influenced by the results
 it contains \cite{sterling1995publication}. The community of
 developers, reviewers and editors may be unwilling to publish software
 that is not highly ranked on speed or accuracy. If correct, this may
-have unfortunate consequences.  We also found that slow and inaccurate
-software is generally published earlier than fast and accurate tools
-{\color{black}(P=0.007, one-tailed Wilcoxon test)}, therefore
-comparisons were not required to publish the slow and
-inaccurate tools.
+have unfortunate consequences as these tools may never-the-less have further uses.
+%We also found that slow and inaccurate
+%software is generally published earlier than fast and accurate tools
+%{\color{black}(P=0.007, one-tailed Wilcoxon test)}, therefore
+%comparisons with existing software were not required to publish the slow and
+%inaccurate tools.
 
 %% A
 %% gedankenexperiment may be sufficient to show that slow software is
@@ -458,11 +448,11 @@ inaccurate tools.
 While we have taken pains to mitigate many issues with our analysis, nevertheless 
 some limitations remain. For example, it has proven difficult to verify if the gap in medium accuracy 
 and medium speed software is genuinely the result of publication bias, or due to additional factors that we have 
-not taken in to account. In addition, all of the features we have used here are moving targets, e.g. as software 
+not taken in to account. In addition, all of the features we have used here are moving targets. For example, as software 
 tools are refined, their relative accuracies and speeds will change, the citation metrics, ages, and version control 
-derived measures also change over time. We merely report a snapshot of values from 2020.  The benchmarks themselves may 
-also introduce biases into the study, for example there are issues with a potential lack of independence between benchmarks 
-(e.g. shared datasets, metrics and tools), there are heterogeneous measures of accuracy and speed and often unclear 
+derived measures also change over time. Here we report a snapshot of values from 2020.  The benchmarks themselves may 
+also introduce biases into the study. For example, there are issues with a potential lack of independence between benchmarks 
+(e.g., shared datasets, metrics and tools), there are heterogeneous measures of accuracy and speed and often unclear 
 processes for including different tools. 
 
 %{\bf DESCRIBE STUDY LIMITATIONS... 
@@ -478,8 +468,8 @@ processes for including different tools.
 
 
 We propose that the full spectrum of software tool accuracies and
-speeds serve a useful purpose to the research community. Like negative
-results, if honestly reported, illustrate to the research community
+speeds serves a useful purpose to the research community. Like negative
+results, if honestly reported this information, illustrates to the research community
 that certain approaches are not practical research avenues
 \cite{fanelli2012negative}. % Ioannidis2005-xh,Workman1999-au,Rivas2000-fb}.
 The current
@@ -502,7 +492,7 @@ correlates with accuracy. We outline these steps in further detail
 below.
 
 \textbf{Criteria for inclusion:} We are interested in using
-computational biology benchmarks that satisfy Anne-Laure Boulesteix’s
+computational biology benchmarks that satisfy Boulesteix’s
 (ALB) three criteria for a “neutral comparison study”
 \cite{Boulesteix2013-vb}. Firstly, the main focus of the article is
 the comparison and \textbf{not} the introduction of a new
@@ -514,17 +504,17 @@ test data should be independent of data that tools have been trained
 upon, and that the evaluation measures appropriately quantify correct
 and incorrect predictions.
 
-Literature mining: We identified an initial list of 10 benchmark
+\textbf{Literature mining:} We identified an initial list of 10 benchmark
 articles that satisfy the ALB-criteria. These were identified based
 upon previous knowledge of published articles and were supplemented
-with several literature searches (e.g. ‘“benchmark” AND “cputime”’ was
+with several literature searches (e.g., [``benchmark'' AND ``cputime''] was
 used to query both GoogleScholar and Pubmed
 \cite{Sayers2010-vm,McEntyre2001-fl}). We used these articles to seed
 a machine-learning approach for identifying further candidate articles
 and to identify new search terms to include.
 
 For our machine-learning-based literature screening, we computed a
-score ($s(a)$) for each article that tells us the likelihood that it
+score, $s(a)$, for each article that tells us the likelihood that it
 is a benchmark. In brief, our approaches uses 3 stages:
 \begin{enumerate}
 \item Remove high frequency words from the title and abstract of candidate articles (e.g. ‘the’, ‘and’, ‘of’, ‘to’, ‘a’, …) 
@@ -546,21 +536,24 @@ with benchmark studies. For background text we used Pubmed
 contained the word “bioinformatics” in the title or abstract and were
 published between 2013 and 2015. We computed frequencies for each word
 by combining text from titles and abstracts for the background and
-training articles. A log-odds score is computed for each word using
+training articles. A log-odds score was computed for each word using
 the following formula:
 %\todo{Word is denoted $w$ on the left and $word$ on the right.}
-$lo(word)=\log_2\frac{f_{tr}(word)+\delta}{f_{bg}(word)+\delta}$, where
+
+\[lo(word)=\log_2\frac{f_{tr}(word)+\delta}{f_{bg}(word)+\delta}\] 
+
+Where
 $\delta$
-is a pseudo-count added for each word ($\delta = 10^{-5}$, by default),
-$f_{bg}(word)$ and $f_{tr}(word)$ are the frequencies of a $word$ in
+was a pseudo-count added for each word ($\delta = 10^{-5}$, by default),
+$f_{bg}(word)$ and $f_{tr}(word)$ were the frequencies of a $word$ in
 the background and training datasets respectively. Word frequencies
-are computed by counting the number of times a word appears in the
-pool of titles and abstracts, the counts are normalised by the total
+were computed by counting the number of times a word appears in the
+pool of titles and abstracts, the counts were normalised by the total
 number of words in each set.
 
 Thirdly, we also collected a group of candidate benchmark articles by
-mining Pubmed for articles that are likely to be benchmarks of
-bioinformatic software, these may match the terms: “((bioinformatics)
+mining Pubmed for articles that were likely to be benchmarks of
+bioinformatic software, these match the terms: “((bioinformatics)
 AND (algorithms OR programs OR software)) AND (accuracy OR assessment
 OR benchmark OR comparison OR performance) AND (speed OR
 time)”. Further terms used in this search were progressively added as
@@ -571,13 +564,13 @@ A score is computed for each candidate article by summing the log-odds
 scores for the words in title and abstract,
 i.e. $s(a)=\sum_i^Nlo(w_i)$. The high scoring candidate articles are
 then manually evaluated against the ALB-criteria. Accuracy and speed
-ranks are extracted from the articles that meet the criteria, and
-these are also added to the set of training articles. The evaluated
-candidate articles that do not meet the ALB-criteria are incorporated
-into the set of background articles. This process is iterated and has resulted in the identification of
-{\color{black}\numBenchmarkPubs} benchmark articles, that
-contain {\color{black}\numBenchmarks} different benchmarks, together these
-rank {\color{black}\numTools~} distinct software packages.
+ranks were extracted from the articles that met the criteria, and
+these were added to the set of training articles. The evaluated
+candidate articles that did not meet the ALB-criteria were incorporated
+into the set of background articles. This process was iterated and resulted in the identification of
+{\color{black}\numBenchmarkPubs} benchmark articles,
+containing {\color{black}\numBenchmarks} different benchmarks. Together these
+ranked {\color{black}\numTools~} distinct software packages.
 
 There is a potential for bias to have been introduced into this
 dataset. Some possible forms of bias include converging on a niche
@@ -586,28 +579,28 @@ we have used. A further possibility is that benchmark studies
 themselves are biased, either including very high performing or very
 low performing software tools. To address each of these concerns we
 have attempted to be as comprehensive as possible in terms of
-benchmark inclusion, as well as include comprehensive benchmarks. By
-which we mean studies that include all available software tools that
-address a biological problem.
+benchmark inclusion, as well as including comprehensive benchmarks (i.e.,
+studies that include all available software tools that
+address a specific biological problem).
 
 \textbf{Data extraction and processing:} for each article that met the
 ALB-criteria and contained data on both the accuracy and speed from
-their tests we extracted ranks for each tool. Many articles contained
+their tests, we extracted ranks for each tool. Many articles contained
 multiple benchmarks, in these cases we selected a range of these, the
 provenance of which is stored with the accuracy metric and raw speed
 and accuracy rank data for each tool. In line with rank-based
-statistics, the cases where tools were tied are resolved by using a
-midpoint rank (e.g. if tool 3 and 4 are tied, the rank 3.5 is used)
+statistics, the cases where tools were tied were resolved by using a
+midpoint rank (e.g., if tool 3 and 4 are tied, the rank 3.5 was used)
 \cite{Mann1947-re}. Each rank extraction was independently verified by
 at least one other co-author to ensure both the provenance of the data
 could be established and that the ranks were correct. The ranks for
 each benchmark were then normalised to lie between 0 and 1 using the
 formula $1-\frac{r-1}{n-1}$ where ‘$r$’ is a tool’s rank and ‘$n$’ is the
 number of tools in the benchmark. For tools that were benchmarked
-multiple times with multiple metrics (e.g. BWA is evaluated in 6
+multiple times with multiple metrics (e.g., BWA was evaluated in 6
 different articles
 \cite{Bao2011-lv,Caboche2014-lj,Hatem2013-cs,Schbath2012-ob,Ruffalo2011-rl,Holtgrewe2011-fd})
-a mean normalised rank is used to summarise the accuracy and speed performance. 
+a mean normalised rank was used to summarise the accuracy and speed performance. 
 Or, more formally:
  
 \begin{equation*}
@@ -618,14 +611,15 @@ speed    =& \sum_{i=1..N} 1-\frac{r^{speed   }_i-1}{n_i-1}
 \end{equation*}
  
 For each tool we identified the corresponding publications in
-GoogleScholar, the total number of citations was recorded, the
-corresponding authors were also identified and if these had public
-GoogleScholar profiles we extracted their H-index and calculated a
+GoogleScholar; the total number of citations was recorded, the
+corresponding authors were also identified, and if they had public
+GoogleScholar profiles, we extracted their H-index and calculated a
 M-index ($\frac{H-index}{y}$) where ‘$y$’ is the number of years since
-their first publication. For the journals that each tool is published
-in we extracted the H5-index
-from GoogleScholar Metrics. The year of publication was also recorded for each
-tool. A “relative age” and “relative citations” was also computed for
+their first publication. The journal quality was estimated using the H5-index
+from GoogleScholar Metrics. 
+
+The year of publication was also recorded for each
+tool. “Relative age” and “relative citations” were also computed for
 each tool. For each benchmark, software was ranked by year of first
 publication (or number of citations), ranks were assigned and then
 normalised as described above. Tools ranked in multiple evaluations
@@ -633,12 +627,12 @@ were then assigned a mean value for “relative age” and “relative
 citations”.
 
 The papers describing tools were checked for information on version numbers and links to GitHub. 
-Google was also employed to identify GitHub repositories. When a repository was matched with a tool, the number of "commits" and number of "contributors" was collected, when details of version numbers were provided, these were also harvested. 
-Version numbers are inconsistently used between groups, and may begin at either 0 or 1. To counter this issue we have added '1' to all versions less than '1', e.g. version 0.31 become 1.31. In addition, multiple point releases may be used e.g. 'version 5.2.6', these have been mapped to the nearest decimal value '5.26'.
+Google was also employed to identify GitHub repositories. When a repository was matched with a tool, the number of ``commits'' and number of ``contributors'' was collected, when details of version numbers were provided, these were also harvested. 
+Version numbers are inconsistently used between groups, and may begin at either 0 or 1. To counter this issue we have added `1' to all versions less than `1', for example, version 0.31 become 1.31. In addition, multiple point releases may be used e.g. `version 5.2.6', these have been mapped to the nearest decimal value `5.26'.
 
-\textbf{Statistical analysis:} For each tool we have manually collected up to 12 different
-statistics from GoogleScholar, GitHub and directly from literature describing tools (
-1. corresponding author’s H-index, 
+\textbf{Statistical analysis:} For each tool we manually collected up to 12 different
+statistics from GoogleScholar, GitHub and directly from literature describing tools 
+(1. corresponding author’s H-index, 
 2. corresponding author’s M-index, 
 3. journal H5 index, 
 4. normalised accuracy rank, 
@@ -650,9 +644,9 @@ statistics from GoogleScholar, GitHub and directly from literature describing to
 10. version
 11. number of commits to GitHub,
 12. number of contributors to GitHub). 
-These have been evaluated in a pairwise fashion to
-produce Figure~\ref{fig:allfactors} A\&B, the R code for these is
-given in the GitHub repository (linked below).
+These were evaluated in a pairwise fashion to
+produce Figure~\ref{fig:allfactors} A\&B, the R code used to generate these is
+given in a GitHub repository (linked below).
 
 %The linear models that we used to test for relationships between
 %speed, accuracy and the above measures are:
@@ -675,20 +669,19 @@ given in the GitHub repository (linked below).
 %\end{split}
 %\end{equation*}
 
-
 For each benchmark of three or more tools, we extracted the published
-accuracy and speed ranks. In order to identify if there is an
+accuracy and speed ranks. In order to identify whether there was an
 enrichment of certain accuracy and speed pairings we constructed a
 permutation test. The individual accuracy and speed ranks were
 reassigned to tools in a random fashion and each new accuracy and
 speed rank pairing was recorded. For each benchmark this procedure was
-repeated 10,000 times. These permuted rankings were normalised and
+repeated 1,000 times. These permuted rankings were normalised and
 compared to the real rankings to produce the ‘$\vartimes$’ points in
 Figure~\ref{fig:allfactors}B and the heatmap and histograms in
 Figure~\ref{fig:speedaccuracy}. The heatmap in
 Figure~\ref{fig:speedaccuracy} is based upon Z-scores
-($Z=\frac{x-\bar{x}}{\sigma}$). For each cell in a $10\times 10$ grid
-a Z-score is computed to illustrate the abundance or lack of tools in
+($Z=\frac{x-\bar{x}}{s}$). For each cell in a $3\times 3$ grid
+a Z-score (and corresponding P-value is computed, either with the `pnorm' distribution function in R (Figure 2A) or empirically (Figure 2B)) is computed to illustrate the abundance or lack of tools in
 a cell relative to the permuted data.
 
 \section*{Data availability}
@@ -716,6 +709,8 @@ PPG is supported by a Rutherford Discovery Fellowship,
 administered by the Royal Society Te Ap\=arangi, 
 PPG, AG and MB acknowledge support from a Data Science Programmes grant
 (UOAX1932).
+
+This work was largely conducted on the traditional territory of K\=ai Tahu.
 
 %{\bf AND ETC....}
 

@@ -349,7 +349,7 @@ sub permutationsRelativeRanks {
 	    }
 	    
 	    if(defined($methodInfo->{$meth}{'citations'} )){
-		$citations{$meth} = $methodInfo->{$meth}{'citations'}        if (isNumeric($methodInfo->{$meth}{'citations'})); 
+		$citations{$meth} = $methodInfo->{$meth}{'citations'} if (isNumeric($methodInfo->{$meth}{'citations'})); 
 	    }
 	    
 	    #normaliseH returns a hash

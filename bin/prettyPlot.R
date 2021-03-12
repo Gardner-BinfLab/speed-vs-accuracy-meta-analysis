@@ -12,6 +12,7 @@ library(gplots)
 #library("CombinePValue")
 library("hash")
 library("vioplot")
+library("randomForest")
 
 k <- 11
 my.cols <- rev(brewer.pal(k, "RdYlBu"))
@@ -165,7 +166,8 @@ dev.off()
 accPerms <-read.table("meanRankAccuracyPerms.tsv", header=T)
 spdPerms <-read.table(   "meanRankSpeedPerms.tsv", header=T)
 
-gridRes  <- 10; #10 x 10 grid
+#Figure 2
+gridRes  <- 3; #10 x 10 or 5 x 5 or 3 x 3 grid
 numPerms <- max(accPerms$permutation)+1
 
 #library(gplots)
@@ -174,12 +176,18 @@ h2dNorm     <- hist2d(d2005$accuracyRank,d2005$speedRank, show=FALSE, same.scale
 sumX  <- 0*h2dNorm$counts
 sumXX <- 0*h2dNorm$counts
 
-
-fastInacc <- vector(mode = "numeric", length = 4*numPerms)
-fastAcc   <- vector(mode = "numeric", length = 4*numPerms)
-slowInacc <- vector(mode = "numeric", length = 4*numPerms)
-slowAcc   <- vector(mode = "numeric", length = 4*numPerms)
-midBlock  <- vector(mode = "numeric", length = 4*numPerms)
+if(gridRes == 10){
+     multiplier <- 4
+}else if(gridRes == 5){
+     multiplier <- 1    
+}else if(gridRes == 3){
+     multiplier <- 1
+}    
+fastInacc <- vector(mode = "numeric", length = multiplier*numPerms)
+fastAcc   <- vector(mode = "numeric", length = multiplier*numPerms)
+slowInacc <- vector(mode = "numeric", length = multiplier*numPerms)
+slowAcc   <- vector(mode = "numeric", length = multiplier*numPerms)
+midBlock  <- vector(mode = "numeric", length = multiplier*numPerms)
 
 dNames <- c("mindex",  "hindex",  "relAge",  "H5", "speedRank", "citations", "relCites",   "yearPublished", "version", "commits", "contributors")
 pNames <- c("M-index", "H-index", "Rel. age","JH5","Speed",     "Citations", "Rel. cites", "Year",          "version", "commits", "contributors")
@@ -193,24 +201,44 @@ colnames(rhoAccMatrix) <- namesA
 ii <- 1;
 for(i in 0:(numPerms-1)){      
       h2dPerm <- hist2d( accPerms$accuracyRank[ accPerms$permutation == i], spdPerms$speedRank[ spdPerms$permutation == i], show=FALSE, same.scale=TRUE, nbins=gridRes)                 
+      #Fast variance calculation:
       sumX    <- h2dPerm$counts                   + sumX;	
       sumXX   <- (h2dPerm$counts * h2dPerm$counts) + sumXX;	
       
-      
-      
+      #for gridRes  <- 10;
       if(gridRes == 10){
       		 #Mid block of 4 squares:
-      		 midP<-floor(gridRes/2)
-      		 midBlock[ii:(ii+3)] <- c(h2dPerm$counts[midP,midP],h2dPerm$counts[midP+1,midP+1],h2dPerm$counts[midP,midP+1],h2dPerm$counts[midP+1,midP])
-		 
+		 midP<-floor(gridRes/2)
+
+		 midBlock[ii:(ii+3)] <- c(h2dPerm$counts[midP,midP],h2dPerm$counts[midP+1,midP+1],h2dPerm$counts[midP,midP+1],h2dPerm$counts[midP+1,midP])
 		 #Corners:
       		 fastInacc[ii:(ii+3)] <- c(h2dPerm$counts[1,gridRes],      h2dPerm$counts[1+1,gridRes],      h2dPerm$counts[1,gridRes-1],      h2dPerm$counts[1+1,gridRes-1])
       		 fastAcc[ii:(ii+3)]   <- c(h2dPerm$counts[gridRes,gridRes],h2dPerm$counts[gridRes-1,gridRes],h2dPerm$counts[gridRes,gridRes-1],h2dPerm$counts[gridRes-1,gridRes-1])
       		 slowInacc[ii:(ii+3)] <- c(h2dPerm$counts[1,1],            h2dPerm$counts[1+1,1],            h2dPerm$counts[1,1+1],            h2dPerm$counts[1+1,1+1])
       		 slowAcc[ii:(ii+3)]   <- c(h2dPerm$counts[gridRes,1],      h2dPerm$counts[gridRes-1,1],      h2dPerm$counts[gridRes,1+1],      h2dPerm$counts[gridRes-1,1+1])
-		 
 		 ii <- ii + 4
-	}
+	}else if(gridRes == 5){
+	     	 midP<-3
+		 #for gridRes  <- 3;
+		 midBlock[ii:(ii+3)] <- c(h2dPerm$counts[midP,midP])
+		 #Corners:
+      		 fastInacc[ii:(ii+3)] <- c(h2dPerm$counts[1,gridRes])
+      		 fastAcc[ii:(ii+3)]   <- c(h2dPerm$counts[gridRes,gridRes])
+      		 slowInacc[ii:(ii+3)] <- c(h2dPerm$counts[1,1])
+      		 slowAcc[ii:(ii+3)]   <- c(h2dPerm$counts[gridRes,1])
+		 ii <- ii + 1
+	}else if(gridRes == 3){
+	     	 midP<-2
+		 #for gridRes  <- 3;
+		 midBlock[ii:(ii+3)] <- c(h2dPerm$counts[midP,midP])
+		 #Corners:
+      		 fastInacc[ii:(ii+3)] <- c(h2dPerm$counts[1,gridRes])
+      		 fastAcc[ii:(ii+3)]   <- c(h2dPerm$counts[gridRes,gridRes])
+      		 slowInacc[ii:(ii+3)] <- c(h2dPerm$counts[1,1])
+      		 slowAcc[ii:(ii+3)]   <- c(h2dPerm$counts[gridRes,1])
+		 ii <- ii + 1
+        }
+
 	j <- 0
       for(fname in dNames){
       	      j <- j+1 
@@ -227,26 +255,26 @@ for(i in 0:(numPerms-1)){
 ######################################################################
 #barplot with significant rho vals from permuted data shown:
 
+# pdf(file=    "../figures/spearmanBarplot-withPerms.pdf", width = 5,  height = 5)
+# xVals <- barplot(t(spearmansA[ixA]), plot=F)
+# op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(6,4,4,4) + .1)
+# barplot(t(spearmansA[ixA]),names=namesA[ixA], ylab="Spearman's rho",ylim=c(-0.25,0.25),main="Correlates with accuracy")
+# lines(c(-100,100),c(0,0))
+# for(i in 1:length(dNames)){      
+#       points(estimatesHash[[dNames[ixA[i]]]]*0+xVals[i],estimatesHash[[dNames[ixA[i]]]],pch="x",cex=1.0,col="skyblue2")
+# }
+# for (i in 1:length(ixA)){
+#     if( spearmansAP[ixA[i]] < 0.005 ){
+#     	text(xVals[i], 0, '**', col='red', pos=1 )
+#     }
+#     else if( spearmansAP[ixA[i]] < 0.05 ){
+#     	text(xVals[i], 0, '*', col='red', pos=1 )
+#     }
+# }
+# dev.off()
+
+
 #FIGURE 1B
-pdf(file=    "../figures/spearmanBarplot-withPerms.pdf", width = 5,  height = 5)
-xVals <- barplot(t(spearmansA[ixA]), plot=F)
-op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(6,4,4,4) + .1)
-barplot(t(spearmansA[ixA]),names=namesA[ixA], ylab="Spearman's rho",ylim=c(-0.25,0.25),main="Correlates with accuracy")
-lines(c(-100,100),c(0,0))
-for(i in 1:length(dNames)){      
-      points(estimatesHash[[dNames[ixA[i]]]]*0+xVals[i],estimatesHash[[dNames[ixA[i]]]],pch="x",cex=1.0,col="skyblue2")
-}
-for (i in 1:length(ixA)){
-    if( spearmansAP[ixA[i]] < 0.005 ){
-    	text(xVals[i], 0, '**', col='red', pos=1 )
-    }
-    else if( spearmansAP[ixA[i]] < 0.05 ){
-    	text(xVals[i], 0, '*', col='red', pos=1 )
-    }
-}
-dev.off()
-
-
 #empirical P-values ( p = r/n):
 reorderedSpearmansA           <-spearmansA[ixA];
 reorderedSpearmansA.emp.pvals <-reorderedSpearmansA/reorderedSpearmansA
@@ -259,7 +287,7 @@ reorderedSpearmansA.emp.pvals <- p.adjust(reorderedSpearmansA.emp.pvals,"BH")
 pdf(file=    "../figures/spearmanBarplot-withPerms-violin.pdf", width = 5,  height = 5)
 op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(6,4,4,4) + .1)
 rhoAccMatrix <- rhoAccMatrix[,ixA]
-vioplot(rhoAccMatrix,ylim=c(-0.25,0.25), col="wheat")
+vioplot(rhoAccMatrix,ylim=c(-0.25,0.25), col="wheat",ylab="Spearman's rho", main="Correlation with Accuracy")
 points(1:length(dNames), reorderedSpearmansA, col="red", pch="*", cex=2)
 for (i in 1:length(reorderedSpearmansA)){
     if(reorderedSpearmansA.emp.pvals[i] <= 0.05){
@@ -277,22 +305,23 @@ dev.off()
 stddevPerms <- sqrt( (numPerms * sumXX - (sumX*sumX)) / (numPerms*(numPerms-1)) )
 meanPerms   <- sumX/numPerms
 
-zScores        <- 0*h2dNorm$counts
-
+zScores    <- 0*h2dNorm$counts
 medRelAges <- 0*h2dNorm$counts
 medHindex  <- 0*h2dNorm$counts
 medCites   <- 0*h2dNorm$counts
 medCommits <- 0*h2dNorm$counts
+medContribs<- 0*h2dNorm$counts
 breaks <- seq(0,1, length=gridRes+1)
 
 for(i in 1:gridRes){
       for(j in 1:gridRes){
       	    zScores[i,j]     <- (h2dNorm$counts[i,j]     - meanPerms[i,j])/stddevPerms[i,j]
 	    
-	    medRelAges[i,j] <- median(d2005$relAge[ breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]],na.rm=TRUE)
-	    medHindex[i,j]  <- median(d2005$hindex[ breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]],na.rm=TRUE)
-	    medCites[i,j]   <- median(  log10(d2005$citations[  breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]]+1),na.rm=TRUE)
-	    medCommits[i,j]   <- median(  log10(d2005$commits[  breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]]+1),na.rm=TRUE)
+	    medRelAges[i,j]   <- median(d2005$relAge[                breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]],   na.rm=TRUE)
+	    medHindex[i,j]    <- median(d2005$hindex[                breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]],   na.rm=TRUE)
+	    medCites[i,j]     <- median(  log10(d2005$citations[     breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]]+1),na.rm=TRUE)
+	    medCommits[i,j]   <- median(  log10(d2005$commits[       breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]]+1),na.rm=TRUE)
+	    medContribs[i,j]  <- median(  log10(d2005$contributors[  breaks[i] <= d2005$accuracyRank & d2005$accuracyRank <= breaks[i+1] & breaks[j] <= d2005$speedRank & d2005$speedRank <= breaks[j+1]]+1),na.rm=TRUE)
       }
 }
 
@@ -316,54 +345,54 @@ colnames(zScores)<-character(gridRes)
 binom.test(sigCount,    gridRes^2, p = 0.05)
 
 ###################################
-#Figure 2: histogram inserts 
-pdf(file=    "../figures/zscores-SpeedVsAccuracyH.pdf", width = 8,  height = 10)
-par(mfrow=c(3,3),cex=1.4,las=1)
-mx <- max(c(slowAcc,fastAcc,slowInacc,fastInacc))
-hist(slowAcc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,15),ylim=c(0,800),main="slo&acc",yaxt="n",xaxt="n")#Slow and accurate 
-arrows(h2dNorm$counts[gridRes,  1  ],2000,h2dNorm$counts[gridRes,  1],  0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[gridRes-1,1  ],2000,h2dNorm$counts[gridRes-1,1],  0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[gridRes,  1+1],2000,h2dNorm$counts[gridRes,  1+1],0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[gridRes-1,1+1],2000,h2dNorm$counts[gridRes-1,1+1],0,col="red",lwd=2,length=0.1,angle=30)
-axis(1,at=c(0,6,12))
-axis(2,at=(0:2)*1000)
-plot(1, type="n", axes=F, xlab="", ylab="")
-hist(fastAcc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,15),ylim=c(0,800),main="fast&acc",yaxt="n",xaxt="n") #Fast and accurate 
-arrows(h2dNorm$counts[gridRes,  gridRes],  2000,h2dNorm$counts[gridRes,  gridRes],  0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[gridRes-1,gridRes],  2000,h2dNorm$counts[gridRes-1,gridRes],  0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[gridRes,  gridRes-1],2000,h2dNorm$counts[gridRes,  gridRes-1],0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[gridRes-1,gridRes-1],2000,h2dNorm$counts[gridRes-1,gridRes-1],0,col="red",lwd=2,length=0.1,angle=30)
-axis(1,at=c(0,6,12))
-axis(2,at=(0:2)*1000)
-plot(1, type="n", axes=F, xlab="", ylab="")
-      if(gridRes == 10){
-      		 hist(midBlock,breaks=(0:(1+max(midBlock)/2))*2-0.5, xlab="",ylab="Freq.",xlim=c(0,22),ylim=c(0,800),main="medial",yaxt="n",xaxt="n") #Medial speed & accuracy 
-		 arrows(h2dNorm$counts[5,5],7000,h2dNorm$counts[5,5],0,col="red",lwd=2,length=0.1,angle=30)
-		 arrows(h2dNorm$counts[6,6],7000,h2dNorm$counts[6,6],0,col="red",lwd=2,length=0.1,angle=30)
-		 arrows(h2dNorm$counts[5,6],7000,h2dNorm$counts[5,6],0,col="red",lwd=2,length=0.1,angle=30)
-		 arrows(h2dNorm$counts[6,5],7000,h2dNorm$counts[6,5],0,col="red",lwd=2,length=0.1,angle=30)
-axis(1,at=c(0,10,20))
-axis(2,at=c(0,5000,10000))
-      } else {
-		plot(1, type="n", axes=F, xlab="", ylab="")
-      }
-plot(1, type="n", axes=F, xlab="", ylab="")
-hist(slowInacc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,15),ylim=c(0,800),main="slo&inacc",yaxt="n",xaxt="n") #Slow and inaccurate 
-arrows(h2dNorm$counts[1,    1],2000,h2dNorm$counts[1,    1],0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[1+1,  1],2000,h2dNorm$counts[1+1,  1],0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[1,  1+1],2000,h2dNorm$counts[1,  1+1],0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[1+1,1+1],2000,h2dNorm$counts[1+1,1+1],0,col="red",lwd=2,length=0.1,angle=30)
-axis(1,at=c(0,6,12))
-axis(2,at=(0:2)*1000)
-plot(1, type="n", axes=F, xlab="", ylab="")
-hist(fastInacc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,15),ylim=c(0,800),main="fast&inacc",yaxt="n",xaxt="n") #Fast and inaccurate
-arrows(h2dNorm$counts[1,  gridRes  ],2000,h2dNorm$counts[1,  gridRes  ],0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[1+1,gridRes  ],2000,h2dNorm$counts[1+1,gridRes  ],0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[1,  gridRes-1],2000,h2dNorm$counts[1,  gridRes-1],0,col="red",lwd=2,length=0.1,angle=30)
-arrows(h2dNorm$counts[1+1,gridRes-1],2000,h2dNorm$counts[1+1,gridRes-1],0,col="red",lwd=2,length=0.1,angle=30)
-axis(1,at=c(0,6,12))
-axis(2,at=(0:2)*1000)
-dev.off()
+#Figure 2: histogram inserts gridRes <- 10
+# pdf(file=    "../figures/zscores-SpeedVsAccuracyH.pdf", width = 8,  height = 10)
+# par(mfrow=c(3,3),cex=1.4,las=1)
+# mx <- max(c(slowAcc,fastAcc,slowInacc,fastInacc))
+# hist(slowAcc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,15),ylim=c(0,800),main="slo&acc",yaxt="n",xaxt="n")#Slow and accurate 
+# arrows(h2dNorm$counts[gridRes,  1  ],2000,h2dNorm$counts[gridRes,  1],  0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[gridRes-1,1  ],2000,h2dNorm$counts[gridRes-1,1],  0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[gridRes,  1+1],2000,h2dNorm$counts[gridRes,  1+1],0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[gridRes-1,1+1],2000,h2dNorm$counts[gridRes-1,1+1],0,col="red",lwd=2,length=0.1,angle=30)
+# axis(1,at=c(0,6,12))
+# axis(2,at=(0:2)*1000)
+# plot(1, type="n", axes=F, xlab="", ylab="")
+# hist(fastAcc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,15),ylim=c(0,800),main="fast&acc",yaxt="n",xaxt="n") #Fast and accurate 
+# arrows(h2dNorm$counts[gridRes,  gridRes],  2000,h2dNorm$counts[gridRes,  gridRes],  0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[gridRes-1,gridRes],  2000,h2dNorm$counts[gridRes-1,gridRes],  0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[gridRes,  gridRes-1],2000,h2dNorm$counts[gridRes,  gridRes-1],0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[gridRes-1,gridRes-1],2000,h2dNorm$counts[gridRes-1,gridRes-1],0,col="red",lwd=2,length=0.1,angle=30)
+# axis(1,at=c(0,6,12))
+# axis(2,at=(0:2)*1000)
+# plot(1, type="n", axes=F, xlab="", ylab="")
+#       if(gridRes == 10){
+#       		 hist(midBlock,breaks=(0:(1+max(midBlock)/2))*2-0.5, xlab="",ylab="Freq.",xlim=c(0,22),ylim=c(0,800),main="medial",yaxt="n",xaxt="n") #Medial speed & accuracy 
+# 		 arrows(h2dNorm$counts[5,5],7000,h2dNorm$counts[5,5],0,col="red",lwd=2,length=0.1,angle=30)
+# 		 arrows(h2dNorm$counts[6,6],7000,h2dNorm$counts[6,6],0,col="red",lwd=2,length=0.1,angle=30)
+# 		 arrows(h2dNorm$counts[5,6],7000,h2dNorm$counts[5,6],0,col="red",lwd=2,length=0.1,angle=30)
+# 		 arrows(h2dNorm$counts[6,5],7000,h2dNorm$counts[6,5],0,col="red",lwd=2,length=0.1,angle=30)
+# axis(1,at=c(0,10,20))
+# axis(2,at=c(0,5000,10000))
+#       } else {
+# 		plot(1, type="n", axes=F, xlab="", ylab="")
+#       }
+# plot(1, type="n", axes=F, xlab="", ylab="")
+# hist(slowInacc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,15),ylim=c(0,800),main="slo&inacc",yaxt="n",xaxt="n") #Slow and inaccurate 
+# arrows(h2dNorm$counts[1,    1],2000,h2dNorm$counts[1,    1],0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[1+1,  1],2000,h2dNorm$counts[1+1,  1],0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[1,  1+1],2000,h2dNorm$counts[1,  1+1],0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[1+1,1+1],2000,h2dNorm$counts[1+1,1+1],0,col="red",lwd=2,length=0.1,angle=30)
+# axis(1,at=c(0,6,12))
+# axis(2,at=(0:2)*1000)
+# plot(1, type="n", axes=F, xlab="", ylab="")
+# hist(fastInacc,breaks=0:(mx+1)-0.5, xlab="",ylab="Freq.",xlim=c(0,15),ylim=c(0,800),main="fast&inacc",yaxt="n",xaxt="n") #Fast and inaccurate
+# arrows(h2dNorm$counts[1,  gridRes  ],2000,h2dNorm$counts[1,  gridRes  ],0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[1+1,gridRes  ],2000,h2dNorm$counts[1+1,gridRes  ],0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[1,  gridRes-1],2000,h2dNorm$counts[1,  gridRes-1],0,col="red",lwd=2,length=0.1,angle=30)
+# arrows(h2dNorm$counts[1+1,gridRes-1],2000,h2dNorm$counts[1+1,gridRes-1],0,col="red",lwd=2,length=0.1,angle=30)
+# axis(1,at=c(0,6,12))
+# axis(2,at=(0:2)*1000)
+# dev.off()
 
 
 #      		 fastInacc[ii:(ii+3)] <- c(h2dPerm$counts[1,gridRes],      h2dPerm$counts[1+1,gridRes],      h2dPerm$counts[1,gridRes-1],      h2dPerm$counts[1+1,gridRes-1])
@@ -378,11 +407,33 @@ write.table(zScores[nrow(zScores):1,], file = "heatmapZ-scores.tsv", sep = "\t",
 
 #colScale <- 20 #redblue(colScale), 
 colScale <- 11
-pdf(file=    "../figures/zscores-SpeedVsAccuracy.pdf", width = 10,  height = 10)
+pdf(file=    "../figures/zscores-SpeedVsAccuracy-gridRes3.pdf", width = 10,  height = 10)
 heatmap.2(zScores[nrow(zScores):1,],
           cellnote=sigMatrix[nrow(zScores):1,],notecex=2.5,notecol="black", 
           col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="none", trace="none", dendrogram="none", symm=F,symkey=T,symbreaks=T, breaks=seq(-3.5,3.5,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(2, 2), key.title = "Z", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=2.0)
 dev.off()
+
+
+
+
+pdf(file=    "../figures/zscores-withPerms-violin.pdf", width = 5,  height = 5)
+op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(7,4,1,1) + .1)
+vioplot(
+	(midBlock -mean(midBlock ))/sd(midBlock),
+	(fastInacc-mean(fastInacc))/sd(fastInacc),
+	(fastAcc  -mean(fastAcc  ))/sd(fastAcc),
+	(slowAcc  -mean(slowAcc  ))/sd(slowAcc),
+	(slowInacc-mean(slowInacc))/sd(slowInacc),
+	ylim=c(-6.5,6.5), col="wheat",ylab="Z-score", main="",
+        names=c("Med. Speed+\nMed. Accuracy","Fast+\nInaccurate","Fast+\nAccurate","Slow+\nAccurate","Slow+\nInaccurate"),
+        lwd=1)
+	if(gridRes == 3){
+		   points(1:5, c(zScores[midP,midP],zScores[1,gridRes],zScores[gridRes,gridRes],zScores[gridRes,1] , zScores[1,1]), col="red", pch="*", cex=3)
+	}
+dev.off()
+
+
+
 
 
 #convert figure2.pdf -background white -flatten  figure2.png
@@ -421,6 +472,11 @@ par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) 
 heatmap.2(medCommits[nrow(medCommits):1,], col=brewer.pal(n = colScale, name = "BuPu"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medCommits, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Commits+1)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
 dev.off()
 
+colScale <- 9
+pdf(file=    "../figures/contributors-SpeedVsAccuracy-heatmap.pdf", width = 10,  height = 10)
+par(mar = c(8,4,4,8) + .1) #c(bottom, left, top, right). default: c(5, 4, 4, 2) + 0.1
+heatmap.2(medContribs[nrow(medContribs):1,], col=brewer.pal(n = colScale, name = "BuPu"), density.info="histogram", trace="none", dendrogram="none", symm=F,symkey=F,symbreaks=T, breaks=seq(0,max(medContribs, na.rm = TRUE)+1,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(8, 8), key.title = "log10(Contributors+1)", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=1.0, na.rm=TRUE,na.color=par("bg"))
+dev.off()
 
 
 ######################################################################
@@ -447,6 +503,17 @@ hist(log10(d2005$contributors), breaks=30, xlab="Contributors", main="",xaxt = "
 tcks<-c(1,10,25,50,100); axis(1,at=log10(tcks), tcks)
 dev.off()
 
+pdf(file=    "../figures/supplementary-distributions-permuted.pdf", width = 9,  height = 4.5)
+op<-par(mfrow=c(1,2),cex=1.0,mar = c(5, 5, 4, 2) + 0.1, las=2) 
+hist(accPerms$accuracyRank, breaks=50, xlab="Permuted normalised accuracy ranks",main="",col="plum3",ylab="")
+par(las=0)
+mtext("Frequency", side=2, line = 4)
+par(las=2)
+hist(   spdPerms$speedRank, breaks=50, xlab="Permuted normalised speed ranks",   main="",col="plum3",ylab="")
+par(las=0)
+mtext("Frequency", side=2, line = 4)
+dev.off()
+
 pairMat <- cbind(d2005$accuracyRank,d2005$speedRank,log10(d2005$H5),log10(d2005$citations),log10(d2005$hindex),log10(d2005$mindex),d2005$relAge,d2005$relCites,d2005$yearPublished,d2005$version,log10(d2005$commits),log10(d2005$contributors))
 colnames(pairMat)<-c("Accuracy","Speed","log10:\nJH5","log10:\nCitations","log10:\nH-index","log10:\nM-index","relAge","relCites","yearPublished", "Version", "log10:\nCommits", "log10:\nContributors")
 
@@ -458,36 +525,29 @@ dev.off()
 #Are github repo'ed tools more accurate?:
 ks.test(d2005$accuracyRank[is.na(d2005$commits)],d2005$accuracyRank[!is.na(d2005$commits)])
 
-######################################################################
-#DISTRIBUTION PLOTS FOR EACH METRIC, FOR THE SUPPLEMENT:
-
 
 ######################################################################
 #Comparing method relative ages of the slow+inaccurate and fast+accurate groups:
 
-#top/bottom 9 squares
-wilcox.test(d2005$relAge[d2005$accuracyRank>=0.8 & d2005$speedRank>=0.8],d2005$relAge[d2005$accuracyRank<=0.2 & d2005$speedRank<=0.2],alternative="g")
-
-b<-boxplot(d2005$relAge[d2005$accuracyRank>=0.8 & d2005$speedRank>=0.8],
-        d2005$relAge[d2005$accuracyRank<=0.2 & d2005$speedRank>=0.8],
-	d2005$relAge[0.4<=d2005$accuracyRank & d2005$accuracyRank<=0.6 & 0.4<=d2005$speedRank & d2005$speedRank<=0.6],
-	d2005$relAge[d2005$accuracyRank>=0.8 & d2005$speedRank<=0.2],
-        d2005$relAge[d2005$accuracyRank<=0.2 & d2005$speedRank<=0.2],
-	names=c("","","","",""),ylab="Relative age",plot=0)
-
-
 pdf(file=    "../figures/relAge-speedAcc.pdf", width = 7,  height = 7)
 op<-par(las=2,cex=1.8,mfrow=c(1,1),mar=c(5, 6.5, 4, 2) + 0.1, mgp=c(3, 1, 0))                 #‘mar’ A numerical vector of the form ‘c(bottom, left, top, right)’ ::: mgp: margin line for the ax
-vioplot(na.omit(d2005$relAge[d2005$accuracyRank>=0.8 & d2005$speedRank>=0.8]),
-        na.omit(d2005$relAge[d2005$accuracyRank>=0.8 & d2005$speedRank<=0.2]),
-	na.omit(d2005$relAge[0.4<=d2005$accuracyRank & d2005$accuracyRank<=0.6 & 0.4<=d2005$speedRank & d2005$speedRank<=0.6]),
-        na.omit(d2005$relAge[d2005$accuracyRank<=0.2 & d2005$speedRank>=0.8]),
-        na.omit(d2005$relAge[d2005$accuracyRank<=0.2 & d2005$speedRank<=0.2]),col="khaki1", colMed="black", pchMed='|', wex=0.9,
+delta<- 1/gridRes
+vioplot(na.omit(d2005$relAge[d2005$accuracyRank>=(1-delta) & d2005$speedRank>=(1-delta)]),
+        na.omit(d2005$relAge[d2005$accuracyRank>=(1-delta) & d2005$speedRank<=delta]),
+	na.omit(d2005$relAge[(0.5-delta/2)<=d2005$accuracyRank & d2005$accuracyRank<=(0.5+delta/2) & (0.5-delta/2)<=d2005$speedRank & d2005$speedRank<=(0.5+delta/2)]),
+        na.omit(d2005$relAge[d2005$accuracyRank<=delta & d2005$speedRank>=(1-delta)]),
+        na.omit(d2005$relAge[d2005$accuracyRank<=delta & d2005$speedRank<=delta]),col="khaki1", colMed="black", pchMed='|', wex=0.9,
                                         #ylab="Relative age")# ,
         names=c("fast+\naccurate","slow+\naccurate","med.speed+\nmed.accuracy","fast+\ninaccurate","slow+\ninaccurate"), horizontal=TRUE,
         lwd=1, xlab="Relative age"
         )
 dev.off()
+
+#fast + accurate vs slow + inaccurate
+wilcox.test(d2005$relAge[d2005$accuracyRank>=(1-delta) & d2005$speedRank>=(1-delta)],d2005$relAge[d2005$accuracyRank<=(delta) & d2005$speedRank<=(delta)],alternative="g")
+#fast + accurate vs everything else
+wilcox.test(d2005$relAge[d2005$accuracyRank>=(1-delta) & d2005$speedRank>=(1-delta)],d2005$relAge[d2005$accuracyRank<(1-delta) & d2005$speedRank<(1-delta)],alternative="g")
+
 
 
 ######################################################################
@@ -575,18 +635,18 @@ dev.off()
 ######################################################################
 #SMOOTH SCATTER PLOTS:
 
-plotMe <- function(r) {
+# plotMe <- function(r) {
        
-op<-par(mfrow=c(1,1),cex=1.1,las=2)
+# op<-par(mfrow=c(1,1),cex=1.1,las=2)
 
-par(mar = c(5,4,4,5) + .1)
-smoothScatter(d2005$speedRank, d2005$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="mean normalised accuracy rank", xlab="mean normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n",main="Accuracy vs. Speed") 
-lines(lowess(d2005$speedRank, d2005$accuracyRank, f = .2), col = 2, lwd=5)
-axis(1,at=(0:5)/5)
-axis(2,at=(0:5)/5)
-boxit()
+# par(mar = c(5,4,4,5) + .1)
+# smoothScatter(d2005$speedRank, d2005$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="mean normalised accuracy rank", xlab="mean normalised speed rank",xlim=c(1.2,-0.2),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n",main="Accuracy vs. Speed") 
+# lines(lowess(d2005$speedRank, d2005$accuracyRank, f = .2), col = 2, lwd=5)
+# axis(1,at=(0:5)/5)
+# axis(2,at=(0:5)/5)
+# boxit()
 
-}
+# }
 
 ###################################
 fudgeit <- function(){
@@ -618,34 +678,34 @@ text( 1.2,-0.2, "slow+accurate",pos=4, cex=0.5)
 }
 
 #REMOVE:
-pdf(file=    "../figures/smoothScatter-speed-vs-accuracy.pdf", width = 5.5,  height = 5)
-plotMe( )
-dev.off()
+# pdf(file=    "../figures/smoothScatter-speed-vs-accuracy.pdf", width = 5.5,  height = 5)
+# plotMe( )
+# dev.off()
 
 ###################################
 #REMOVE:
-pdf(file=    "../figures/smoothScatters.pdf", width = 11,  height = 5)
-op<-par(mfrow=c(1,2),cex=1.1,las=2,mar = c(5,4,4,5) + .1)
-smoothScatter(log10(as.numeric(d2005$IF)), d2005$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="Accuracy", xlab="JIF",xlim=c(log10(0.4),log10(54)),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n",main="Accuracy vs. JIF") 
-notNA <- !is.na(d2005$IF)
-lines(lowess(log10(d2005$IF[notNA]), d2005$accuracyRank[notNA], f = .2), col = 2, lwd=5)
-tcks<-c(0.5,1,2.5,5,10,25,50); axis(1,at=log10(tcks), tcks)
-axis(2,at=(0:5)/5)
+# pdf(file=    "../figures/smoothScatters.pdf", width = 11,  height = 5)
+# op<-par(mfrow=c(1,2),cex=1.1,las=2,mar = c(5,4,4,5) + .1)
+# smoothScatter(log10(as.numeric(d2005$IF)), d2005$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="Accuracy", xlab="JIF",xlim=c(log10(0.4),log10(54)),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n",main="Accuracy vs. JIF") 
+# notNA <- !is.na(d2005$IF)
+# lines(lowess(log10(d2005$IF[notNA]), d2005$accuracyRank[notNA], f = .2), col = 2, lwd=5)
+# tcks<-c(0.5,1,2.5,5,10,25,50); axis(1,at=log10(tcks), tcks)
+# axis(2,at=(0:5)/5)
 
-text(log10(2.576),  1.25, "BMC Bioinf.",    pos=4, srt=90, cex=0.75)
-text(log10(4.333),  1.25, "JMB",            pos=4, srt=90, cex=0.75)
-text(log10(4.981),  1.25, "Bioinformatics", pos=4, srt=90, cex=0.75)
-text(log10(9.112),  1.25, "NAR",            pos=4, srt=90, cex=0.75)
-text(log10(14.630), 1.25, "Genome res.",    pos=4, srt=90, cex=0.75)
-text(log10(32.072), 1.25, "Nature methods", pos=4, srt=90, cex=0.75)
+# text(log10(2.576),  1.25, "BMC Bioinf.",    pos=4, srt=90, cex=0.75)
+# text(log10(4.333),  1.25, "JMB",            pos=4, srt=90, cex=0.75)
+# text(log10(4.981),  1.25, "Bioinformatics", pos=4, srt=90, cex=0.75)
+# text(log10(9.112),  1.25, "NAR",            pos=4, srt=90, cex=0.75)
+# text(log10(14.630), 1.25, "Genome res.",    pos=4, srt=90, cex=0.75)
+# text(log10(32.072), 1.25, "Nature methods", pos=4, srt=90, cex=0.75)
 
-smoothScatter(log10(as.numeric(d2005$citations)), d2005$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="Accuracy", xlab="Citations",xlim=c(0,5),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n",main="Accuracy vs. Citations") 
-notNA <- !is.na(d2005$citations)
-lines(lowess(log10(d2005$citations[notNA]), d2005$accuracyRank[notNA], f = .2), col = 2, lwd=5)
-axis(1,at=0:5, c(1,10,100,"1,000","10,000","100,000"))
-axis(2,at=(0:5)/5)
+# smoothScatter(log10(as.numeric(d2005$citations)), d2005$accuracyRank, nbin=1000, nrpoints=0, colramp=colorRampPalette(my.cols), postPlotHook = fudgeit, pch=19, cex=.85, ylab="Accuracy", xlab="Citations",xlim=c(0,5),ylim=c(1.2,-0.2), xaxt = "n", yaxt = "n",main="Accuracy vs. Citations") 
+# notNA <- !is.na(d2005$citations)
+# lines(lowess(log10(d2005$citations[notNA]), d2005$accuracyRank[notNA], f = .2), col = 2, lwd=5)
+# axis(1,at=0:5, c(1,10,100,"1,000","10,000","100,000"))
+# axis(2,at=(0:5)/5)
 
-dev.off()
+# dev.off()
 
 
 ######################################################################
@@ -661,11 +721,11 @@ dev.off()
 
 ######################################################################
 #REMOVE:
-png(file=    "../figures/citesVsAccuracy.png", width = 1000,  height = 1000)
-op<-par(mfrow=c(1,1),cex=2.0,las=2)
-plot(log10(d2005$citations),d2005$accuracyRank, pch=20, col="cornflowerblue", xlab="log10(# citations)", ylab="Normalised accuracy", main="Accuracy vs # Citations")
-abline(lm(d2005$accuracyRank~log10(d2005$citations)), col="red", lwd=3) # regression line (y~x) 
-lines(lowess(log10(d2005$citations),d2005$accuracyRank,delta=0.3), col="blue", lwd=3) # lowess line (x,y)
-text(3.75, 0.1, "Spearman\'s rho=0.07, p=0.29")
-dev.off()
+# png(file=    "../figures/citesVsAccuracy.png", width = 1000,  height = 1000)
+# op<-par(mfrow=c(1,1),cex=2.0,las=2)
+# plot(log10(d2005$citations),d2005$accuracyRank, pch=20, col="cornflowerblue", xlab="log10(# citations)", ylab="Normalised accuracy", main="Accuracy vs # Citations")
+# abline(lm(d2005$accuracyRank~log10(d2005$citations)), col="red", lwd=3) # regression line (y~x) 
+# lines(lowess(log10(d2005$citations),d2005$accuracyRank,delta=0.3), col="blue", lwd=3) # lowess line (x,y)
+# text(3.75, 0.1, "Spearman\'s rho=0.07, p=0.29")
+# dev.off()
 

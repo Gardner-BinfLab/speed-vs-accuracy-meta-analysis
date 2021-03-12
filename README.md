@@ -69,7 +69,7 @@ cd $PROJECTHOME/speed-vs-accuracy-meta-analysis/data
 
 ```
 cd $PROJECTHOME/speed-vs-accuracy-meta-analysis/manuscripts
-pdflatex   manuscript-speed-accuracy.tex && bibtex ./manuscript-speed-accuracy && pdflatex   manuscript-speed-accuracy.tex && pdflatex   manuscript-speed-accuracy.tex && echo "DONE!" ; pdflatex  ./supplementary.tex && echo "DONE!"
+pdflatex   manuscript-speed-accuracy.tex && bibtex ./manuscript-speed-accuracy && pdflatex   manuscript-speed-accuracy.tex && pdflatex   manuscript-speed-accuracy.tex && echo "DONE!" ; pdflatex  ./supplementary.tex && bibtex ./supplementary && pdflatex  ./supplementary.tex && pdflatex  ./supplementary.tex   && echo "DONE!"
 ```
 
 

@@ -165,49 +165,49 @@ pdflatex   manuscript-speed-accuracy.tex && bibtex ./manuscript-speed-accuracy &
 
 -- "figures" directory
 
---- [./figures/cites-SpeedVsAccuracy-heatmap.pdf](./figures/cites-SpeedVsAccuracy-heatmap.pdf)
+--- [./figures/figure1.pdf](./figures/figure1.pdf) PDF format of manuscript Figure 1. 
 
---- [./figures/commits-SpeedVsAccuracy-heatmap.pdf](./figures/commits-SpeedVsAccuracy-heatmap.pdf)
+--- [./figures/figure1.svg](./figures/figure1.svg) SVG format of manuscript Figure 1. 
 
---- [./figures/contributors-SpeedVsAccuracy-heatmap.pdf](./figures/contributors-SpeedVsAccuracy-heatmap.pdf)
+--- [./figures/figure2.pdf](./figures/figure2.pdf) PDF format of manuscript Figure 2. 
 
---- [./figures/figure1.pdf](./figures/figure1.pdf)
+--- [./figures/figure2.svg](./figures/figure2.svg) SVG format of manuscript Figure 2. 
 
---- [./figures/figure1.svg](./figures/figure1.svg)
+Supplementary figures:
 
---- [./figures/figure2.pdf](./figures/figure2.pdf)
+--- [./figures/litMiningFlowDiagram-edited.pdf](./figures/litMiningFlowDiagram-edited.pdf) Figure S1. 
 
---- [./figures/figure2.svg](./figures/figure2.svg)
+--- [./figures/wordScores.pdf](./figures/wordScores.pdf) Figure S2. 
 
---- [./figures/hindex-SpeedVsAccuracy-heatmap.pdf](./figures/hindex-SpeedVsAccuracy-heatmap.pdf)
+--- [./figures/supplementary-figures-small.pdf](./figures/supplementary-figures-small.pdf) Figure S3. 
 
---- [./figures/litMiningFlowDiagram-edited.pdf](./figures/litMiningFlowDiagram-edited.pdf)
+--- [./figures/supplementary-distributions-permuted.pdf](./figures/supplementary-distributions-permuted.pdf) Figure S4. 
+
+--- [./figures/supplementary-figures-pairs.pdf](./figures/supplementary-figures-pairs.pdf) Figure S5.
+
+--- [./figures/spearmanBarplot.pdf](./figures/spearmanBarplot.pdf) Figure S6 (left). 
+
+--- [./figures/spearmanBarplotSpeed.pdf](./figures/spearmanBarplotSpeed.pdf) Figure S6 (right). 
+
+--- [./figures/hindex-SpeedVsAccuracy-heatmap.pdf](./figures/hindex-SpeedVsAccuracy-heatmap.pdf) Figure S7 (left). 
+
+--- [./figures/cites-SpeedVsAccuracy-heatmap.pdf](./figures/cites-SpeedVsAccuracy-heatmap.pdf) Figure S7 (right). 
+
+--- [./figures/relAge-speedAcc.pdf](./figures/relAge-speedAcc.pdf) Figure S8 (left). 
+
+--- [./figures/relAge-SpeedVsAccuracy-heatmap.pdf](./figures/relAge-SpeedVsAccuracy-heatmap.pdf) Figure S8 (right). 
+
+--- [./figures/commits-SpeedVsAccuracy-heatmap.pdf](./figures/commits-SpeedVsAccuracy-heatmap.pdf) Figure S9 (left). 
+
+--- [./figures/contributors-SpeedVsAccuracy-heatmap.pdf](./figures/contributors-SpeedVsAccuracy-heatmap.pdf) Figure S9 (right). 
 
 --- [./figures/litMiningFlowDiagram.pdf](./figures/litMiningFlowDiagram.pdf)
 
 --- [./figures/litMiningFlowDiagram.tex](./figures/litMiningFlowDiagram.tex)
 
---- [./figures/relAge-speedAcc.pdf](./figures/relAge-speedAcc.pdf)
-
---- [./figures/relAge-SpeedVsAccuracy-heatmap.pdf](./figures/relAge-SpeedVsAccuracy-heatmap.pdf)
-
---- [./figures/spearmanBarplot.pdf](./figures/spearmanBarplot.pdf)
-
---- [./figures/spearmanBarplot.png](./figures/spearmanBarplot.png)
-
---- [./figures/spearmanBarplotSpeed.pdf](./figures/spearmanBarplotSpeed.pdf)
-
---- [./figures/spearmanBarplot-withPerms.pdf](./figures/spearmanBarplot-withPerms.pdf)
+--- [./figures/spearmanBarplot-withPerms.pdf](./figures/spearmanBarplot-withPerms.pdf) 
 
 --- [./figures/spearmanHeatmap.pdf](./figures/spearmanHeatmap.pdf)
-
---- [./figures/supplementary-distributions-permuted.pdf](./figures/supplementary-distributions-permuted.pdf)
-
---- [./figures/supplementary-figures-pairs.pdf](./figures/supplementary-figures-pairs.pdf)
-
---- [./figures/supplementary-figures-small.pdf](./figures/supplementary-figures-small.pdf)
-
---- [./figures/wordScores.pdf](./figures/wordScores.pdf)
 
 --- [./figures/zscores-SpeedVsAccuracyH.pdf](./figures/zscores-SpeedVsAccuracyH.pdf)
 
@@ -215,17 +215,17 @@ pdflatex   manuscript-speed-accuracy.tex && bibtex ./manuscript-speed-accuracy &
 
 -- "manuscript" directory, contains a copy of the draft manuscript, supplementary pdf and associated files
 
---- [./manuscript/manuscript-speed-accuracy.pdf](./manuscript/manuscript-speed-accuracy.pdf)
+--- [./manuscript/manuscript-speed-accuracy.pdf](./manuscript/manuscript-speed-accuracy.pdf) PDF format of the main manuscript. 
 
---- [./manuscript/manuscript-speed-accuracy.tex](./manuscript/manuscript-speed-accuracy.tex)
+--- [./manuscript/manuscript-speed-accuracy.tex](./manuscript/manuscript-speed-accuracy.tex) TEX format of the main manuscript. 
 
---- [./manuscript/references.bib](./manuscript/references.bib)
+--- [./manuscript/references.bib](./manuscript/references.bib) References, in latex "bib" format. 
 
---- [./manuscript/supplementary.pdf](./manuscript/supplementary.pdf)
+--- [./manuscript/supplementary.pdf](./manuscript/supplementary.pdf) PDF format of the supplementary figures and information. 
 
---- [./manuscript/supplementary.tex](./manuscript/supplementary.tex)
+--- [./manuscript/supplementary.tex](./manuscript/supplementary.tex) TEX format of the supplementary figures and information. 
 
---- [./manuscript/supp-references.bib](./manuscript/supp-references.bib)
+--- [./manuscript/supp-references.bib](./manuscript/supp-references.bib) Supplementary references, in latex "bib" format. 
 
 
 

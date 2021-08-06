@@ -5,7 +5,7 @@
 
 ```
 Directory descriptions:
- bin/        -- contains scripts associated with the data analysis
+ bin/        -- contains scripts associated with the data analysis and visualisation
  data/       -- raw data collected during the project
  figures/    -- images generated during the analysis
  manuscript/ -- manuscript files
@@ -38,7 +38,7 @@ cd $PROJECTHOME/speed-vs-accuracy-meta-analysis/data
 ../bin/pmArticleScore.pl  -t pubmed_result-training.xml -b pubmed_result-background.xml -c pubmed_result-2016-2020.xml -f background.txt -d checked-pmids.tsv -i ignore.tsv
 ```
 
---- NB. The XML file sizes are large, and are therefore not included in the repository. They have been made available on FigShare (https://doi.org/10.6084/m9.figshare.15121818.v1). 
+--- NB. The XML file sizes are large, and are therefore not included in the repository. They have been made available on FigShare ([https://doi.org/10.6084/m9.figshare.15121818.v1]). 
 
 --- NNB. PubMed no longer supports the output format. 
 
@@ -75,125 +75,157 @@ pdflatex   manuscript-speed-accuracy.tex && bibtex ./manuscript-speed-accuracy &
 
 * Files and descriptions:
 
----[./README.md](./README.md) - this file 
+--- [./README.md](./README.md) - this file 
 
----[./LICENSE](./LICENSE) - license file 
+--- [./LICENSE](./LICENSE) - license file 
 
 -- "bin" directory, the software scripts used to process and visualise the results 
 
----[./bin/pmArticleScore.pl](./bin/pmArticleScore.pl)
+--- [./bin/pmArticleScore.pl](./bin/pmArticleScore.pl)
 
----[./bin/prettyPlot.R](./bin/prettyPlot.R)
+--- [./bin/prettyPlot.R](./bin/prettyPlot.R)
 
----[./bin/tsv2data.pl](./bin/tsv2data.pl)
+--- [./bin/tsv2data.pl](./bin/tsv2data.pl)
 
 -- "data" directory
 
----[./data/alice-in-wonderland.txt](./data/alice-in-wonderland.txt) - text to find high-frequency English words 
+--- [./data/alice-in-wonderland.txt](./data/alice-in-wonderland.txt) - text to find high-frequency English words 
 
----[./data/the-hobbit.txt](./data/the-hobbit.txt) - text to find high-frequency English words 
+--- [./data/the-hobbit.txt](./data/the-hobbit.txt) - text to find high-frequency English words 
 
----[./data/background.txt](./data/background.txt) - text to find high-frequency English words 
+--- [./data/background.txt](./data/background.txt) - text to find high-frequency English words 
 
----[./data/articleScores.tsv](./data/articleScores.tsv) - scores for candidate articles, scores reflect the probability that the article is a benchmark that fulfils our selection criteria based upon word frequency analysis. 
+--- [./data/articleScores.tsv](./data/articleScores.tsv) - tab-seperated-values: scores for candidate articles, scores reflect the probability that the article is a benchmark that fulfils our selection criteria based upon word frequency analysis. 
 
----[./data/checked-pmids.tsv](./data/checked-pmids.tsv) - pubmed IDs for articles that have been checked, but do not meet our selection criteria. These are used as a negative dataset. 
+--- [./data/checked-pmids.tsv](./data/checked-pmids.tsv) - tab-seperated-values: pubmed IDs for articles that have been checked, but do not meet our selection criteria. These are used as a negative dataset. 
 
----[./data/common-words.tsv](./data/common-words.tsv) - a list of common English words, with relative frequencies. 
+--- [./data/common-words.tsv](./data/common-words.tsv) - tab-seperated-values: a list of common English words, with relative frequencies. 
 
----[./data/ignore.tsv](./data/ignore.tsv) - words that should be ignored for the purpose of scoring articles, largely the names of software tools. 
+--- [./data/ignore.tsv](./data/ignore.tsv) - tab-seperated-values: words that should be ignored for the purpose of scoring articles, largely the names of software tools. 
 
----[./data/journalInfo2020.tsv](./data/journalInfo2020.tsv) - for each Journal that has published at least one of the benchmarked software tools we provide a count of the number of tools, and the 2020 H5-index from GoogleScholar.   
+--- [./data/journalInfo2020.tsv](./data/journalInfo2020.tsv) - tab-seperated-values: for each Journal that has published at least one of the benchmarked software tools we provide a count of the number of tools, and the 2020 H5-index from GoogleScholar.   
 
----[./data/meanRankAccuracyPerms.tsv](./data/meanRankAccuracyPerms.tsv) - accuracy ranks for permuted rankings, 1,000 for each software tool.   
+--- [./data/meanRankAccuracyPerms.tsv](./data/meanRankAccuracyPerms.tsv) - tab-seperated-values: accuracy ranks for permuted rankings, 1,000 for each software tool.   
 
----[./data/meanRankSpeedData.tsv](./data/meanRankSpeedData.tsv)
+--- [./data/meanRankSpeedPerms.tsv](./data/meanRankSpeedPerms.tsv) - tab-seperated-values: speed ranks for permuted rankings, 1,000 for each software tool.   
 
----[./data/meanRankSpeedPerms.tsv](./data/meanRankSpeedPerms.tsv)
+--- [./data/pubmed_result-background.xml](./data/pubmed_result-background.xml) - XML file (place-holder), available from ([https://doi.org/10.6084/m9.figshare.15121818.v1]) -- contains pubmed entries for general bioinformatic (not-benchmarks) articles, used to compute background word frequencies.  
 
----[./data/pubmed_result-background.xml](./data/pubmed_result-background.xml)
+--- [./data/pubmed_result-checked.xml](./data/pubmed_result-checked.xml) - XML file (place-holder), available from ([https://doi.org/10.6084/m9.figshare.15121818.v1]) -- contains pubmed entries for articles that matched our search terms, but did meet our selection criteria
 
----[./data/pubmed_result-checked.xml](./data/pubmed_result-checked.xml)
+--- [./data/pubmed_result-training.xml](./data/pubmed_result-training.xml) - XML file (place-holder), available from ([https://doi.org/10.6084/m9.figshare.15121818.v1]) -- contains pubmed entries for articles that meet our selection criteria
 
----[./data/pubmed_result-training.xml](./data/pubmed_result-training.xml)
+--- [./data/rawRankSpeedData2005-2020.tsv](./data/rawRankSpeedData2005-2020.tsv) - tab-seperated-values: accuracy and speed ranks for each tool, seperated by benchmark. Tools may appear multiple times, from different benchmarks, summary statistics of these are used in ```meanRankSpeedData.tsv```. 
 
----[./data/rawRankSpeedData2005-2020.tsv](./data/rawRankSpeedData2005-2020.tsv)
+--- [./data/speed-vs-accuracy-journalIF2005-2015.tsv](./data/speed-vs-accuracy-journalIF2005-2015.tsv) - tab-seperated-values: Information about the different journals. 
+```
+     1	Journal
+     2	Abbreviated Journal Title
+     3	Number of methods
+     4	Total Cites
+     5	2014 Impact Factor
+```
 
----[./data/rawRankSpeedData.tsv](./data/rawRankSpeedData.tsv)
+--- [./data/speed-vs-accuracy-toolInfo2005-2020.tsv](./data/speed-vs-accuracy-toolInfo2005-2020.tsv) - tab-seperated-values: data for each software tool, the columns correspond to:
+```
+     1	tool
+     2	yearPublished
+     3	journal
+     4	impactFactor(2017)
+     5	Journal H5-index(2017)
+     6	totalCitations(2017)
+     7	totalCitations(2020)
+     8	H-index: (Corresponding author)(2017)
+     9	M-index (Corresponding author)(2017)
+    10	H (2020)
+    11	M (2020)
+    12	Versions
+    13	Commits (Github)
+    14	Contributers (Github)
+    15	Github repo
+    16	fullCite
+```
 
----[./data/selected-benchmarks-pubmed-records.nbib](./data/selected-benchmarks-pubmed-records.nbib)
-
----[./data/speed-vs-accuracy-journalIF2005-2015.tsv](./data/speed-vs-accuracy-journalIF2005-2015.tsv)
-
----[./data/speed-vs-accuracy-toolInfo2005-2020.tsv](./data/speed-vs-accuracy-toolInfo2005-2020.tsv)
-
----[./data/speed-vs-accuracy-toolRanks2005-2020.tsv](./data/speed-vs-accuracy-toolRanks2005-2020.tsv)
-
----[./data/wordScores.tsv](./data/wordScores.tsv)
+--- [./data/speed-vs-accuracy-toolRanks2005-2020.tsv](./data/speed-vs-accuracy-toolRanks2005-2020.tsv) - tab-seperated-values: curated ranks extracted from selected benchmark papers. 
+```
+     1	PubMed ID
+     2	Title
+     3	accuracySource
+     4	accuracyMetric
+     5	speedSource
+     6	Method
+     7	accuracyRank
+     8	speedRank
+     9	numMethods
+    10	Data set (if applicable)
+    11	Bias
+    12	Acc comment
+    13	Speed comment
+```
 
 -- "figures" directory
 
----[./figures/cites-SpeedVsAccuracy-heatmap.pdf](./figures/cites-SpeedVsAccuracy-heatmap.pdf)
+--- [./figures/cites-SpeedVsAccuracy-heatmap.pdf](./figures/cites-SpeedVsAccuracy-heatmap.pdf)
 
----[./figures/commits-SpeedVsAccuracy-heatmap.pdf](./figures/commits-SpeedVsAccuracy-heatmap.pdf)
+--- [./figures/commits-SpeedVsAccuracy-heatmap.pdf](./figures/commits-SpeedVsAccuracy-heatmap.pdf)
 
----[./figures/contributors-SpeedVsAccuracy-heatmap.pdf](./figures/contributors-SpeedVsAccuracy-heatmap.pdf)
+--- [./figures/contributors-SpeedVsAccuracy-heatmap.pdf](./figures/contributors-SpeedVsAccuracy-heatmap.pdf)
 
----[./figures/figure1.pdf](./figures/figure1.pdf)
+--- [./figures/figure1.pdf](./figures/figure1.pdf)
 
----[./figures/figure1.svg](./figures/figure1.svg)
+--- [./figures/figure1.svg](./figures/figure1.svg)
 
----[./figures/figure2.pdf](./figures/figure2.pdf)
+--- [./figures/figure2.pdf](./figures/figure2.pdf)
 
----[./figures/figure2.svg](./figures/figure2.svg)
+--- [./figures/figure2.svg](./figures/figure2.svg)
 
----[./figures/hindex-SpeedVsAccuracy-heatmap.pdf](./figures/hindex-SpeedVsAccuracy-heatmap.pdf)
+--- [./figures/hindex-SpeedVsAccuracy-heatmap.pdf](./figures/hindex-SpeedVsAccuracy-heatmap.pdf)
 
----[./figures/litMiningFlowDiagram-edited.pdf](./figures/litMiningFlowDiagram-edited.pdf)
+--- [./figures/litMiningFlowDiagram-edited.pdf](./figures/litMiningFlowDiagram-edited.pdf)
 
----[./figures/litMiningFlowDiagram.pdf](./figures/litMiningFlowDiagram.pdf)
+--- [./figures/litMiningFlowDiagram.pdf](./figures/litMiningFlowDiagram.pdf)
 
----[./figures/litMiningFlowDiagram.tex](./figures/litMiningFlowDiagram.tex)
+--- [./figures/litMiningFlowDiagram.tex](./figures/litMiningFlowDiagram.tex)
 
----[./figures/relAge-speedAcc.pdf](./figures/relAge-speedAcc.pdf)
+--- [./figures/relAge-speedAcc.pdf](./figures/relAge-speedAcc.pdf)
 
----[./figures/relAge-SpeedVsAccuracy-heatmap.pdf](./figures/relAge-SpeedVsAccuracy-heatmap.pdf)
+--- [./figures/relAge-SpeedVsAccuracy-heatmap.pdf](./figures/relAge-SpeedVsAccuracy-heatmap.pdf)
 
----[./figures/spearmanBarplot.pdf](./figures/spearmanBarplot.pdf)
+--- [./figures/spearmanBarplot.pdf](./figures/spearmanBarplot.pdf)
 
----[./figures/spearmanBarplot.png](./figures/spearmanBarplot.png)
+--- [./figures/spearmanBarplot.png](./figures/spearmanBarplot.png)
 
----[./figures/spearmanBarplotSpeed.pdf](./figures/spearmanBarplotSpeed.pdf)
+--- [./figures/spearmanBarplotSpeed.pdf](./figures/spearmanBarplotSpeed.pdf)
 
----[./figures/spearmanBarplot-withPerms.pdf](./figures/spearmanBarplot-withPerms.pdf)
+--- [./figures/spearmanBarplot-withPerms.pdf](./figures/spearmanBarplot-withPerms.pdf)
 
----[./figures/spearmanHeatmap.pdf](./figures/spearmanHeatmap.pdf)
+--- [./figures/spearmanHeatmap.pdf](./figures/spearmanHeatmap.pdf)
 
----[./figures/supplementary-distributions-permuted.pdf](./figures/supplementary-distributions-permuted.pdf)
+--- [./figures/supplementary-distributions-permuted.pdf](./figures/supplementary-distributions-permuted.pdf)
 
----[./figures/supplementary-figures-pairs.pdf](./figures/supplementary-figures-pairs.pdf)
+--- [./figures/supplementary-figures-pairs.pdf](./figures/supplementary-figures-pairs.pdf)
 
----[./figures/supplementary-figures-small.pdf](./figures/supplementary-figures-small.pdf)
+--- [./figures/supplementary-figures-small.pdf](./figures/supplementary-figures-small.pdf)
 
----[./figures/wordScores.pdf](./figures/wordScores.pdf)
+--- [./figures/wordScores.pdf](./figures/wordScores.pdf)
 
----[./figures/zscores-SpeedVsAccuracyH.pdf](./figures/zscores-SpeedVsAccuracyH.pdf)
+--- [./figures/zscores-SpeedVsAccuracyH.pdf](./figures/zscores-SpeedVsAccuracyH.pdf)
 
----[./figures/zscores-SpeedVsAccuracy.pdf](./figures/zscores-SpeedVsAccuracy.pdf)
+--- [./figures/zscores-SpeedVsAccuracy.pdf](./figures/zscores-SpeedVsAccuracy.pdf)
 
 -- "manuscript" directory, contains a copy of the draft manuscript, supplementary pdf and associated files
 
----[./manuscript/manuscript-speed-accuracy.pdf](./manuscript/manuscript-speed-accuracy.pdf)
+--- [./manuscript/manuscript-speed-accuracy.pdf](./manuscript/manuscript-speed-accuracy.pdf)
 
----[./manuscript/manuscript-speed-accuracy.tex](./manuscript/manuscript-speed-accuracy.tex)
+--- [./manuscript/manuscript-speed-accuracy.tex](./manuscript/manuscript-speed-accuracy.tex)
 
----[./manuscript/references.bib](./manuscript/references.bib)
+--- [./manuscript/references.bib](./manuscript/references.bib)
 
----[./manuscript/supplementary.pdf](./manuscript/supplementary.pdf)
+--- [./manuscript/supplementary.pdf](./manuscript/supplementary.pdf)
 
----[./manuscript/supplementary.tex](./manuscript/supplementary.tex)
+--- [./manuscript/supplementary.tex](./manuscript/supplementary.tex)
 
----[./manuscript/supp-references.bib](./manuscript/supp-references.bib)
+--- [./manuscript/supp-references.bib](./manuscript/supp-references.bib)
 
 
 

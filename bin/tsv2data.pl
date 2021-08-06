@@ -2,98 +2,208 @@
 
 use warnings;
 use strict;
+use Data::Dumper;
 
-my %methodInfo; 
-my @methodInfoKeys = qw(yearPublished IF H5 cites hindex mindex); 
-# head -n 1 speed-vs-accuracy-toolInfo2005-2015.tsv | tr "\t" "\n" | nl
-#      1	method
-#      2	yearPublished
-#      3	journal
-#      4	impactFactor
-#      5	Journal H5-index
-#      6	totalCitations
-#      7	Corresponding author: H-index
-#      8	Corresponding author: M-index
-#      9	fullCite
-#Read tool info:
-open(IN0, "< speed-vs-accuracy-toolInfo2005-2015.tsv");  #Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ methodInfo.tsv
-while(my $in = <IN0>){
-    next if $in =~ /^tool/; 
-    $in =~ s/[^[:ascii:]]//g; #strip off unicode chars
-    chomp($in);
-    $in =~  s/\r//g;
-    my @in = split(/\t/, $in); 
+###################################
+#Parse tool info (e.g. age, impact, etc.):
+my @methodInfoKeys = qw(yearPublished H5 citations hindex mindex version commits contributors); #IF 
+my $methodInfoPtr = extractMethodInfo("speed-vs-accuracy-toolInfo2005-2020.tsv", "journalInfo2020.tsv"); #, \%methodInfo); 
+my %methodInfo = %{$methodInfoPtr};
     
-    if(defined($in[0]) && length($in[0]) > 1){
-	
-	if(defined($in[1])){
-	    my @yrs = split(/;\s*/, $in[1]);
-	    $methodInfo{$in[0]}{'yearPublished'}='NA';
-	    $methodInfo{$in[0]}{'yearPublished'}=minA(@yrs) if ($in[1] !~ 'NA'); #using the first publication
-	    #printf "[$in[0]]\tyrsArray[@yrs]\tyearStr[$in[1]]\tminA[%d]\n", minA(@yrs);
-	}
-	
-	if(defined($in[3])){
-	    my @ifs = split(/;\s*/, $in[3]);	    
-	    $methodInfo{$in[0]}{'IF'}='NA';
-	    $methodInfo{$in[0]}{'IF'}=maxA(@ifs) if ($in[3] !~ 'NA'); #using the highest impact factor
-	}
-	
-	if(defined($in[4])){
-	    my @h5s = split(/;\s*/, $in[4]);
-	    $methodInfo{$in[0]}{'H5'}='NA';
-	    $methodInfo{$in[0]}{'H5'}=maxA(@h5s) if ($in[4] !~ 'NA'); #using the highest impact factor
-	}
-	
-	if(defined($in[5])){
-	    my @cites = split(/;\s*/, $in[5]);
-	    $methodInfo{$in[0]}{'cites'}='NA';
-	    $methodInfo{$in[0]}{'cites'}=sumA(@cites) if ($in[5] !~ 'NA'); #using the sum of cites (some cites counted twice due to multiple cites from 1 paper)
-	}
-	
-	if(defined($in[6])){
-	    $methodInfo{$in[0]}{'hindex'}='NA';
+###################################
+#Parse tool ranks 
+#ranks hash: key: methodName, 0: sum of normalised accuracy rank, 1: sum of normalised speed rank, 2: number of times method benchmarked, 3: benchmark number
+my (%ranks, %benchAccuracy, %benchSpeed, %benchMethod);
+readRanks("speed-vs-accuracy-toolRanks2005-2020.tsv", "rawRankSpeedData2005-2020.tsv", \%ranks, \%benchAccuracy, \%benchSpeed, \%benchMethod); 
 
-	    if ($in[6] !~ 'NA'){
-		my @hs = split(/;\s*/, $in[6]);
-		for (my $i=0; $i<scalar(@hs); $i++){
-		    if($hs[$i] =~ /:(\d+)/){
-			$hs[$i] = $1;
-		    }
-		    else{
-			print "MALFORMED H-index cell for [$in[0]]\n";
-			$hs[$i] = 0;
-		    }
-		}
-		$methodInfo{$in[0]}{'hindex'}=maxA(@hs); #using the highest H-author
-	    }
-	}
+#my (%ranks2015, %benchAccuracy2015, %benchSpeed2015, %benchMethod2015);
+#readRanks("speed-vs-accuracy-toolRanks2016-2020.tsv", "rawRankSpeedData2016-2020.tsv", \%ranks2015, \%benchAccuracy2015, \%benchSpeed2015, \%benchMethod2015); 
 
-	if(defined($in[7])){
-	    $methodInfo{$in[0]}{'mindex'}='NA';
-	    if ($in[7] !~ 'NA'){
-		my @ms = split(/;\s*/, $in[7]);
-		for (my $i=0; $i<scalar(@ms); $i++){
-		    if($ms[$i] =~ /:(\d+\.\d+)/ or $ms[$i] =~ /:(\d+)/){
-			$ms[$i] = $1;
-		    }
-		    else{
-			print "MALFORMED M-index cell for [$in[0]]\n";
-			$ms[$i] = 0;
-		    }
-		}
-		$methodInfo{$in[0]}{'mindex'}=maxA(@ms); #using the highest M-author
-	    }
-	}
 
-    }
-    
-}
-close(IN0);
+
+###################################
+#Permutation test ranks! Compute relative ages & cites. 
+my $numPermutations = 1000;
+my (%ranksPerms,%datesRelRanks, %citesRelRanks);
+permutationsRelativeRanks($numPermutations, \%benchMethod, \%ranksPerms,\%datesRelRanks, \%citesRelRanks, \%benchAccuracy, \%benchSpeed, \%methodInfo);
+#my (%ranksPerms2015,%datesRelRanks2015, %citesRelRanks2015);
+#permutationsRelativeRanks($numPermutations, \%benchMethod2015, \%ranksPerms2015,\%datesRelRanks2015, \%citesRelRanks2015, \%benchAccuracy2015, \%benchSpeed2015, \%methodInfo);
+
+###################################
+#Print mean speed/accuracy relative rank, and permutation results for each method:
+printResults("meanRankSpeedData.tsv", "meanRankAccuracyPerms.tsv", "meanRankSpeedPerms.tsv", \%ranks, \%ranksPerms, \@methodInfoKeys, \%methodInfo, \%datesRelRanks, \%citesRelRanks);
+#printResults("meanRankSpeedData2015.tsv", "meanRankAccuracyPerms2015.tsv", "meanRankSpeedPerms2015.tsv", \%ranks2015, \%ranksPerms2015, \@methodInfoKeys, \%methodInfo, \%datesRelRanks2015, \%citesRelRanks2015);
+
+
+
+###################################
+#Make all the figures, do some statistics: 
+system("R CMD BATCH --no-save ../bin/prettyPlot.R");
+
+exit(0);
 
 ######################################################################
-#echo -ne "accuracyRank\tspeedRank\tnumMethods\n" > data && cut -f 7,8,9 speed-vs-accuracy-toolRanks2005-2015.tsv | grep -v N | tr -d "=" | perl -lane 'if(/^acc|^N/ or $F[0] !~ /\d+/ or $F[1] !~ /\d+/){next}elsif(defined($F[2])){$max=$F[2]} printf "%0.2f\t%0.2f\t$max\n", ($F[0]-1)/($max-1), ($F[1]-1)/($max-1); ' >> data
+#extractMethodInfo: read in publication, age etc. features for the tools:
+sub extractMethodInfo {
+    my ($infoFile, $journalInfoFile)= @_; #, $methodInfoPtr) = @_;
 
+# head -n 1 journalInfo2020.tsv | tr "\t" "\n" | nl
+#      1	numTools
+#      2	h5-index (2020)
+#      3	journal
+    my %journalInfo;
+    open(IN, "< $journalInfoFile") or die "FATAL: failed to open [$journalInfoFile].\n[$!]";  
+    while(my $in = <IN>){
+	next if $in =~ /^numTools/; 
+	$in =~ s/[^[:ascii:]]//g; #strip off unicode chars
+	chomp($in);
+	$in =~  s/\r//g;
+	my @in = split(/\t/, $in); 
+	
+	$in[2] =~ s/\s+//g;
+	$in[2] =~ tr/[A-Z]/[a-z]/; 
+	$journalInfo{$in[2]}=$in[1];
+	#print "journalInfo[$in[2]]=[$in[1]];\n";
+    }
+    
+    
+# head -n 1 speed-vs-accuracy-toolInfo2005-2020.tsv | tr "\t" "\n" | nl
+#      1	tool
+#      2	yearPublished
+#      3	journal
+#      4	impactFactor(2017)
+#      5	Journal H5-index(2017)
+#      6	totalCitations(2017)
+#      7	totalCitations(2020)
+#      8	H-index: (Corresponding author)(2017)
+#      9	M-index (Corresponding author)(2017)
+#     10	H (2020)
+#     11	M (2020)
+#     12	Versions
+#     13	Commits (Github)
+#     14	Contributers (Github)
+#     15	Github repo
+#     16	fullCite
+
+
+    #For each tool collect:
+    #yearPublished jH5 citations hindex mindex version commits contributors
+    my %methodInfo; #  = %{$methodInfoPtr}; 
+    open(IN0, "< $infoFile") or die "FATAL: failed to open [$infoFile].\n[$!]";  #Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ methodInfo.tsv
+    while(my $in = <IN0>){
+	next if $in =~ /^tool/; 
+	$in =~ s/[^[:ascii:]]//g; #strip off unicode chars
+	chomp($in);
+	$in =~  s/\r//g;
+	my @in = split(/\t/, $in); 
+	
+	if(defined($in[0]) && length($in[0]) > 1){
+
+	    #Year of first publication
+	    if(defined($in[1])){
+		my @yrs = split(/;\s*/, $in[1]);
+		$methodInfo{$in[0]}{'yearPublished'}='NA';
+		$methodInfo{$in[0]}{'yearPublished'}=minA(@yrs) if ($in[1] !~ 'NA'); #using the first publication
+		#printf "[$in[0]]\tyrsArray[@yrs]\tyearStr[$in[1]]\tminA[%d]\n", minA(@yrs);
+	    }
+
+	    #Look up H5 index for journals
+	    if(defined($in[2])){
+		#print "$in[2]\n";
+		$in[2]=~s/\s+//g;
+		$in[2]=~tr/[A-Z]/[a-z]/;
+		my @journals = split(/;/, $in[2]);
+		my @h5;
+		foreach my $jnl (@journals){
+		    if (defined( $journalInfo{$jnl} )){
+			push( @h5, $journalInfo{$jnl});
+		    }
+		    else {
+			push( @h5, 'NA');
+			print "No journal H5 found for [$jnl]\n";
+		    }
+		}
+		$methodInfo{$in[0]}{'H5'}='NA';
+		$methodInfo{$in[0]}{'H5'}=maxA(@h5); #using the highest impact factor
+	    }
+	    
+	    #Total citations
+	    if(defined($in[6])){
+		my @citations = split(/;\s*/, $in[6]);
+		$methodInfo{$in[0]}{'citations'}='NA';
+		$methodInfo{$in[0]}{'citations'}=sumA(@citations) if ($in[6] !~ 'NA'); #using the sum of cites (some cites counted twice due to multiple cites from 1 paper)
+	    }
+
+	    #Corresponding author's H-index:
+	    if(defined($in[9])){
+		$methodInfo{$in[0]}{'hindex'}='NA';
+		
+		if ($in[9] !~ 'NA'){
+		    my @hs = split(/;\s*/, $in[9]);
+		    for (my $i=0; $i<scalar(@hs); $i++){
+			if($hs[$i] =~ /:(\d+)/){
+			    $hs[$i] = $1;
+			}
+			else{
+			    print "WARNING: MALFORMED H-index cell for [$in[0]]\n";
+			    $hs[$i] = 0;
+			}
+		}
+		    $methodInfo{$in[0]}{'hindex'}=maxA(@hs); #using the highest H-author
+		}
+	    }
+
+	    #Corresponding author's M-index
+	    if(defined($in[10])){
+		$methodInfo{$in[0]}{'mindex'}='NA';
+		if ($in[10] !~ 'NA'){
+		    my @ms = split(/;\s*/, $in[10]);
+		    for (my $i=0; $i<scalar(@ms); $i++){
+			if($ms[$i] =~ /:(\d+\.\d+)/ or $ms[$i] =~ /:(\d+)/ or $ms[$i] =~ /(\d+\.\d+)/){
+			    $ms[$i] = $1;
+			}
+			else{
+			print "WARNING: MALFORMED M-index cell for [$in[0]]\n";
+			$ms[$i] = 0;
+			}
+		    }
+		    $methodInfo{$in[0]}{'mindex'}=maxA(@ms); #using the highest M-author
+		}
+	    }
+
+	    #Software version 
+	    if(defined($in[11])){
+		$methodInfo{$in[0]}{'version'}=1.0; #minimum version set to 1.0. 
+		$methodInfo{$in[0]}{'version'}= $in[11]      if (isNumeric($in[11])); 
+	    }
+
+	    #Commits to github
+	    if(defined($in[12])){
+		$methodInfo{$in[0]}{'commits'}='NA';
+		$methodInfo{$in[0]}{'commits'}= $in[12]      if (isNumeric($in[12])); 
+	    }
+
+	    #Contributors to github
+	    if(defined($in[13])){
+		$methodInfo{$in[0]}{'contributors'}='NA';
+		$methodInfo{$in[0]}{'contributors'}= $in[13] if (isNumeric($in[13])); 
+	    }
+	    
+	}
+	
+    }
+    close(IN0);
+
+    #print "methodInfoHash1||"      . Dumper(\%methodInfo)      . "||\n";
+
+    return \%methodInfo; 
+}
+######################################################################
+sub readRanks {
+
+
+    
+    #echo -ne "accuracyRank\tspeedRank\tnumMethods\n" > data && cut -f 7,8,9 speed-vs-accuracy-toolRanks2005-2015.tsv | grep -v N | tr -d "=" | perl -lane 'if(/^acc|^N/ or $F[0] !~ /\d+/ or $F[1] !~ /\d+/){next}elsif(defined($F[2])){$max=$F[2]} printf "%0.2f\t%0.2f\t$max\n", ($F[0]-1)/($max-1), ($F[1]-1)/($max-1); ' >> data
     #  1	pubmedID
     #  2	Title
     #  3	accuracySource
@@ -105,50 +215,41 @@ close(IN0);
     #  9	numMethods
     # 10	Data set (if applicable)
     # 11	Bias
-
-
-#ADD NEW METHODS TO "methodInfo" SHEET:
-#cat speed-vs-accuracy-toolInfo2005-2015.tsv | cut -f 1 | sort -d | perl -lane 'print "$F[0] => 1, "' | tr -d "\n"
-#cut -f 4 meanRankSpeedData.tsv | perl -lane '%meth = (abyss => 1, apg => 1, barry => 1, bismark => 1, biss => 1, bowtie => 1, bowtie2 => 1, bratbw => 1, bsmap => 1, bsseeker => 1, buckymrbayes => 1, buckymrbayesspa => 1, buckyraxml => 1, bwa => 1, bwasw => 1, caml => 1, camp => 1, ce => 1, celera => 1, clark => 1, clc => 1, clustalomega => 1, clustalw => 1, comus => 1, coprarna => 1, cosine => 1, cro => 1, cufflinks => 1, dali => 1, de => 1, dexseq => 1, dialign => 1, dialign22 => 1, dialignt => 1, dialigntx => 1, diffsplice => 1, diginormvelvet => 1, dima => 1, downhillsimplex => 1, dsgseq => 1, ebi => 1, edenanonstrict => 1, edenastrict => 1, edit => 1, erpin => 1, fa => 1, fasta => 1, fasttree => 1, genometa => 1, gojobori => 1, goldman => 1, gossamer => 1, gottcha => 1, greedyft => 1, gsnap => 1, heidge => 1, hmmer => 1, idbaud => 1, igtpduplossft => 1, inchworm => 1, infernal => 1, intarna => 1, kalign => 1, kbsps => 1, kraken => 1, kthse => 1, leidnl => 1, lmat => 1, lsqman => 1, mafft => 1, mafftfftns => 1, mafftfftns2 => 1, mafftlinsi => 1, maq => 1, mats => 1, megan => 1, metaphlan => 1, metaphyler => 1, method => 1, mgrast => 1, minia => 1, mira => 1, mosaik => 1, motu => 1, mrpml => 1, mrpmp => 1, mrsfast => 1, msinspect => 1, muscle => 1, musclemaxiters => 1, mzmine => 1, ncbiblast => 1, newbler => 1, novoalign => 1, oases => 1, onecodex => 1, openms => 1, pairfold => 1, paralign => 1, pass => 1, phylonetft => 1, piler => 1, poa => 1, pragcz => 1, probalign => 1, probcons => 1, pso => 1, pt => 1, qiime => 1, qsra => 1, ravenna => 1, raxml => 1, raxmllimited => 1, rdiffparam => 1, repeatfinder => 1, repeatgluer => 1, repeatscout => 1, rmap => 1, rnacofold => 1, rnaduplex => 1, rnahybrid => 1, rnaplex => 1, rnaup => 1, rsearch => 1, rsmatch => 1, sa => 1, sam => 1, scro => 1, segemehl => 1, seqgsea => 1, seqman => 1, seqmap => 1, sga => 1, sharcgs => 1, shrimp => 1, sl => 1, smalt => 1, snap => 1, soap => 1, soap2 => 1, soapdenovo => 1, spades => 1, sparse => 1, sparseassembler => 1, spcomp => 1, specarray => 1, spt => 1, srmapper => 1, ssaha => 1, ssake => 1, ssap => 1, ssearch => 1, ssm => 1, sst => 1, st => 1, strcutal => 1, taipan => 1, targetrna => 1, targetrna2 => 1, taxatortk => 1, tcoffee => 1, tmap => 1, transabyss => 1, trinity => 1, upmes => 1, vcake => 1, velvet => 1, wmrpmp => 1, woodhams => 1, wublast => 1, xalign => 1, xcmswithcorrection => 1, xcmswithoutretentiontime => 1, zema => 1); print if ( not defined($meth{$F[0]}) );' | sort -d
-
-#ranks hash is keyed on each method, holds mean normalised speed rank and mean normalised accuracy rank
-my ($max,$numBench)=(1,0);
-my %ranks;
-my %methodCounts;
-my ($testId,$pmid,$accuracySource,$accuracyMetric,$speedSource)=("","","","","");
-my (%benchAccuracy, %benchSpeed, %benchMethod);
-
-
-#open(IN1, "< Does\ bioinformatic\ software\ trade\ speed\ for\ accuracy-\ -\ Data.tsv"); 
-open(IN1, "< speed-vs-accuracy-toolRanks2005-2015.tsv"); 
-open(UT0, "> rawRankSpeedData.tsv");
-print UT0 "testId\taccuracyRank\tspeedRank\tmethod\n";
-while(my $in = <IN1>){
-    next if $in =~ /^pubmed/i; 
-    $in =~ s/[^[:ascii:]]//g; #strip of fucking unicode chars
-    chomp($in);
-    $in =~  s/\r//g; #Grrrrr
-    my @in = split(/\t/, $in); 
-    #fix method name:
-    $in[5] =~  s/[ -=\/0-9]//g;
-    $in[5]=lc($in[5]);
     
-    if (isNumeric($in[8])){
-        $max=$in[8];
-        $numBench++;
-	
-	
-	
-    }
+    my ($rankFile, $rawRankSpeedDataFile, $ranks, $benchAccuracy, $benchSpeed, $benchMethod) = @_; 
     
-    #print "$in[5]/$in[6]:$in[7] max($in[8])\n";
+    open(IN1, "< $rankFile") or die "FATAL: failed to open [$rankFile].\n[$!]"; 
+    open(UT0, "> $rawRankSpeedDataFile");
+    print UT0 "testId\taccuracyRank\tspeedRank\tmethod\n";
+    my ($testId,$pmid,$accuracySource,$accuracyMetric,$speedSource)=("","","","","");
+    my ($max,$numBench)=(1,0);
+    
+    while(my $in = <IN1>){
+	next if $in =~ /^pubmed/i; 
+	$in =~ s/[^[:ascii:]]//g; #strip those fucking unicode chars
+	chomp($in);
+	$in =~  s/\r//g; #Grrrrr
+	my @in = split(/\t/, $in); 
+	#fix method name:
+	$in[5] =~  s/[ -=\/0-9]//g;
+	$in[5]=lc($in[5]);
+	
+	if (isNumeric($in[8])){
+	    $max=$in[8];
+	    $numBench++;
+	    
+	    
+	    
+	}
+	
+	#print "$in[5]/$in[6]:$in[7] max($in[8])\n";
     if(isNumeric($in[6]) && isNumeric($in[7])){
 	
 	if (defined($in[0]) && isNumeric($in[0]) && $in[0]>0){
 	    $pmid = $in[0];
 	    ($testId,$accuracySource,$accuracyMetric,$speedSource)=("","","","");
 	}
-
+	
 	if (defined($in[2]) && length($in[2])>0){
 	    $in[2] =~  s/[ -\/]//g;
 	    $accuracySource = $in[2];
@@ -158,7 +259,7 @@ while(my $in = <IN1>){
 	    $in[3] =~  s/[ -\/]//g;
 	    $accuracyMetric = $in[3];
 	}
-
+	
 	if (defined($in[4]) && length($in[4])>0){
 	    $in[4] =~  s/[ -\/]//g;
 	    $speedSource = $in[4];
@@ -166,147 +267,176 @@ while(my $in = <IN1>){
 	
         if($pmid && length($accuracySource) && length($accuracyMetric) && length($speedSource) ){
 	    $testId = "$pmid:$accuracySource:$accuracyMetric:$speedSource";
-	    
+
+	    #Normalise ranks, values lie between 0.0 & 1.0, 0.0 = low acc/speed (highest rank)
 	    my $accNorm = 1-($in[6]-1)/($max-1);
 	    my $spdNorm = 1-($in[7]-1)/($max-1);
-	    push(@{$benchMethod{$testId}}, $in[5]);
-	    push(@{$benchAccuracy{$testId}}, $accNorm);
-	    push(@{$benchSpeed{   $testId}}, $spdNorm);
-	
-	        
-	    if (not defined $ranks{$in[5]}){
+	    push(@{$benchMethod->{$testId}}, $in[5]);
+	    push(@{$benchAccuracy->{$testId}}, $accNorm);
+	    push(@{$benchSpeed->{   $testId}}, $spdNorm);
+	    
+	    if (not defined $ranks->{$in[5]}){
 		#sum(accuracy) sum(speed) numEntries whichBenchmark
-		$ranks{$in[5]} = [0.0,0.0, 0, 0]; 
+		$ranks->{$in[5]} = [0.0,0.0, 0, 0]; 
 		$numBench++;
 	    }
 	    
 	    #ranks: key: methodName, 0: sum of normalised accuracy rank, 1: sum of normalised speed rank, 2: number of times method benchmarked, 3: benchmark number
-	    $ranks{$in[5]}[0] += $accNorm; #normalised accuracy rank
-	    $ranks{$in[5]}[1] += $spdNorm; #normalised speed rank
-	    $ranks{$in[5]}[2]++;
-	    $ranks{$in[5]}[3]  = $numBench;
+	    $ranks->{$in[5]}[0] += $accNorm; #normalised accuracy rank
+	    $ranks->{$in[5]}[1] += $spdNorm; #normalised speed rank
+	    $ranks->{$in[5]}[2]++;
+	    $ranks->{$in[5]}[3]  = $numBench;
 	    
 	    
 	    #            testId   normAccuracyRank   normSpeedRank   method
 	    printf UT0 "$testId\t%0.3f\t%0.3f\t$in[5]\n", $accNorm, $spdNorm;
 	}
+	}
+	else {
+	    print "\tWTF:[$in]\n"
+	}
+	
+	
+	
     }
-    else {
-        print "\tWTF:[$in]\n"
-    }
+    close(IN1);
+    close(UT0);
     
-    
+    return 0; #(\%ranks, \%benchAccuracy, \%benchSpeed, \%benchMethod);     
     
 }
-close(IN1);
-close(UT0);
 
-my $numPermutations = 10000;
-my (%benchAccuracyPerms, %benchSpeedPerms, %ranksPerms);
-#PERMUTATIONS & RELATIVE VALUES FOR EACH BENCHMARK:
-my (%datesRelRanks, %citesRelRanks);
-foreach my $bench (keys %benchMethod){ 
-    my %dates=(); 
-    my %cites=(); 
+######################################################################
+#permutationsRelativeRanks: 
+sub permutationsRelativeRanks {
+
+    my ($numPermutations, $benchMethod, $ranksPerms, $datesRelRanks, $citesRelRanks, $benchAccuracy, $benchSpeed, , $methodInfo) = @_;
+    #my (%benchMethod, %ranksPerms, %datesRelRanks, %citesRelRanks, %benchAccuracy, %benchSpeed) = (%{$benchMethod}, %{$ranksPerms}, %{$datesRelRanks}, %{$citesRelRanks}, %{$benchAccuracy}, %{$benchSpeed});
     
-    #GENERATE XXX PERMUTATIONS OF ACCURACY & SPEED RANKS
-    for (my $p=0; $p<$numPermutations; $p++){
+    #my (%benchAccuracyPerms, %benchSpeedPerms);
+    foreach my $bench (keys %{$benchMethod}){ 
+	my %dates=(); 
+	my %citations=(); 
 	
-	my $pAccP = permuteA( @{$benchAccuracy{$bench}} ); 
-	my $pSpdP = permuteA( @{$benchSpeed{$bench}} ); 
-	my $testIdP = $bench . ":$p";
-	push(@{$benchAccuracyPerms{$testIdP}}, @{$pAccP});
-	push(@{$benchSpeedPerms{   $testIdP}}, @{$pSpdP});
-	
-	my $cnt=0;
-	foreach my $meth (@{$benchMethod{$bench}}){
-	    $ranksPerms{"$meth:$p"}[0] += $pAccP->[$cnt]; #normalised accuracy rank
-	    $ranksPerms{"$meth:$p"}[1] += $pSpdP->[$cnt]; #normalised speed rank
-	    $cnt++;
+	#GENERATE XXX PERMUTATIONS OF ACCURACY & SPEED RANKS
+	for (my $p=0; $p<$numPermutations; $p++){
+	    
+	    my $pAccP = permuteA( @{$benchAccuracy->{$bench}} ); 
+	    my $pSpdP = permuteA( @{$benchSpeed->{$bench}} ); 
+	    ##THESE ARE UNUSED LATER, NOT NEEDED?
+	    #my $testIdP = $bench . ":$p";
+	    #push(@{$benchAccuracyPerms{$testIdP}}, @{$pAccP});  
+	    #push(@{$benchSpeedPerms{   $testIdP}}, @{$pSpdP});
+	    
+	    my $cnt=0;
+	    foreach my $meth (@{$benchMethod->{$bench}}){
+		$ranksPerms->{"$meth:$p"}[0] += $pAccP->[$cnt]; #normalised accuracy rank
+		$ranksPerms->{"$meth:$p"}[1] += $pSpdP->[$cnt]; #normalised speed rank
+		$cnt++;
+	    }
+	    
 	}
-
+	
+	
+	#COMPUTE RELATIVE AGE & CITATION COUNT FOR EACH METHOD IN EACH BENCHMARK/TEST:
+	#This block is awful. Problem is methods may have ages, but not cites, ... 
+	#need to treat each stat seperately. Or learn how to deal with tonnes of missing values:
+	foreach my $meth (@{$benchMethod->{$bench}}){
+	    
+	    
+	    if(defined($methodInfo->{$meth}{'yearPublished'} )){
+		$dates{$meth} = $methodInfo->{$meth}{'yearPublished'} if (isNumeric($methodInfo->{$meth}{'yearPublished'})); 
+	    }
+	    
+	    if(defined($methodInfo->{$meth}{'citations'} )){
+		$citations{$meth} = $methodInfo->{$meth}{'citations'} if (isNumeric($methodInfo->{$meth}{'citations'})); 
+	    }
+	    
+	    #normaliseH returns a hash
+	    my $relRankDates = normaliseH( \%dates ); 
+	    foreach my $meth (keys %{$relRankDates}){ 
+		push(@{ $datesRelRanks->{$meth} }, $relRankDates->{$meth} );
+	    }
+	    
+	    my $relRankCites = normaliseH( \%citations ); 
+	    foreach my $meth (keys %{$relRankCites}){ 
+		push(@{ $citesRelRanks->{$meth} }, $relRankCites->{$meth} );
+	    }
+	}
     }
-
-
-    #COMPUTE RELATIVE AGE & CITATION COUNT FOR EACH METHOD IN EACH BENCHMARK/TEST:
-    #This block is filthy. Problem is methods may have ages, but not cites, ... 
-    #need to treat each stat seperately. Or learn how to deal with tonnes of missing values:
-    foreach my $meth (@{$benchMethod{$bench}}){
-	
-	#printf "[$meth]\ty[%0.2f]y[%s]\tc[%0.2f]c[%s]\t[$bench]\n", $methodInfo{$meth}{'yearPublished'}, $methodInfo{$meth}{'yearPublished'}, $methodInfo{$meth}{'cites'}, $methodInfo{$meth}{'cites'};
-
-	if(defined($methodInfo{$meth}{'yearPublished'} )){
-	    $dates{$meth} = $methodInfo{$meth}{'yearPublished'} if (isNumeric($methodInfo{$meth}{'yearPublished'})); 
-	}
-	
-	if(defined($methodInfo{$meth}{'cites'} )){
-	    $cites{$meth} = $methodInfo{$meth}{'cites'}        if (isNumeric($methodInfo{$meth}{'cites'})); 
-	}
-	
-	#normaliseH returns a hash
-	my $relRankDates = normaliseH( \%dates ); 
-	foreach my $meth (keys %{$relRankDates}){ 
-	    push(@{ $datesRelRanks{$meth} }, $relRankDates->{$meth} );
-	}
-	
-	my $relRankCites = normaliseH( \%cites ); 
-	foreach my $meth (keys %{$relRankCites}){ 
-	    push(@{ $citesRelRanks{$meth} }, $relRankCites->{$meth} );
-	}
-    }
+    
+    return 0;
 }
-#exit(0);
 
-#COMPUTE MEAN SPEED/ACCURACY RELATIVE RANK FOR EACH METHOD:
-open(UT, "> meanRankSpeedData.tsv");
-my $methInfo = join("\t", @methodInfoKeys); 
-print UT "sumRanks\taccuracyRank\tspeedRank\tmethod\tnumTests\t$methInfo\trelAge\trelCites\n";
+######################################################################
+#printResults
+#printResults("meanRankSpeedData.tsv", "meanRankAccuracyPerms.tsv", "meanRankSpeedPerms.tsv", \%ranks, \%ranksPerms, \@methodInfoKeys, \%methodInfo, \%datesRelRanks, \%citesRelRanks);
+sub printResults {
 
-open( UTPA, "> meanRankAccuracyPerms.tsv");
-print UTPA "method\tpermutation\taccuracyRank\n";
-open( UTPS, "> meanRankSpeedPerms.tsv");
-print UTPS "method\tpermutation\tspeedRank\n";
-
-foreach my $meth (sort keys %ranks){ 
-    #ranks: key: methodName, 0: sum of normalised accuracy rank, 1: sum of normalised speed rank, 2: number of times method benchmarked, 3: benchmark number
-    printf UT "%0.3f\t%0.3f\t%0.3f\t%s\t%d", $ranks{$meth}[0]/$ranks{$meth}[2] + $ranks{$meth}[1]/$ranks{$meth}[2],  $ranks{$meth}[0]/$ranks{$meth}[2], $ranks{$meth}[1]/$ranks{$meth}[2], $meth, $ranks{$meth}[2];
+    my ($meanRankSpeedDataFile, $meanRankAccuracyPermsFile, $meanRankSpeedPermsFile, $ranks, $ranksPerms, $methodInfoKeys, $methodInfo, $datesRelRanks, $citesRelRanks) = @_;
     
-    #PRINT PERMUTATIONS OF ACCURACY & SPEED RANKS
-    for (my $p=0; $p<$numPermutations; $p++){
-	printf UTPA "%s\t%d\t%0.3f\n", "$meth:$p", $p, $ranksPerms{"$meth:$p"}[0]/$ranks{$meth}[2];
-	printf UTPS "%s\t%d\t%0.3f\n", "$meth:$p", $p, $ranksPerms{"$meth:$p"}[1]/$ranks{$meth}[2];
-    }
+    #my (%ranks, %ranksPerms, @methodInfoKeys, %methodInfo, %datesRelRanks, %citesRelRanks) = (%{$ranksPtr}, %{$ranksPermsPtr}, @{$methodInfoKeysAPtr}, %{$methodInfoPtr}, %{$datesRelRanksPtr}, %{$citesRelRanksPtr});
     
-    foreach my $methInfo (@methodInfoKeys){
-	if(not defined($methodInfo{$meth}{$methInfo} )){
-	    print "[$meth] needs [$methInfo]!\n"; 
-	    $methodInfo{$meth}{$methInfo} = 'NA';
+    open( UT,   "> $meanRankSpeedDataFile"    );
+    open( UTPA, "> $meanRankAccuracyPermsFile");
+    open( UTPS, "> $meanRankSpeedPermsFile"   );
+    
+    my $methInfo = join("\t", @{$methodInfoKeys}); 
+    #yearPublished H5 citations hindex mindex version commits contributors
+    print UT   "sumRanks\taccuracyRank\tspeedRank\tmethod\tnumTests\t$methInfo\trelAge\trelCites\n";
+    print UTPA "method\tpermutation\taccuracyRank\n";
+    print UTPS "method\tpermutation\tspeedRank\n";
+
+
+    #print "ranksHash||"      . Dumper($ranks)      . "||\n";
+    #print "methodInfoHash||" . Dumper($methodInfo) . "||\n";
+
+    
+    foreach my $meth (sort keys %{$ranks}){ 
+	#ranks: key: methodName, 0: sum of normalised accuracy rank, 
+        #                        1: sum of normalised speed rank, 
+        #                        2: number of times method benchmarked, 
+        #                        3: benchmark number/ID
+
+	printf UT "%0.3f\t%0.3f\t%0.3f\t%s\t%d", $ranks->{$meth}[0]/$ranks->{$meth}[2] + $ranks->{$meth}[1]/$ranks->{$meth}[2],  $ranks->{$meth}[0]/$ranks->{$meth}[2], $ranks->{$meth}[1]/$ranks->{$meth}[2], $meth, $ranks->{$meth}[2];
+	
+	#PRINT PERMUTATIONS OF ACCURACY & SPEED RANKS
+	for (my $p=0; $p<$numPermutations; $p++){
+	    printf UTPA "%s\t%d\t%0.3f\n", "$meth:$p", $p, $ranksPerms->{"$meth:$p"}[0]/$ranks->{$meth}[2];
+	    printf UTPS "%s\t%d\t%0.3f\n", "$meth:$p", $p, $ranksPerms->{"$meth:$p"}[1]/$ranks->{$meth}[2];
 	}
-	printf UT "\t%s", $methodInfo{$meth}{$methInfo};	
+	
+	foreach my $methInfo (@{$methodInfoKeys}){
+	    if(not defined($methodInfo->{$meth}{$methInfo} )){
+		print "[$meth] needs [$methInfo]!\n"; 
+		$methodInfo->{$meth}{$methInfo} = 'NA';
+	    }
+	    printf UT "\t%s", $methodInfo->{$meth}{$methInfo};	
+	}
+	
+	if( defined($datesRelRanks->{$meth}) && scalar(@{ $datesRelRanks->{$meth} }) ){
+	    printf UT "\t%0.2f", meanA(@{ $datesRelRanks->{$meth} });
+	}
+	else{
+	    printf UT "\tNA"
+	}
+	
+	if( defined($citesRelRanks->{$meth}) && scalar(@{ $citesRelRanks->{$meth} }) ){
+	    printf UT "\t%0.2f", meanA(@{ $citesRelRanks->{$meth} });
+	}
+	else{
+	    printf UT "\tNA"
+	}
+	printf UT "\n";
     }
-
-    if( defined($datesRelRanks{$meth}) && scalar(@{ $datesRelRanks{$meth} }) ){
-	printf UT "\t%0.2f", meanA(@{ $datesRelRanks{$meth} });
-    }
-    else{
-	printf UT "\tNA"
-    }
+    close(UT);
+    close(UTPA);
+    close(UTPS);
     
-    if( defined($citesRelRanks{$meth}) && scalar(@{ $citesRelRanks{$meth} }) ){
-	printf UT "\t%0.2f", meanA(@{ $citesRelRanks{$meth} });
-    }
-    else{
-	printf UT "\tNA"
-    }
-    printf UT "\n";
+    return 0;
+    
 }
-close(UT);
-close(UTPA);
-close(UTPS);
 
-system("R CMD BATCH --no-save ../bin/prettyPlot.R");
-
-exit(0);
 
 ######################################################################
 sub isNumeric {
@@ -323,14 +453,18 @@ sub isNumeric {
 #Max and Min
 #max
 sub max {
-  return $_[0] if @_ == 1;
-  $_[0] > $_[1] ? $_[0] : $_[1]
+    return $_[0] if @_ == 1;
+    return $_[0] if $_[1] eq 'NA';
+    return $_[1] if $_[0] eq 'NA';
+    $_[0] > $_[1] ? $_[0] : $_[1]
 }
 
 #min
 sub min {
-  return $_[0] if @_ == 1;
-  $_[0] < $_[1] ? $_[0] : $_[1]
+    return $_[0] if @_ == 1;
+    return $_[0] if $_[1] eq 'NA';
+    return $_[1] if $_[0] eq 'NA';
+    $_[0] < $_[1] ? $_[0] : $_[1]
 }
 ######################################################################
 #Max and Min for arrays:

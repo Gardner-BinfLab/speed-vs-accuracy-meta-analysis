@@ -81,11 +81,11 @@ pdflatex   manuscript-speed-accuracy.tex && bibtex ./manuscript-speed-accuracy &
 
 -- "bin" directory, the software scripts used to process and visualise the results 
 
---- [./bin/pmArticleScore.pl](./bin/pmArticleScore.pl)
+--- [./bin/pmArticleScore.pl](./bin/pmArticleScore.pl) - perl script for parsing PubMed XML files, and scoring the likelihood that a paper matches our selection criteria based upon word frequencies and previous selections for training. 
 
---- [./bin/prettyPlot.R](./bin/prettyPlot.R)
+--- [./bin/prettyPlot.R](./bin/prettyPlot.R) - R script for parsing data files and generating the figures presented in the manuscript. 
 
---- [./bin/tsv2data.pl](./bin/tsv2data.pl)
+--- [./bin/tsv2data.pl](./bin/tsv2data.pl) - perl script for parsing TSV files and converting/joining them to produce required data files for R. 
 
 -- "data" directory
 

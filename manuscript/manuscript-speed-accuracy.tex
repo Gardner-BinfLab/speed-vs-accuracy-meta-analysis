@@ -11,6 +11,9 @@
 \usepackage{todonotes}
 \usepackage{maori}
 \graphicspath{{../figures/}}
+\usepackage{xr}
+\externaldocument{supplementary}
+
 \setlength{\abovecaptionskip}{15pt plus 3pt minus 2pt}
 
 \newcommand{\beginsupplement}{%
@@ -337,15 +340,19 @@ significant associations between most of the citation-based metrics
 M-index). There is also a negative correlation between the year of
 publication, the relative age and many of the citation-based metrics.
 
-Data on the
-number of updates to software tools from GitHub such as the number of versions,
-commits and contributors was significantly correlated with 
-software accuracy (respective Spearman’s rhos = {\color{black}0.15, 0.22, 0.21,} and respective Benjamini \& Hochberg corrected P-values = {\color{black}0.029, 0.042, 0.063}), Figure~\ref{fig:allfactors}B. 
-The significance if these features was further confirmed with a permutation test (Figure~\ref{fig:allfactors}B).
-These features were not correlated with speed however (see Figure~\ref{fig:allfactors}A \& Supplementary Figure ????).
-We also found that reputation metrics such as citations, author and journal H-indices, and the age
-of tools were generally \textbf{not} correlated with either tool
-accuracy or speed (Figure~\ref{fig:allfactors}A\&B). 
+Data on the number of updates to software tools from GitHub such as
+the number of versions, commits and contributors was significantly
+correlated with software accuracy (respective Spearman’s rhos =
+{\color{black}0.15, 0.22, 0.21,} and respective Benjamini \& Hochberg
+corrected P-values = {\color{black}0.029, 0.042, 0.063}),
+Figure~\ref{fig:allfactors}B.  The significance of these features was
+further confirmed with a permutation test
+(Figure~\ref{fig:allfactors}B).  These features were not correlated
+with speed however (see Figure~\ref{fig:allfactors}A \& Supplementary
+Figures~\ref{fig:metricPairs} and~\ref{fig:S2}).  We also found that
+reputation metrics such as citations, author and journal H-indices,
+and the age of tools were generally \textbf{not} correlated with
+either tool accuracy or speed (Figure~\ref{fig:allfactors}A\&B).
 %The strongest
 %association was between accuracy and the relative
 %number of citations (Spearman’s rho = {\color{black}0.092,

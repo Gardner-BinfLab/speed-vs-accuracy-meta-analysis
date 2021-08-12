@@ -30,12 +30,12 @@ dr2005<-read.table( "rawRankSpeedData2005-2020.tsv", header=T)
 reg1  <- lm(d2005$accuracyRank ~ d2005$speedRank)
 summary(reg1)
 
-regM <- lm(accuracyRank ~ speedRank + H5 + citations + hindex + mindex + relAge + relCites + version + commits + contributors, data=d2005, na.action=na.roughfix)
+regM <- lm(accuracyRank ~ speedRank + H5 + citations + hindex + mindex + relAge + relCites + version + commits + contributors + issues + issuesFracOpen + pullrequests + forks, data=d2005, na.action=na.roughfix)
 summary(regM)
 
 ####PCA:
-xx<-cbind(d2005$accuracyRank, d2005$speedRank, d2005$H5, d2005$citations, d2005$hindex, d2005$mindex, d2005$relAge, d2005$relCites,d2005$yearPublished, d2005$version, d2005$commits, d2005$contributors)
-colnames(xx)<-c("accuracy","speed","JH5","citations","hindex","mindex","relAge","relCites","age", "version", "commits", "contributors")
+xx<-cbind(d2005$accuracyRank, d2005$speedRank, d2005$H5, d2005$citations, d2005$hindex, d2005$mindex, d2005$relAge, d2005$relCites,d2005$yearPublished, d2005$version, d2005$commits, d2005$contributors, d2005$issues, d2005$issuesFracOpen, d2005$pullrequests, d2005$forks)
+colnames(xx)<-c("accuracy","speed","JH5","citations","hindex","mindex","relAge","relCites","age", "version", "commits", "contributors", "issues", "issuesFracOpen", "pullrequests", "forks")
 pca<-prcomp(na.omit(xx), center = TRUE,scale=TRUE)
 pca
 summary(pca)
@@ -62,8 +62,8 @@ summary(pca)
 #FIGURE 1 A & B
 #All vs All Spearman Heatmap
 
-dNames <- c("H5", "relAge",    "yearPublished", "citations", "relCites",   "mindex",  "hindex",  "accuracyRank",  "speedRank", "version", "commits", "contributors" )
-pNames <- c("JH5", "Rel. age", "Year",          "Citations", "Rel. cites", "M-index", "H-index", "Accuracy",      "Speed",     "version", "commits", "contributors")
+dNames <- c("H5", "relAge",    "yearPublished", "citations", "relCites",   "mindex",  "hindex",  "accuracyRank",  "speedRank", "version", "commits", "contributors", "issues", "issuesFracOpen", "pullrequests", "forks" )
+pNames <- c("JH5", "Rel. age", "Year",          "Citations", "Rel. cites", "M-index", "H-index", "Accuracy",      "Speed",     "Version", "Commits", "Contributors", "Issues", "%Open issues", "Pull req.", "Forks")
 pvalMatrix<-matrix(1, length(dNames), length(dNames))
 rhoMatrix <-matrix(0, length(dNames), length(dNames))
 sigMatrix <-matrix("",length(dNames), length(dNames))
@@ -87,7 +87,6 @@ for(i in 1:N){
 		sigMatrix[i,j]  <- "X"
                 sigCount <- sigCount + 1
 	    }
-
       }
 }
 
@@ -101,27 +100,32 @@ dev.off()
 ############
 #BARPLOT OF SPEARMAN RHO VALUES:
 
-relCitesA     <-cor.test(d2005$accuracyRank, as.numeric(d2005$relCites),     method = "spearman")
-hindexA       <-cor.test(d2005$accuracyRank, as.numeric(d2005$hindex),       method = "spearman")
-mindexA       <-cor.test(d2005$accuracyRank, as.numeric(d2005$mindex),       method = "spearman")
-H5A           <-cor.test(d2005$accuracyRank, as.numeric(d2005$H5),           method = "spearman")
-relAgeA       <-cor.test(d2005$accuracyRank, as.numeric(d2005$relAge),       method = "spearman")
-speedA        <-cor.test(d2005$accuracyRank, as.numeric(d2005$speedRank),    method = "spearman")
-citesA        <-cor.test(d2005$accuracyRank, as.numeric(d2005$citations),    method = "spearman")
-yearA         <-cor.test(d2005$accuracyRank, as.numeric(d2005$yearPublished),method = "spearman")
-versionA      <-cor.test(d2005$accuracyRank, as.numeric(d2005$version),      method = "spearman")
-commitsA      <-cor.test(d2005$accuracyRank, as.numeric(d2005$commits),      method = "spearman")
-contributorsA <-cor.test(d2005$accuracyRank, as.numeric(d2005$contributors), method = "spearman")
+relCitesA       <-cor.test(d2005$accuracyRank, as.numeric(d2005$relCites),       method = "spearman")
+hindexA         <-cor.test(d2005$accuracyRank, as.numeric(d2005$hindex),         method = "spearman")
+mindexA         <-cor.test(d2005$accuracyRank, as.numeric(d2005$mindex),         method = "spearman")
+H5A             <-cor.test(d2005$accuracyRank, as.numeric(d2005$H5),             method = "spearman")
+relAgeA         <-cor.test(d2005$accuracyRank, as.numeric(d2005$relAge),         method = "spearman")
+speedA          <-cor.test(d2005$accuracyRank, as.numeric(d2005$speedRank),      method = "spearman")
+citesA          <-cor.test(d2005$accuracyRank, as.numeric(d2005$citations),      method = "spearman")
+yearA           <-cor.test(d2005$accuracyRank, as.numeric(d2005$yearPublished),  method = "spearman")
+versionA        <-cor.test(d2005$accuracyRank, as.numeric(d2005$version),        method = "spearman")
+commitsA        <-cor.test(d2005$accuracyRank, as.numeric(d2005$commits),        method = "spearman")
+contributorsA   <-cor.test(d2005$accuracyRank, as.numeric(d2005$contributors),   method = "spearman")
+issuesA         <-cor.test(d2005$accuracyRank, as.numeric(d2005$issues),         method = "spearman")
+issuesFracOpenA <-cor.test(d2005$accuracyRank, as.numeric(d2005$issuesFracOpen), method = "spearman")
+pullrequestsA   <-cor.test(d2005$accuracyRank, as.numeric(d2005$pullrequests),   method = "spearman")
+forksA          <-cor.test(d2005$accuracyRank, as.numeric(d2005$forks),          method = "spearman")
 
-spearmansA <- c(mindexA$estimate, hindexA$estimate, speedA$estimate, relAgeA$estimate, H5A$estimate, citesA$estimate, relCitesA$estimate, yearA$estimate, versionA$estimate, commitsA$estimate, contributorsA$estimate)
-spearmansAP<- c(mindexA$p.value, hindexA$p.value, speedA$p.value, relAgeA$p.value, H5A$p.value, citesA$p.value, relCitesA$p.value, yearA$p.value, versionA$p.value, commitsA$p.value, contributorsA$p.value)
-namesA     <- c("M-index", "H-index", "Speed", "Rel. age", 'JH5', "Citations", "Rel. cites", "Year", "Version", "Commits", "Contributors")
+
+spearmansA <- c(mindexA$estimate, hindexA$estimate, speedA$estimate, relAgeA$estimate, H5A$estimate, citesA$estimate, relCitesA$estimate, yearA$estimate, versionA$estimate, commitsA$estimate, contributorsA$estimate, issuesA$estimate, issuesFracOpenA$estimate, pullrequestsA$estimate, forksA$estimate)
+spearmansAP<- c(mindexA$p.value, hindexA$p.value, speedA$p.value, relAgeA$p.value, H5A$p.value, citesA$p.value, relCitesA$p.value, yearA$p.value, versionA$p.value, commitsA$p.value, contributorsA$p.value, issuesA$p.value, issuesFracOpenA$p.value, pullrequestsA$p.value, forksA$p.value)
+namesA     <- c("M-index", "H-index", "Speed", "Rel. age", 'JH5', "Citations", "Rel. cites", "Year", "Version", "Commits", "Contributors", "#Issues", "%Open issues", "Pull reqs", "Forks")
 ixA <- sort(spearmansA, index.return=T)$ix
 
 #Figure S4A
 pdf(file=    "../figures/spearmanBarplot.pdf", width = 5,  height = 5)
-op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(6,4,4,4) + .1)
-bp<-barplot(t(spearmansA[ixA]),names=namesA[ixA], ylab="Spearman's rho",ylim=c(-0.01,0.25),main="Correlates with accuracy")
+op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(7,4,4,4) + .1)
+bp<-barplot(t(spearmansA[ixA]),names=namesA[ixA], ylab="Spearman's rho",ylim=c(-0.2,0.3),main="Correlates with accuracy")
 lines(c(-100,100),c(0,0))
 for (i in 1:length(spearmansAP)){
     if( spearmansAP[ixA[i]] < 0.005 ){

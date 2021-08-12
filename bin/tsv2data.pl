@@ -38,7 +38,7 @@ printResults("meanRankSpeedData.tsv", "meanRankAccuracyPerms.tsv", "meanRankSpee
 
 ###################################
 #Make all the figures, do some statistics: 
-system("R CMD BATCH --no-save ../bin/prettyPlot.R");
+#system("R CMD BATCH --no-save ../bin/prettyPlot.R");
 
 exit(0);
 
@@ -68,22 +68,26 @@ sub extractMethodInfo {
     
     
 # head -n 1 speed-vs-accuracy-toolInfo2005-2020.tsv | tr "\t" "\n" | nl
-#      1	tool
-#      2	yearPublished
-#      3	journal
-#      4	impactFactor(2017)
-#      5	Journal H5-index(2017)
-#      6	totalCitations(2017)
-#      7	totalCitations(2020)
-#      8	H-index: (Corresponding author)(2017)
-#      9	M-index (Corresponding author)(2017)
-#     10	H (2020)
-#     11	M (2020)
-#     12	Versions
-#     13	Commits (Github)
-#     14	Contributers (Github)
-#     15	Github repo
-#     16	fullCite
+    #  1	tool
+    #  2	yearPublished
+    #  3	journal
+    #  4	impactFactor(2017)
+    #  5	Journal H5-index(2017)
+    #  6	totalCitations(2017)
+    #  7	totalCitations(2020)
+    #  8	H-index: (Corresponding author)(2017)
+    #  9	M-index (Corresponding author)(2017)
+    # 10	H (2020)
+    # 11	M (2020)
+    # 12	Versions
+    # 13	Commits (Github)
+    # 14	Contributers (Github)
+    # 15	Issues Open
+    # 16	Issues Closed
+    # 17	Pull requests
+    # 18	Forks
+    # 19	Github repo
+    # 20	fullCite
 
 
     #For each tool collect:
@@ -188,6 +192,38 @@ sub extractMethodInfo {
 		$methodInfo{$in[0]}{'contributors'}='NA';
 		$methodInfo{$in[0]}{'contributors'}= $in[13] if (isNumeric($in[13])); 
 	    }
+
+	    #Issues in github
+	    if(defined($in[14]) && defined($in[15])){
+		$methodInfo{$in[0]}{'issues'}='NA';
+		$methodInfo{$in[0]}{'issues'}= ($in[14]+$in[15]) if (isNumeric($in[14]) && isNumeric($in[15])); 
+	    }
+	    
+	    #Fraction of open issues in github
+	    if(defined($in[14]) && defined($in[15])){
+		$methodInfo{$in[0]}{'issuesFracOpen'}='NA';
+		$methodInfo{$in[0]}{'issuesFracOpen'}= $in[14]/($in[14]+$in[15]) if (isNumeric($in[14]) && isNumeric($in[15]) && ($in[14]+$in[15])>0 ); 
+	    }
+	    
+	    #Pull requests to github repo
+	    if(defined($in[16])){
+		$methodInfo{$in[0]}{'pullrequests'}='NA';
+		$methodInfo{$in[0]}{'pullrequests'}= $in[16] if (isNumeric($in[16])); 
+	    }
+
+	    #Forks of github repo
+	    if(defined($in[17])){
+		$methodInfo{$in[0]}{'forks'}='NA';
+		$methodInfo{$in[0]}{'forks'}= $in[17] if (isNumeric($in[17])); 
+	    }
+
+
+# contributors issues issuesFracOpen pullrequests forks
+    # 14	Contributers (Github)
+    # 15	Issues Open
+    # 16	Issues Closed
+    # 17	Pull requests
+    # 18	Forks
 	    
 	}
 	

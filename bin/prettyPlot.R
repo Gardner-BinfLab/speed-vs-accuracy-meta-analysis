@@ -159,6 +159,50 @@ lines(c(-100,100),c(0,0))
 dev.off()
 
 
+#####################
+#Reviewer 2 requested plots:
+#plot each software package (potentially sized by the number of studies on which a software tool was included)
+pdf(file=    "../figures/numberBenchmarksPerToolBarplot.pdf", width = 100,  height = 5)
+op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(12,4,4,4) + .1)
+bp<-barplot(d2005$numTests,names=d2005$method, ylab="Number of benchmarks",ylim=c(0,26),main="Number of benchmarks per software tool")
+dev.off()
+
+#Presumably the data are not fully complete (i.e., some scholar profiles couldn't be identified, etc). A table within either the methods or results breaking out the completeness of the records would be helpful.
+
+naFeatureCounts<-matrix(0, length(dNames), 2)
+for(i in 1:length(dNames)){      
+      naFeatureCounts[i,2] <- sum(is.na(d2005[,dNames[i] == colnames(d2005)]))
+      naFeatureCounts[i,1] <- length(d2005[,dNames[i] == colnames(d2005)]) - naFeatureCounts[i,2]      
+}
+rownames(naFeatureCounts) <- pNames
+colnames(naFeatureCounts) <- c("Known", "NA")
+
+ixF <- sort(naFeatureCounts[,1], index.return=T, decreasing=T)$ix
+
+pdf(file=    "../figures/numberRealValueFeaturesBarplot.pdf", width = 7,  height = 5)
+op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(6,4,4,4) + .1)
+barplot(t(naFeatureCounts[ixF,]), col=c("plum3", "plum1"), xlab = "", ylab = "Count", ylim=c(0,500), xlim = c(0,length(dNames)+6), width = 1, main="Data completeness")
+legend("bottomright", 
+ legend = c("Real val.", "NA"),
+ fill = c("plum3", "plum1"),
+ title = "Data")
+for(i in 1:length(dNames)){      
+      text( i*(length(dNames)+2)/length(dNames) , 30, naFeatureCounts[ixF[i],1], srt=90 )
+}
+dev.off()
+
+#Reviewer 3 requested plots:
+#What does the correlation between commits and citations imply?  Given the correlation between commits and accuracy, how might we interpret the lack of the transitive correlation between citations and accuracy?
+
+#regM <- lm(accuracyRank ~ speedRank + H5 + citations + hindex + mindex + relAge + relCites + version + commits + contributors, data=d2005, na.action=na.roughfix)
+
+library("car")
+fitSmall <- lm( commits ~ citations, data=d2005, na.action=na.roughfix)
+plot(fitSmall)
+outlierTest(fitSmall)
+qqPlot(fitSmall, main="QQ Plot", ylim=c(-6,11))
+leveragePlots(fitSmall)
+
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #FIGURE 1B
 #GENERATE PLOTS FOR THE PERMUTATION TESTS!:

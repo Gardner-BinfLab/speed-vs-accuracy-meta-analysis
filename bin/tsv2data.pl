@@ -6,7 +6,7 @@ use Data::Dumper;
 
 ###################################
 #Parse tool info (e.g. age, impact, etc.):
-my @methodInfoKeys = qw(yearPublished H5 citations hindex mindex version commits contributors); #IF 
+my @methodInfoKeys = qw(yearPublished H5 citations hindex mindex version commits contributors issues issuesFracOpen pullrequests forks); #IF 
 my $methodInfoPtr = extractMethodInfo("speed-vs-accuracy-toolInfo2005-2020.tsv", "journalInfo2020.tsv"); #, \%methodInfo); 
 my %methodInfo = %{$methodInfoPtr};
     

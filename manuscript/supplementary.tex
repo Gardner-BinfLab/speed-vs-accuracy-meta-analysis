@@ -154,9 +154,8 @@ Contributors -- the number of contributors to a Github repository;
 \includegraphics[width=0.95\textwidth]{supplementary-figures-pairs.pdf}
 \caption{Dot plots for each feature relative to every other feature
   (accuracy, speed, JH5, citations, H-index, M-index, relAge,
-  relCites, yearPublished, version, commits, contributors,
-  ).
-
+  relCites, yearPublished, version, commits, contributors, \#Issues,
+\%Open issues, \#Pull requests, and the \#Forks).
 }
 \label{fig:metricPairs}
 \end{figure}
@@ -222,19 +221,23 @@ Contributors -- the number of contributors to a Github repository;
 
 \begin{figure}[H]
 \centering
-%\includegraphics[width=0.95\textwidth]{relAge-SpeedVsAccuracy-heatmap-edited.pdf}
-\includegraphics[width=0.45\textwidth]{relAge-speedAcc.pdf}
-\includegraphics[width=0.45\textwidth]{relAge-SpeedVsAccuracy-heatmap.pdf}
-\caption{{\bf Relative software tool ages and speeds/accuracies.} {\bf Left.} Violin plots for the relative age distribution
-  for software tools in each of the 5 2x2 cells indicated in B. The
-  five boxes correspond to the four extreme corners of the speed vs
-  accuracy spectrum (i.e. slow and inaccurate, slow and accurate, fast
-  and inaccurate, fast and accurate) and the central box (medium speed
-  and medium accuracy). {\bf Right.} A heatmap indicating the relative age
+%\includegraphics[width=0.45\textwidth]{relAge-speedAcc-jitterPlot.pdf}
+%\includegraphics[width=0.45\textwidth]{relAge-SpeedVsAccuracy-heatmap.pdf}
+\includegraphics[width=0.95\textwidth]{relAge.pdf}
+\caption{{\bf Relative software tool ages and speeds/accuracies.}
+{\bf A.} A heatmap indicating the relative age
   of software in a range of relative accuracy and speed rankings. Blue
   colours indicate an abundance of older software tools in an accuracy
   and speed category, while light colours indicate younger software in
-  an accuracy and speed category. }
+  an accuracy and speed category.
+  {\bf B.} Jitter-plots for the relative age distribution
+  for software tools in each of the 5 3x3 cells indicated in {\bf B}. The
+  five row correspond to the four extreme corners of the speed vs
+  accuracy spectrum (i.e. slow and inaccurate, slow and accurate, fast
+  and inaccurate, fast and accurate) and the central box (medium speed
+  and medium accuracy). Median, quartile and extreme values are indicated with tick marks for each group.
+  Accurate and fast software tools tend to have been published more recently than inaccurate and slow tools (Wilcox rank sum test, $W=341,~P=5\times 10^{-3}$)
+   }
 \label{fig:ageplot}
 \end{figure}
 

@@ -1,10 +1,12 @@
-\documentclass[fleqn,10pt]{SelfArx} % Document font size and equations flushed left
+\documentclass{bmcart}
+%\documentclass[fleqn,10pt]{SelfArx} % Document font size and equations flushed left
 
+\usepackage[utf8]{inputenc} %unicode support
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage[hyphens]{url}
-\usepackage{hyperref}
+%\usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage{amsmath}
 \usepackage{stmaryrd}
@@ -16,128 +18,210 @@
 
 \setlength{\abovecaptionskip}{15pt plus 3pt minus 2pt}
 
-\newcommand{\beginsupplement}{%
-        \setcounter{table}{0}
-        \renewcommand{\thetable}{S\arabic{table}}%
-        \setcounter{figure}{0}
-        \renewcommand{\thefigure}{S\arabic{figure}}%
-     }
+%% \definecolor{color1}{RGB}{0,0,90} % Color of the article title and sections
+%% \definecolor{color2}{RGB}{200,200,200} % Color of the boxes behind the abstract and headings
+%% \definecolor{color3}{RGB}{5,5,5} % Color of the boxes behind the abstract and headings
 
-\definecolor{color1}{RGB}{0,0,90} % Color of the article title and sections
-\definecolor{color2}{RGB}{200,200,200} % Color of the boxes behind the abstract and headings
-\definecolor{color3}{RGB}{5,5,5} % Color of the boxes behind the abstract and headings
+%\JournalInfo{.} % Journal information ``Journal, Vol. XXI, No. 1, 1-5, 2015''
+%\Archive{ } % Additional notes (e.g. copyright, DOI, review/research article)
 
-\JournalInfo{.} % Journal information ``Journal, Vol. XXI, No. 1, 1-5, 2015''
-\Archive{ } % Additional notes (e.g. copyright, DOI, review/research article)
-
+%%% Put your definitions there:
+\startlocaldefs
 \def\numTools{499}
 %cat meanRankSpeedData.tsv | cut -f 4 | grep -v ^method$ | wc -l
 \def\numBenchmarkPubs{69}
 %cat speed-vs-accuracy-toolRanks2005-2020.tsv | cut -f 1 | sort  | uniq | grep -E '[0-9]'  | wc -l
 \def\numBenchmarks{134}
 %cat rawRankSpeedData2005-2020.tsv | cut -f 1 | grep -v ^testId$ | uniq -c | wc -l
+\endlocaldefs
 
-\PaperTitle{Sustained software development, not number of citations or journal choice, is indicative of accurate bioinformatic software}
 
-%1 A meta-analysis of bioinformatics software benchmarks reveals major influences on software accuracy
-%2 Analysis of sixty software benchmarks shows the benefits of good software practice 
-%3 Assessing the state of the bioinformatic software landscape with a meta-analysis of benchmarks
-%4 Sustained software development, not citation metrics, is indicative of accurate bioinformatic software 
-%
+%%% Begin BMC format...
+\begin{document}
 
-\Authors{Paul P. Gardner\textsuperscript{1,2}*, James M. Paterson\textsuperscript{3}, Stephanie McGimpsey\textsuperscript{4}, Fatemeh Ashari-Ghomi\textsuperscript{5}, Sinan U. Umu\textsuperscript{6}, Aleksandra Pawlik\textsuperscript{7},
-Alex Gavryushkin\textsuperscript{8}, Michael A Black\textsuperscript{1}
-} % Authors
+%%% Start of article front matter
+\begin{frontmatter}
 
-\affiliation{\textsuperscript{1}\textit{Department of Biochemistry, University of Otago, Dunedin, New Zealand.}} % Author affiliation
-\affiliation{\textsuperscript{2}\textit{Biomolecular Interaction Centre, University of Canterbury, Christchurch, New Zealand.}}
-\affiliation{\textsuperscript{3}\textit{Department of Civil and Natural Resources Engineering, University of Canterbury, Christchurch, New Zealand.}}
-\affiliation{\textsuperscript{4}\textit{Parasites and Microbes, Wellcome Sanger Institute, Wellcome Genome Campus, Hinxton,
-8 Cambridgeshire, CB10 1RQ, UK.}}
-\affiliation{\textsuperscript{5}\textit{Research Group for Genomic Epidemiology, National Food Institute, Technical University of Denmark, Kongens Lyngby, Denmark.}}
-\affiliation{\textsuperscript{6}\textit{Department of Research, Cancer Registry of Norway, Oslo, Norway.}} % Author affiliation
-\affiliation{\textsuperscript{7}\textit{New Zealand eScience Infrastructure, 49 Symonds St, Auckland, New Zealand.}}
-\affiliation{\textsuperscript{8}\textit{Department of Computer Science, University of Otago, Dunedin, New Zealand.}} % Author affiliation
+\begin{fmbox}
+\dochead{Research}
 
-\affiliation{*\textbf{Corresponding author}: paul.gardner@otago.ac.nz} % Corresponding author
 
-\Keywords{} % Keywords - if you don't want any simply remove all the text between the curly brackets
-\newcommand{\keywordname}{Keywords} % Defines the keywords heading name
+%\PaperTitle{Sustained software development, not number of citations or journal choice, is indicative of accurate bioinformatic software}
+\title{Sustained software development, not number of citations or journal choice, is indicative of accurate bioinformatic software}
+
+%% \Authors{Paul P. Gardner\textsuperscript{1,2}*, James M. Paterson\textsuperscript{3}, Stephanie McGimpsey\textsuperscript{4}, Fatemeh Ashari-Ghomi\textsuperscript{5}, Sinan U. Umu\textsuperscript{6}, Aleksandra Pawlik\textsuperscript{7},
+%% Alex Gavryushkin\textsuperscript{8}, Michael A Black\textsuperscript{1}
+%% } % Authors
+
+%james.paterson@canterbury.ac.nz, srm88@cam.ac.uk, fatgho@food.dtu.dk, sinan.ugur.umu@kreftregisteret.no, PawlikA@landcareresearch.co.nz, alex@biods.org, mik.black@otago.ac.nz
+
+%Authors:
+\author[
+  addressref={aff1,aff2},                   % id's of addresses, e.g. {aff1,aff2}
+  corref={aff1},                       % id of corresponding address, if any
+  email={paul.gardner@otago.ac.nz}   % email address
+]{\inits{P.P.}\fnm{Paul P.} \snm{Gardner}}
+\author[
+  addressref={aff3},
+  email={james.paterson@canterbury.ac.nz}
+]{\inits{J.M.}\fnm{James M.} \snm{Paterson}}
+\author[
+  addressref={aff4},
+  email={srm88@cam.ac.uk}
+]{\inits{S.}\fnm{Stephanie} \snm{McGimpsey}}
+\author[
+  addressref={aff5},
+  email={fatgho@food.dtu.dk}
+]{\inits{F.}\fnm{Fatemeh} \snm{Ashari-Ghomi}}
+\author[
+  addressref={aff6},
+  email={sinan.ugur.umu@kreftregisteret.no}
+]{\inits{S.U.}\fnm{Sinan U.} \snm{Umu}}
+\author[
+  addressref={aff7},
+  email={PawlikA@landcareresearch.co.nz}
+]{\inits{A.}\fnm{Aleksandra} \snm{Pawlik}}
+\author[
+  addressref={aff8},
+  email={alex@biods.org}
+]{\inits{A.}\fnm{Alex} \snm{Gavryushkin}}
+\author[
+  addressref={aff1},
+  email={mik.black@otago.ac.nz}
+]{\inits{M.A.}\fnm{Michael A.} \snm{Black}}
+
+%Affiliations:
+%% \affiliation{\textsuperscript{1}\textit{Department of Biochemistry, University of Otago, Dunedin, New Zealand.}} % Author affiliation
+%% \affiliation{\textsuperscript{2}\textit{Biomolecular Interaction Centre, University of Canterbury, Christchurch, New Zealand.}}
+%% \affiliation{\textsuperscript{3}\textit{Department of Civil and Natural Resources Engineering, University of Canterbury, Christchurch, New Zealand.}}
+%% \affiliation{\textsuperscript{4}\textit{Parasites and Microbes, Wellcome Sanger Institute, Wellcome Genome Campus, Hinxton,
+%% 8 Cambridgeshire, CB10 1RQ, UK.}}
+%% \affiliation{\textsuperscript{5}\textit{Research Group for Genomic Epidemiology, National Food Institute, Technical University of Denmark, Kongens Lyngby, Denmark.}}
+%% \affiliation{\textsuperscript{6}\textit{Department of Research, Cancer Registry of Norway, Oslo, Norway.}} % Author affiliation
+%% \affiliation{\textsuperscript{7}\textit{New Zealand eScience Infrastructure, 49 Symonds St, Auckland, New Zealand.}}
+%% \affiliation{\textsuperscript{8}\textit{Department of Computer Science, University of Otago, Dunedin, New Zealand.}} % Author affiliation
+
+%% \affiliation{*\textbf{Corresponding author}: paul.gardner@otago.ac.nz} % Corresponding author
+
+%% \Keywords{} % Keywords - if you don't want any simply remove all the text between the curly brackets
+%% \newcommand{\keywordname}{Keywords} % Defines the keywords heading name
+
+\address[id=aff1]{%                       % unique id
+  \orgdiv{Department of Biochemistry,},   % department, if any
+  \orgname{University of Otago},          % university, etc
+  \city{Dunedin},                         % city
+  \cny{New Zealand}                       % country
+}
+\address[id=aff2]{%
+  \orgdiv{Biomolecular Interaction Centre},
+  \orgname{University of Canterbury},
+  %\street{},
+  %\postcode{}
+  \city{Christchurch},
+  \cny{New Zealand}
+}
+\address[id=aff3]{%
+  \orgdiv{Department of Civil and Natural Resources Engineering},
+  \orgname{University of Canterbury},
+  \city{Christchurch},
+  \cny{New Zealand}
+}
+\address[id=aff4]{%
+  \orgdiv{Parasites and Microbes},
+  \orgname{Wellcome Sanger Institute},
+  \city{Hinxton},
+  \cny{UK}
+}
+\address[id=aff5]{%
+  \orgdiv{Research Group for Genomic Epidemiology},
+  \orgname{Technical University of Denmark},
+  \city{Kongens Lyngby},
+  \cny{Denmark}
+}
+\address[id=aff6]{%
+  \orgdiv{Department of Research},
+  \orgname{Cancer Registry of Norway},
+  \city{Oslo},
+  \cny{Norway}
+}
+\address[id=aff7]{%
+%  \orgdiv{Department of Research},
+  \orgname{Manaaki Whenua - Landcare Research},
+  \city{Lincoln},
+  \cny{New Zealand}
+}
+\address[id=aff8]{%                       
+  \orgdiv{Department of Computer Science},   
+  \orgname{University of Otago},          
+  \city{Dunedin},                         
+  \cny{New Zealand}                       
+}
+
+\end{fmbox}% comment this for two column layout
+
 
 %----------------------------------------------------------------------------------------
 %	ABSTRACT
 %----------------------------------------------------------------------------------------
 
-%\Abstract{In the below we provide additional results for our investigation of computational biology benchmarks.}
-\Abstract{Computational biology provides widely used and powerful
-  software tools for testing and making inferences about biological
-  data. In the face of rapidly increasing volumes of data, heuristic
-  methods that trade software speed for accuracy may
-  be employed.  We are have studied these trade-offs using the results of a large number of independent software benchmarks, 
-  and evaluated whether external factors are indicative of accurate
-  software.
+%\Abstract{
+\begin{abstractbox}
+  \begin{abstract} % abstract
+    \parttitle{Background:} Computational biology provides widely used and
+    powerful software tools for testing and making inferences about
+    biological data. In the face of rapidly increasing volumes of
+    data, heuristic methods that trade software speed for accuracy may
+    be employed.  We are have studied these trade-offs using the
+    results of a large number of independent software benchmarks, and
+    evaluated whether external factors are indicative of accurate
+    software.
 
-We have extracted accuracy and speed ranks from independent benchmarks of
-different bioinformatic software tools, and evaluated whether the
-speed, author reputation, journal impact, recency and developer efforts are indicative of accuracy.
+    \parttitle{Method:} We have extracted accuracy and speed ranks from
+    independent benchmarks of different bioinformatic software tools,
+    and evaluated whether the speed, author reputation, journal
+    impact, recency and developer efforts are indicative of accuracy.
 
-We found that software speed, author reputation, journal impact, 
-number of citations and age are all unreliable predictors of software
-accuracy. This is unfortunate because citations, author and journal
-reputation are frequently cited reasons for selecting software
-tools. However, GitHub-derived records and high version numbers show that 
-the accurate bioinformatic software tools
-are generally the product of many improvements over time, often from
-multiple developers. 
+    \parttitle{Results:} We found that software speed, author reputation,
+    journal impact, number of citations and age are all unreliable
+    predictors of software accuracy. This is unfortunate because
+    citations, author and journal reputation are frequently cited
+    reasons for selecting software tools. However, GitHub-derived
+    records and high version numbers show that the accurate
+    bioinformatic software tools are generally the product of many
+    improvements over time, often from multiple developers.
 
-We also find
-that the field of bioinformatics has a large excess of slow and inaccurate software
-tools, and this is consistent across many sub-disciplines. Meanwhile, there are few tools that
-are middle-of-road in terms of accuracy and speed trade-offs. We
-hypothesise that a form of publication-bias influences the
-publication and development of bioinformatic software. In other
-words, software that is intermediate in terms of both speed and accuracy may be difficult to publish - possibly due to author,
-editor and reviewer practices. This leaves an unfortunate hole in the
-literature as the ideal tools may fall into this gap. For example, high accuracy tools are not always useful if years of CPU time are required, 
-while high speed is not useful if the results are also inaccurate.  }
+    We also find that the field of bioinformatics has a
+    large excess of slow and inaccurate software tools, and this is
+    consistent across many sub-disciplines. Meanwhile, there are few
+    tools that are middle-of-road in terms of accuracy and speed
+    trade-offs. We hypothesise that a form of publication-bias
+    influences the publication and development of bioinformatic
+    software. In other words, software that is intermediate in terms
+    of both speed and accuracy may be difficult to publish - possibly
+    due to author, editor and reviewer practices. This leaves an
+    unfortunate hole in the literature as the ideal tools may fall
+    into this gap. For example, high accuracy tools are not always
+    useful if years of CPU time are required, while high speed is not
+    useful if the results are also inaccurate.
+%}
+\end{abstract}
 
-\begin{document}
+%% \begin{keyword}
+%% \kwd{sample}
+%% \kwd{article}
+%% \kwd{author}
+%% \end{keyword}
 
-\flushbottom % Makes all text pages the same height
-\maketitle % Print the title and abstract box
+\end{abstractbox}
+\end{frontmatter}
+
+
+%\begin{document}
+%\flushbottom % Makes all text pages the same height
+%\maketitle % Print the title and abstract box
 %\tableofcontents % Print the contents section
+%\thispagestyle{empty} % Removes page numbering from the first page
 
-\thispagestyle{empty} % Removes page numbering from the first page
-
-%----------------------------------------------------------------------------------------
-%	ARTICLE CONTENTS
-%----------------------------------------------------------------------------------------
-
-%\onecolumn
-%\beginsupplement
-
-
-
-%----------------------------------------------------------------------------------------
-%	ARTICLE CONTENTS
-%----------------------------------------------------------------------------------------
-
-
-
-%%REFERENCES::
-%reference Stefan Buchka$^{1}$, Rory Wilson$^2$, Alexander Hapfelmeier$^3$,\\  Paul Gardner$^4$,  Anne-Laure Boulesteix PAPER!!!
-
-%% A comprehensive analysis of the usability and archival stability of omics computational tools and resources
-%% https://www.biorxiv.org/content/10.1101/452532v1
-
-%% Tools and best practices for data processing in allelic expression analysis
-%% https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0762-6
-
-%% Towards reproducible, transparent, and systematic benchmarking of omics computational tools
-%% https://osf.io/p8yd9
-
-%% Essential guidelines for computational method benchmarking
-%% https://arxiv.org/abs/1812.00661
 
 \section*{Background}
 Computational biology software is widely used and has produced some of
@@ -150,7 +234,7 @@ biomolecular structure analysis \cite{Sheldrick1990-kc,Sheldrick2008-xy,Jones199
 visualization and data collection \cite{Kraulis1991-lt,Berman2000-to}. 
 However, the popularity of a
 software tool does not necessarily mean that it is accurate or
-computationally efficient, instead usability, ease of installation,
+computationally efficient{\color{red};} instead usability, ease of installation,
 operating system support or other indirect factors may play a greater role in a software
 tool's popularity. Indeed, there have been several notable incidences where
 convenient, yet inaccurate software has caused considerable harm
@@ -173,10 +257,10 @@ larger even small error rates can have
 major impacts on the number of false inferences \cite{Storey2003-cv}.
 
 The gold-standard for determining accuracy is for researchers independent
-of individual tool development to conduct benchmarking studies, these benchmarks can serve a useful role in
+of individual tool development to conduct benchmarking studies{\color{red};} these benchmarks can serve a useful role in
 reducing the over-optimistic reporting of software accuracy
 \cite{Boulesteix2010-te,Jelizarow2010-zf,Weber:2019} and the self-assessment trap
-\cite{Norel2011-cq,Buchka:2021}. Benchmarking typically involves the use a number of
+\cite{Norel2011-cq,Buchka:2021a}. Benchmarking typically involves the use a number of
 positive and negative control datasets, so that predictions from different software tools can be
 partitioned into true or false groups, allowing a variety of metrics to be
 used to evaluate performance
@@ -221,7 +305,7 @@ user-friendly. In fact,``large user base'', ``word-of-mouth'',
 close colleague'', were frequent responses to surveys of ``how do
 scientists select software?''
 \cite{Hannay2009-cf,Joppa2013-vj,Loman2015-bw}. \textbf{3. Journal
-impact:} high profile journals are run by editors and reviewers who
+impact:} {\color{red}many believe that} high profile journals are run by editors and reviewers who
 carefully select and curate the best manuscripts. Therefore, high
 impact journals may be more likely to select manuscripts describing
 good software \cite{Garfield1955-wf}. \textbf{4. Author/Group
@@ -239,7 +323,7 @@ interpret this fact as implying that slower software is likely to be more
 accurate. But speed may also be influenced by the programming language
 \cite{Fourment2008-vl}, and the level of hardware optimisation
 \cite{Farrar2007-ky,Dematte2010-ph};
-However, the specific method of implementation generally has a greater impact (e.g., brute-force approaches versus
+{\color{red}however}, the specific method of implementation generally has a greater impact (e.g., brute-force approaches versus
 rapid and sensitive pre-filtering
 \cite{Schaeffer1989-mu,Papadimitriou_undated-bo,leiserson2020there}).
 %\todo{This paper
@@ -265,7 +349,7 @@ With the wide adoption of GitHub ($47\%$ of the
 linked to a GitHub repository), and consequently quantifiable data on software
 development time and intensity indicators, such as the number of contributors to code, number of code
 changes and versions is available for these
-\cite{ray2014large,Dozmorov:2018,mangul2018comprehensive}.
+\cite{ray2014large,Dozmorov:2018,Mangul:2019}.
 
 In the following study, we explore factors that may be indicative of
 software accuracy. This, in our opinion, should be one of the prime
@@ -293,7 +377,7 @@ sensible.
 
 
 \begin{figure*}[htb!]
-\includegraphics[width=\textwidth]{figure1.pdf}
+\includegraphics[width=0.9\textwidth]{figure1.pdf}
 \caption{\textbf{A.} A heatmap indicating the relationships between
   different features of bioinformatic software tools. Spearman’s rho is used to
   infer correlations between metrics such as citations based metrics, the year and relative age of publication, 
@@ -318,8 +402,11 @@ sensible.
 \end{figure*}
 
 For each of the publications describing these tools, we have (where
-possible) collected the journal's H5-index (\href{https://scholar.google.co.nz/citations?view\_op=top\_venues\&hl=en}{Google
-Scholar Metrics}), the maximum H-index and
+possible) collected the journal's H5-index (
+%\href{https://scholar.google.co.nz/citations?view\_op=top\_venues\&hl=en}{
+Google Scholar Metrics
+%}
+), the maximum H-index and
 corresponding M-indices \cite{Hirsch2005-mt} for the corresponding
 authors for each tool, and the number of times the publication(s)
 associated with a tool has been cited using Google Scholar (data
@@ -348,11 +435,13 @@ corrected P-values = {\color{black}0.029, 0.042, 0.063}),
 Figure~\ref{fig:allfactors}B.  The significance of these features was
 further confirmed with a permutation test
 (Figure~\ref{fig:allfactors}B).  These features were not correlated
-with speed however (see Figure~\ref{fig:allfactors}A \& Supplementary
-Figures~\ref{fig:metricPairs} and~\ref{fig:S2}).  We also found that
+with speed however (see Figure~\ref{fig:allfactors}A {\color{red}\& Supplementary
+Figures~S5 and~S6}%\ref{fig:S2}
+).  We also found that
 reputation metrics such as citations, author and journal H-indices,
 and the age of tools were generally \textbf{not} correlated with
 either tool accuracy or speed (Figure~\ref{fig:allfactors}A\&B).
+
 %The strongest
 %association was between accuracy and the relative
 %number of citations (Spearman’s rho = {\color{black}0.092,
@@ -383,7 +472,7 @@ expected proportions based upon the permutation test (Figure 2B).
 \begin{figure*}[htb!]
 %\includegraphics[scale=0.55]{figure2.pdf}
 \centering
-\includegraphics[width=0.75\textwidth]{figure2.pdf}
+\includegraphics[width=0.95\textwidth]{figure2.pdf}
 \caption{\textbf{A.} A heatmap indicating the relative paucity or abundance of
   software in the range of possible accuracy and speed rankings. Redder
   colours indicate an abundance of software tools in an accuracy and
@@ -437,7 +526,7 @@ probability that a study being published is influenced by the results
 it contains \cite{sterling1995publication}. The community of
 developers, reviewers and editors may be unwilling to publish software
 that is not highly ranked on speed or accuracy. If correct, this may
-have unfortunate consequences as these tools may never-the-less have further uses.
+have unfortunate consequences as these tools may {\color{red}nevertheless} have further uses.
 %We also found that slow and inaccurate
 %software is generally published earlier than fast and accurate tools
 %{\color{black}(P=0.007, one-tailed Wilcoxon test)}, therefore
@@ -502,10 +591,10 @@ below.
 
 \textbf{Criteria for inclusion:} We are interested in using
 computational biology benchmarks that satisfy Boulesteix’s
-(ALB) three criteria for a “neutral comparison study”
+(ALB) three criteria for a ``neutral comparison study''
 \cite{Boulesteix2013-vb}. Firstly, the main focus of the article is
 the comparison and \textbf{not} the introduction of a new
-tool. Secondly, the authors should be reasonably neutral, which means
+tool {{\color{red}as these can be biased} \cite{Buchka:2021a}. Secondly, the authors should be reasonably neutral, which means
 that the authors should not generally have been involved in the
 development of the tools included in the benchmark. Thirdly, the test
 data and evaluation criteria should be sensible. This means that the
@@ -594,12 +683,13 @@ address a specific biological problem).
 
 \textbf{Data extraction and processing:} for each article that met the
 ALB-criteria and contained data on both the accuracy and speed from
-their tests, we extracted ranks for each tool. Many articles contained
-multiple benchmarks, in these cases we selected a range of these, the
+their tests, we extracted ranks for each tool. {\color{red}Until published datasets are made available in consistent, machine-readable formats this step is necessarily a manual process -- ranks were extracted from a mixture of manuscript figures, tables and supplementary materials, each data source is documented in Supplementary Table 1. In addition, a variety of accuracy metrics are reported e.g. ``accuracy'', ``AUROC'', ``F-measure'', ``Gain'', ``MCC'', ``N50'', ``PPV'', ``precision'', ``RMSD'', ``sensitivity'', ``TPR'', ``tree error'', etc. Our analysis makes the necessarily pragmatic assumption that highly ranked tools on one accuracy metric will also be highly ranked on other accuracy metrics.}
+Many articles contained
+multiple benchmarks, in these cases we recorded ranks from each of these, the
 provenance of which is stored with the accuracy metric and raw speed
-and accuracy rank data for each tool. In line with rank-based
+and accuracy rank data for each tool {\color{red}(Supplementary Table 1)}. In line with rank-based
 statistics, the cases where tools were tied were resolved by using a
-midpoint rank (e.g., if tool 3 and 4 are tied, the rank 3.5 was used)
+midpoint rank (e.g., if tools ranked 3 and 4 are tied, the rank 3.5 was used)
 \cite{Mann1947-re}. Each rank extraction was independently verified by
 at least one other co-author to ensure both the provenance of the data
 could be established and that the ranks were correct. The ranks for
@@ -693,7 +783,26 @@ Figure~\ref{fig:speedaccuracy} is based upon Z-scores
 a Z-score (and corresponding P-value is computed, either with the `pnorm' distribution function in R (Figure 2A) or empirically (Figure 2B)) is computed to illustrate the abundance or lack of tools in
 a cell relative to the permuted data.
 
-\section*{Data availability}
+
+\begin{backmatter}
+
+\section*{Acknowledgements}
+The authors acknowledge the valued contribution of invaluable
+discussions with Anne-Laure Boulesteix, Shinichi Nakagawa, Suetonia
+Palmer and Jason Tylianakis. Murray Cox, Raquel
+Norel, Alexandros Stamatakis, Jens Stoye,Tandy Warnow, provided
+valuable feedback on drafts of the manuscript.
+
+This work was largely conducted on the traditional territory of K\=ai Tahu.
+
+\section*{Funding}
+PPG is supported by a Rutherford Discovery Fellowship,
+administered by the Royal Society Te Ap\=arangi, 
+PPG, AG and MAB acknowledge support from a Data Science Programmes grant
+(UOAX1932).
+
+\section*{Availability of data and materials}
+%\section*{Data availability}
 Raw datasets, software and documents are available under a CC-BY license:\\
 %\fussy
 %\url{https://docs.google.com/spreadsheets/d/14xIY2PHNvxmV9MQLpbzSfFkuy1RlzDHbBOCZLJKcGu8/edit?usp=sharing}\\
@@ -706,31 +815,16 @@ Raw datasets, software and documents are available under a CC-BY license:\\
 \url{https://github.com/Gardner-BinfLab/speed-vs-accuracy-meta-analysis}
 \sloppy
 
-\section*{Acknowledgements}
+\section*{Competing interests}
+The authors declare that they have no competing interests.
 
-The authors acknowledge the valued contribution of invaluable
-discussions with Anne-Laure Boulesteix, Shinichi Nakagawa, Suetonia
-Palmer and Jason Tylianakis. Murray Cox, Raquel
-Norel, Alexandros Stamatakis, Jens Stoye,Tandy Warnow, provided
-valuable feedback on drafts of the manuscript.
-
-PPG is supported by a Rutherford Discovery Fellowship,
-administered by the Royal Society Te Ap\=arangi, 
-PPG, AG and MAB acknowledge support from a Data Science Programmes grant
-(UOAX1932).
-
-This work was largely conducted on the traditional territory of K\=ai Tahu.
-
-%{\bf AND ETC....}
 
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
 %----------------------------------------------------------------------------------------
-\bibliographystyle{unsrt}
+%\bibliographystyle{unsrt}
+\bibliographystyle{bmc-mathphys}
 \bibliography{references.bib}
 
-
-
-
-
+\end{backmatter}
 \end{document}

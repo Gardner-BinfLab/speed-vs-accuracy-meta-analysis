@@ -412,7 +412,9 @@ authors for each tool, and the number of times the publication(s)
 associated with a tool has been cited using Google Scholar (data
 collected over a 6 month period in late 2020). Note that citation metrics
 are not static and will change over time. In addition, where possible we also extract the version number, the number
-of commits and number of contributors from GitHub repositories.  
+of commits, number of contributors
+{\color{red} total number ``issues'', the proportion of issues that remain open, the number of pull requests, and the number of times the code was forked}
+from public GitHub repositories.  
 
 We have computed the Spearman’s correlation coefficient for each
 pairwise combination of the mean normalised accuracy and speed ranks,
@@ -420,8 +422,9 @@ with the year published, mean relative age (compared to software in the
 same benchmarks), journal H5 metrics, the total number of citations,
 the relative number of citations (compared to software in the same
 benchmarks) and the maximum H- and corresponding M-indices for the corresponding
-authors, version number, and numbers of commits and contributors.
-The results are presented in Figure~\ref{fig:allfactors}A\&B. We find
+authors, version number,
+{\color{red}and the GitHub statistics commits, contributors, pull requests, issues, \% open issues and forks}.
+The results are presented in Figure~\ref{fig:allfactors}A\&B and S5\&S6. We find
 significant associations between most of the citation-based metrics
 (journal H5, citations, relative citations, H-index and
 M-index). There is also a negative correlation between the year of
@@ -790,7 +793,8 @@ a cell relative to the permuted data.
 The authors acknowledge the valued contribution of invaluable
 discussions with Anne-Laure Boulesteix, Shinichi Nakagawa, Suetonia
 Palmer and Jason Tylianakis. Murray Cox, Raquel
-Norel, Alexandros Stamatakis, Jens Stoye,Tandy Warnow, provided
+Norel, Alexandros Stamatakis, Jens Stoye, Tandy Warnow, and 
+Luis Pedro Coelho provided
 valuable feedback on drafts of the manuscript.
 
 This work was largely conducted on the traditional territory of K\=ai Tahu.

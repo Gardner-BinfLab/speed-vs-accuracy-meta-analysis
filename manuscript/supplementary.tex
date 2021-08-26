@@ -5,6 +5,14 @@
 \usepackage{caption}
 \graphicspath{{../figures/}}
 
+\def\numTools{499}
+%cat meanRankSpeedData.tsv | cut -f 4 | grep -v ^method$ | wc -l
+\def\numBenchmarkPubs{69}
+%cat speed-vs-accuracy-toolRanks2005-2020.tsv | cut -f 1 | sort  | uniq | grep -E '[0-9]'  | wc -l
+\def\numBenchmarks{134}
+%cat rawRankSpeedData2005-2020.tsv | cut -f 1 | grep -v ^testId$ | uniq -c | wc -l
+
+
 \newcommand{\beginsupplement}{%
         \setcounter{table}{0}
         \renewcommand{\thetable}{S\arabic{table}}%
@@ -141,8 +149,8 @@ Contributors -- the number of contributors to a Github repository;
 
 \begin{figure}[htb!]
 \centering
-\includegraphics[width=0.95\textwidth]{supplementary-distributions-permuted.pdf}
-\caption{The distributions for the permuted accuracy ({\bf left}) and speed ({\bf right}) values, where accuracy and speed ranks have been normalised to lie between 0 and 1.
+\includegraphics[width=0.95\textwidth]{supplementary-distributions-permuted.pdf}\\
+\caption{The distributions for the permuted accuracy ({\bf left}) and speed ({\bf right}) values, where accuracy and speed ranks have been normalised to lie between 0 and 1. 
 }
 \label{fig:metricDistributionsPerm}
 \end{figure}
@@ -263,10 +271,13 @@ Contributors -- the number of contributors to a Github repository;
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.99\textwidth]{numberBenchmarksPerToolBarplot.pdf}\\
-\includegraphics[width=0.99\textwidth]{numberRealValueFeaturesBarplot.pdf}
-\caption{ {\bf Top:} The number of benchmarks each software tool has appeared in. {\bf Bottom:}
+\includegraphics[width=0.99\textwidth]{numberRealValueFeaturesBarplot.pdf}\\
+\includegraphics[width=0.95\textwidth]{powerCurves.pdf}
+
+\caption{ {\bf Top:} The number of benchmarks each software tool has appeared in. {\bf Middle:}
   Plot of the amount missing/known data for each of the software features used in this analysis. 
- }
+{\bf Bottom:} a power curve analysis to determine if the sample sizes for each set of features is sufficient to detect significant correlations between our features of interest. For example, for speed vs accuracy $N=\numTools$, which is indicated with a vertical line.    
+}
 \label{fig:numBenchmarks}
 \end{figure}
 

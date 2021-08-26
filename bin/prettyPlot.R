@@ -3,8 +3,7 @@
 #Rscript ../bin/prettyPlot.R
 #R CMD BATCH ../bin/prettyPlot.R
 
-
-library(MASS)  # in case it is not already loaded 
+library(MASS) 
 library(RColorBrewer)
 library(fields)
 library(gplots)
@@ -13,6 +12,7 @@ library(gplots)
 library("hash")
 library("vioplot")
 library("randomForest")
+library("WebPower")
 
 k <- 11
 my.cols <- rev(brewer.pal(k, "RdYlBu"))
@@ -174,53 +174,6 @@ for (i in 1:length(spearmansSP)){
 dev.off()
 
 
-#####################
-#Reviewer/Referee 2 requested plots:
-#plot each software package (potentially sized by the number of studies on which a software tool was included)
-pdf(file=    "../figures/numberBenchmarksPerToolBarplot.pdf", width = 100,  height = 5)
-op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(12,4,4,4) + .1)
-bp<-barplot(d2005$numTests,names=d2005$method, ylab="Number of benchmarks",ylim=c(0,26),main="Number of benchmarks per software tool")
-dev.off()
-
-#Presumably the data are not fully complete (i.e., some scholar profiles couldn't be identified, etc). A table within either the methods or results breaking out the completeness of the records would be helpful.
-
-naFeatureCounts<-matrix(0, length(dNamesALL), 2)
-for(i in 1:length(dNamesALL)){      
-      naFeatureCounts[i,2] <- sum(is.na(d2005[,dNamesALL[i] == colnames(d2005)]))
-      naFeatureCounts[i,1] <- length(d2005[,dNamesALL[i] == colnames(d2005)]) - naFeatureCounts[i,2]      
-}
-rownames(naFeatureCounts) <- pNamesALL
-colnames(naFeatureCounts) <- c("Known", "NA")
-
-ixF <- sort(naFeatureCounts[,1], index.return=T, decreasing=T)$ix
-
-pdf(file=    "../figures/numberRealValueFeaturesBarplot.pdf", width = 10,  height = 5)
-op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(7,4,4,4) + .1)
-barplot(t(naFeatureCounts[ixF,]), col=c("plum3", "plum1"), xlab = "", ylab = "Count", ylim=c(0,500), xlim = c(0,length(dNamesALL)+6), width = 1, main="Data completeness")
-legend("bottomright", 
- legend = c("Real val.", "NA"),
- fill = c("plum3", "plum1"),
- title = "Data")
-for(i in 1:length(dNamesALL)){      
-      text( i*(length(dNamesALL)+3.25)/length(dNamesALL)-0.5 , 60, paste("N=",naFeatureCounts[ixF[i],1]), srt=90 )
-}
-dev.off()
-
-#Reviewer 3 requested plots:
-#What does the correlation between commits and citations imply?  Given the correlation between commits and accuracy, how might we interpret the lack of the transitive correlation between citations and accuracy?
-
-
-pdf(file=    "../figures/citations-vs-commits.pdf", width = 7,  height = 7)
-plot(log10(d2005$citations),log10(d2005$commits),xaxt = "n",yaxt = "n", ylab="Number of Commits", xlab="Number of Citations", pch=20, col="red")
-axis(1,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
-axis(2,at=0:4, c(10^(0:4)))
-abline(lm(log10(d2005$commits) ~ log10(d2005$citations+1), data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
-cit.com.cor <- cor.test(d2005$citations, d2005$commits, method = "spearman")
-text(4, 1.0, paste("Spearman's Rho: ", signif(cit.com.cor$estimate, digits=3), "\n P.value: ", signif(cit.com.cor$p.value, digits=3)))
-dev.off()
-
-
-
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #FIGURE 1B
 #GENERATE PLOTS FOR THE PERMUTATION TESTS!:
@@ -331,7 +284,7 @@ spearmansA.emp.pvals <- p.adjust(spearmansA.emp.pvals,"BH")
 
 pdf(file=    "../figures/spearmanBarplot-withPerms-violin.pdf", width = 10,  height = 10)
 op<-par(mfrow=c(1,1),cex=1.5,las=2, mar = c(7,4,4,4) + .1)
-vioplot(rhoAccMatrix,ylim=c(-0.25,0.25), col="wheat",ylab="Spearman's rho", main="Correlation with Accuracy")
+vioplot(rhoAccMatrix,ylim=c(-0.25,0.25), col="wheat",ylab="Spearman's rho", main="Correlation with accuracy")
 points(1:length(dNamesA), spearmansA, col="red", pch="*", cex=2)
 for (i in 1:length(spearmansA)){       
     if(spearmansA.emp.pvals[i] <= 0.05){
@@ -557,6 +510,136 @@ mtext(expression(paste("Relative Age")), side = 1, line = 5, cex=3)
 dev.off()
 
 wilcox.test(af,is,alternative="g")
+
+######################################################################
+#REVIEWER REQUESTS:
+######################################################################
+
+#Reviewer/Referee 1 
+#"it's not clear to me that this study is large enough"
+
+k <- 6
+my.cols.p <- rev(brewer.pal(k, "RdYlBu"))
+
+pdf(file=    "../figures/powerCurves.pdf", width = 20,  height = 10)
+op<-par(cex=1.25,las=1)
+plot(NA,NA,xlim=c(0,1000),ylim=c(0,1),xlab="Sample Size", ylab="Power", main="Power curves, alpha=0.05, correlation coefficient")
+for(i in 0:5){
+      r<-i/10
+      #WebPower:
+      res <- wp.correlation(n=seq(20,1000,10),r=r, alternative="two.sided")
+      lines(res$n,res$p, lwd=2, col=my.cols.p[i+1])
+      points(res$n,res$p, pch='x', col=my.cols.p[i+1])
+}
+numSamples <- c(499, 464, 461, 424, 402, 234, 232, 206)
+for( i in 1:length(numSamples)){
+     lines(c(numSamples[i],numSamples[i]), c(0, 1))
+}
+legend(700, 0.4, paste("r = ", (0:5)/10), fil=my.cols.p)
+dev.off()
+
+#####################
+#Reviewer/Referee 2 requested plots:
+#"plot each software package (potentially sized by the number of studies on which a software tool was included)"
+pdf(file=    "../figures/numberBenchmarksPerToolBarplot.pdf", width = 100,  height = 5)
+op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(12,4,4,4) + .1)
+bp<-barplot(d2005$numTests,names=d2005$method, ylab="Number of benchmarks",ylim=c(0,26),main="Number of benchmarks per software tool")
+dev.off()
+
+#Presumably the data are not fully complete (i.e., some scholar profiles couldn't be identified, etc). A table within either the methods or results breaking out the completeness of the records would be helpful.
+
+naFeatureCounts<-matrix(0, length(dNamesALL), 2)
+for(i in 1:length(dNamesALL)){      
+      naFeatureCounts[i,2] <- sum(is.na(d2005[,dNamesALL[i] == colnames(d2005)]))
+      naFeatureCounts[i,1] <- length(d2005[,dNamesALL[i] == colnames(d2005)]) - naFeatureCounts[i,2]      
+}
+rownames(naFeatureCounts) <- pNamesALL
+colnames(naFeatureCounts) <- c("Known", "NA")
+
+ixF <- sort(naFeatureCounts[,1], index.return=T, decreasing=T)$ix
+
+pdf(file=    "../figures/numberRealValueFeaturesBarplot.pdf", width = 10,  height = 5)
+op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(7,4,4,4) + .1)
+barplot(t(naFeatureCounts[ixF,]), col=c("plum3", "plum1"), xlab = "", ylab = "Count", ylim=c(0,500), xlim = c(0,length(dNamesALL)+6), width = 1, main="Data completeness")
+legend("bottomright", 
+ legend = c("Real val.", "NA"),
+ fill = c("plum3", "plum1"),
+ title = "Data")
+for(i in 1:length(dNamesALL)){      
+      text( i*(length(dNamesALL)+3.25)/length(dNamesALL)-0.5 , 60, paste("N=",naFeatureCounts[ixF[i],1]), srt=90 )
+}
+dev.off()
+
+#Reviewer 3 requested plots:
+#"What does the correlation between commits and citations imply?  Given the correlation between commits and accuracy, how might we interpret the lack of the transitive correlation between citations and accuracy?"
+
+
+pdf(file=    "../figures/selected-scatter-plots.pdf", width = 20,  height = 20)
+op<-par(mfrow=c(3,3),cex=1.5,las=2)
+#####1. cites vs year
+plot(log10(d2005$citations+1),d2005$year,xaxt = "n",ylab="Year", xlab="Number of Citations", pch=20, col="red")
+axis(1,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+abline(lm(d2005$year ~ log10(d2005$citations+1), data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+cit.yr.cor <- cor.test(d2005$citations, d2005$year, method = "spearman")
+text(1.5, 1930, paste("Spearman's Rho: ", signif(cit.yr.cor$estimate, digits=3), "\nP.value: ", signif(cit.yr.cor$p.value, digits=3)),pos=4)
+#####2. cites vs forks
+plot(log10(d2005$citations+1),log10(d2005$forks+1),xaxt = "n",yaxt = "n", ylab="Number of Forks", xlab="Number of Citations", pch=20, col="red")
+axis(1,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+axis(2,at=c(0,log10(2), 1:3), c(0, 10^(0:3)))
+abline(lm(log10(d2005$forks+1) ~ log10(d2005$citations+1), data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+cit.fks.cor <- cor.test(d2005$citations, d2005$forks, method = "spearman")
+text(1.5, 0.25, paste("Spearman's Rho: ", signif(cit.fks.cor$estimate, digits=3), "\nP.value: ", signif(cit.fks.cor$p.value, digits=3)),pos=4)
+#####3. cites vs commits
+plot(log10(d2005$citations+1),log10(d2005$commits+1),xaxt = "n",yaxt = "n", ylab="Number of Commits", xlab="Number of Citations", pch=20, col="red")
+axis(1,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+axis(2,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+abline(lm(log10(d2005$commits+1) ~ log10(d2005$citations+1), data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+cit.com.cor <- cor.test(d2005$citations, d2005$commits, method = "spearman")
+text(1.5, 0.5, paste("Spearman's Rho: ", signif(cit.com.cor$estimate, digits=3), "\nP.value: ", signif(cit.com.cor$p.value, digits=3)),pos=4)
+#####
+#####4. issues vs accuracy
+plot(log10(d2005$issues+1),d2005$accuracyRank,xaxt = "n",ylab="Accuracy", xlab="Number of issues", pch=20, col="red")
+axis(1,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+abline(lm(d2005$accuracyRank ~ log10(d2005$issues+1), data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+acc.iss.cor <- cor.test(d2005$issues,d2005$accuracyRank, method = "spearman")
+text(1.25, 0.05, paste("Spearman's Rho: ", signif(acc.iss.cor$estimate, digits=3), "\nP.value: ", signif(acc.iss.cor$p.value, digits=3)),pos=4)
+#####5. forks vs accuracy
+plot(log10(d2005$forks+1),d2005$accuracyRank,xaxt = "n",ylab="Accuracy", xlab="Number of forks", pch=20, col="red",xlim=c(0,3))
+axis(1,at=c(0,log10(2), 1:3), c(0, 10^(0:3)))
+abline(lm(d2005$accuracyRank ~ log10(d2005$forks+1), data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+acc.fks.cor <- cor.test(d2005$forks,d2005$accuracyRank, method = "spearman")
+text(1.0, 0.05, paste("Spearman's Rho: ", signif(acc.fks.cor$estimate, digits=3), "\nP.value: ", signif(acc.fks.cor$p.value, digits=3)),pos=4)
+#####6. PRs vs accuracy
+plot(log10(d2005$pullrequests+1),d2005$accuracyRank,xaxt = "n",ylab="Accuracy", xlab="Number of pull requests", pch=20, col="red",xlim=c(0,3))
+axis(1,at=c(0,log10(2), 1:3), c(0, 10^(0:3)))
+abline(lm(d2005$accuracyRank ~ log10(d2005$pullrequests+1), data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+acc.prs.cor <- cor.test(d2005$pullrequests,d2005$accuracyRank, method = "spearman")
+text(1.0, 0.05, paste("Spearman's Rho: ", signif(acc.prs.cor$estimate, digits=3), "\nP.value: ", signif(acc.prs.cor$p.value, digits=3)),pos=4)
+#####
+#####7. commits vs accuracy
+plot(log10(d2005$commits+1),d2005$accuracyRank,xaxt = "n",ylab="Accuracy", xlab="Number of commits", pch=20, col="red",xlim=c(0,4))
+axis(1,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+abline(lm(d2005$accuracyRank ~ log10(d2005$commits+1), data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+acc.com.cor <- cor.test(d2005$commits,d2005$accuracyRank, method = "spearman")
+text(1.5, 0.05, paste("Spearman's Rho: ", signif(acc.com.cor$estimate, digits=3), "\nP.value: ", signif(acc.com.cor$p.value, digits=3)),pos=4)
+#####8. version vs accuracy
+plot(log10(d2005$citations+1),d2005$accuracyRank,xaxt = "n",ylab="Accuracy", xlab="Number of citations", pch=20, col="red")
+axis(1,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+abline(lm(d2005$accuracyRank ~ log10(d2005$citations+1), data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+acc.cit.cor <- cor.test(d2005$citations,d2005$accuracyRank, method = "spearman")
+text(1.5, 0.05, paste("Spearman's Rho: ", signif(acc.cit.cor$estimate, digits=3), "\nP.value: ", signif(acc.cit.cor$p.value, digits=3)),pos=4)
+#####9. speed vs accuracy
+plot(d2005$speedRank,d2005$accuracyRank,ylab="Accuracy", xlab="Speed", pch=20, col="red")
+abline(lm(d2005$accuracyRank ~ d2005$speedRank, data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+acc.spd.cor <- cor.test(d2005$speedRank,d2005$accuracyRank, method = "spearman")
+text(0.25, 0.05, paste("Spearman's Rho: ", signif(acc.spd.cor$estimate, digits=3), "\nP.value: ", signif(acc.spd.cor$p.value, digits=3)),pos=4)
+dev.off()
+
+
+
+
+
+
 
 
 ######################################################################

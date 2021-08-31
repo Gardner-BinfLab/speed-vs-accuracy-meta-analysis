@@ -536,6 +536,7 @@ for( i in 1:length(numSamples)){
      lines(c(numSamples[i],numSamples[i]), c(0, 1))
 }
 legend(700, 0.4, paste("r = ", (0:5)/10), fil=my.cols.p)
+lines(c(0,1000),c(0.8,0.8),lty=2)
 dev.off()
 
 #####################
@@ -573,8 +574,55 @@ dev.off()
 #Reviewer 3 requested plots:
 #"What does the correlation between commits and citations imply?  Given the correlation between commits and accuracy, how might we interpret the lack of the transitive correlation between citations and accuracy?"
 
+######################################################################
 
-pdf(file=    "../figures/selected-scatter-plots.pdf", width = 20,  height = 20)
+
+
+pdf(file=    "../figures/selected-scatter-plots.pdf", width = 10,  height = 15)
+op<-par(mfrow=c(3,2),cex=1.5,las=2)
+plot(d2005$relAge,log10(d2005$citations+1),yaxt = "n",xlab="Relative age", ylab="Number of Citations", pch=20, col="red")
+axis(2,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+abline(lm(log10(d2005$citations+1) ~ d2005$relAge, data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+cit.yr.cor <- cor.test(d2005$relAge, d2005$citations, method = "spearman")
+text(0.01, 0.25, paste("Spearman's Rho: ", signif(cit.yr.cor$estimate, digits=3), "\nP.value: ", signif(cit.yr.cor$p.value, digits=3)),pos=4)
+#############
+plot(d2005$relAge,log10(d2005$commits+1),yaxt = "n", ylab="Number of Commits", xlab="Relative age", pch=20, col="red")
+axis(2,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+abline(lm(log10(d2005$commits+1) ~ d2005$relAge, data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+cit.com.cor <- cor.test(d2005$relAge, d2005$commits, method = "spearman")
+text(0.01, 0.5, paste("Spearman's Rho: ", signif(cit.com.cor$estimate, digits=3), "\nP.value: ", signif(cit.com.cor$p.value, digits=3)),pos=4)
+#############
+plot(log10(d2005$citations+1),log10(d2005$commits+1),xaxt = "n",yaxt = "n", ylab="Number of Commits", xlab="Number of Citations", pch=20, col="red")
+axis(1,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+axis(2,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+abline(lm(log10(d2005$commits+1) ~ log10(d2005$citations+1), data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+cit.com.cor <- cor.test(d2005$citations, d2005$commits, method = "spearman")
+text(0.01, 0.5, paste("Spearman's Rho: ", signif(cit.com.cor$estimate, digits=3), "\nP.value: ", signif(cit.com.cor$p.value, digits=3)),pos=4)
+#############
+plot(NA)
+#############
+plot(d2005$accuracyRank,log10(d2005$citations+1),yaxt = "n",xlab="Accuracy", ylab="Number of Citations", pch=20, col="red")
+axis(2,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+abline(lm(log10(d2005$citations+1) ~ d2005$accuracyRank, data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+cit.yr.cor <- cor.test(d2005$accuracyRank, d2005$citations, method = "spearman")
+text(0.01, 0.25, paste("Spearman's Rho: ", signif(cit.yr.cor$estimate, digits=3), "\nP.value: ", signif(cit.yr.cor$p.value, digits=3)),pos=4)
+##############
+plot(d2005$accuracyRank,log10(d2005$commits+1),yaxt = "n", ylab="Number of Commits", xlab="Accuracy", pch=20, col="red")
+axis(2,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
+abline(lm(log10(d2005$commits+1) ~ d2005$accuracyRank, data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+cit.com.cor <- cor.test(d2005$accuracyRank, d2005$commits, method = "spearman")
+text(0.01, 0.5, paste("Spearman's Rho: ", signif(cit.com.cor$estimate, digits=3), "\nP.value: ", signif(cit.com.cor$p.value, digits=3)),pos=4)
+dev.off()
+
+
+
+
+
+
+
+######################################################################
+
+pdf(file=    "../figures/selected-scatter-plots2.pdf", width = 20,  height = 20)
 op<-par(mfrow=c(3,3),cex=1.5,las=2)
 #####1. cites vs year
 plot(log10(d2005$citations+1),d2005$year,xaxt = "n",ylab="Year", xlab="Number of Citations", pch=20, col="red")

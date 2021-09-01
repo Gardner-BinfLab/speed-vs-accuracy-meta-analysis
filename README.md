@@ -169,6 +169,9 @@ pdflatex   manuscript-speed-accuracy.tex && bibtex ./manuscript-speed-accuracy &
 
 --- [./figures/figure1.svg](./figures/figure1.svg) SVG format of manuscript Figure 1. 
 
+--- [./figures/spearmanHeatmap.pdf](./figures/spearmanHeatmap.pdf) Figure 1A
+
+
 --- [./figures/figure2.pdf](./figures/figure2.pdf) PDF format of manuscript Figure 2. 
 
 --- [./figures/figure2.svg](./figures/figure2.svg) SVG format of manuscript Figure 2. 
@@ -176,6 +179,10 @@ pdflatex   manuscript-speed-accuracy.tex && bibtex ./manuscript-speed-accuracy &
 Supplementary figures:
 
 --- [./figures/litMiningFlowDiagram-edited.pdf](./figures/litMiningFlowDiagram-edited.pdf) Figure S1. 
+
+--- [./figures/litMiningFlowDiagram.pdf](./figures/litMiningFlowDiagram.pdf) Figure S1. 
+
+--- [./figures/litMiningFlowDiagram.tex](./figures/litMiningFlowDiagram.tex) Figure S1. 
 
 --- [./figures/wordScores.pdf](./figures/wordScores.pdf) Figure S2. 
 
@@ -189,29 +196,17 @@ Supplementary figures:
 
 --- [./figures/spearmanBarplotSpeed.pdf](./figures/spearmanBarplotSpeed.pdf) Figure S6 (right). 
 
---- [./figures/hindex-SpeedVsAccuracy-heatmap.pdf](./figures/hindex-SpeedVsAccuracy-heatmap.pdf) Figure S7 (left). 
+--- [./figures/relAge.pdf](./figures/relAge.pdf) Figure S7
 
---- [./figures/cites-SpeedVsAccuracy-heatmap.pdf](./figures/cites-SpeedVsAccuracy-heatmap.pdf) Figure S7 (right). 
+--- [./figures/relAge-SpeedVsAccuracy-heatmap.pdf](./figures/relAge-SpeedVsAccuracy-heatmap.pdf) Figure S7 (left). 
 
---- [./figures/relAge-speedAcc.pdf](./figures/relAge-speedAcc.pdf) Figure S8 (left). 
+--- [./figures/relAge-speedAcc-jitterPlot.pdf](./figures/relAge-speedAcc-jitterPlot.pdf) Figure S7 (right). 
 
---- [./figures/relAge-SpeedVsAccuracy-heatmap.pdf](./figures/relAge-SpeedVsAccuracy-heatmap.pdf) Figure S8 (right). 
+--- [./figures/numberBenchmarksPerToolBarplot.pdf](./figures/numberBenchmarksPerToolBarplot.pdf) Figure S8 (top)
 
---- [./figures/commits-SpeedVsAccuracy-heatmap.pdf](./figures/commits-SpeedVsAccuracy-heatmap.pdf) Figure S9 (left). 
+--- [./figures/numberRealValueFeaturesBarplot.pdf](./figures/numberRealValueFeaturesBarplot.pdf) Figure S8 (middle)
 
---- [./figures/contributors-SpeedVsAccuracy-heatmap.pdf](./figures/contributors-SpeedVsAccuracy-heatmap.pdf) Figure S9 (right). 
-
---- [./figures/litMiningFlowDiagram.pdf](./figures/litMiningFlowDiagram.pdf)
-
---- [./figures/litMiningFlowDiagram.tex](./figures/litMiningFlowDiagram.tex)
-
---- [./figures/spearmanBarplot-withPerms.pdf](./figures/spearmanBarplot-withPerms.pdf) 
-
---- [./figures/spearmanHeatmap.pdf](./figures/spearmanHeatmap.pdf)
-
---- [./figures/zscores-SpeedVsAccuracyH.pdf](./figures/zscores-SpeedVsAccuracyH.pdf)
-
---- [./figures/zscores-SpeedVsAccuracy.pdf](./figures/zscores-SpeedVsAccuracy.pdf)
+--- [./figures/powerCurves.pdf](./figures/powerCurves.pdf) Figure S8 (bottom)
 
 -- "manuscript" directory, contains a copy of the draft manuscript, supplementary pdf and associated files
 
@@ -226,6 +221,23 @@ Supplementary figures:
 --- [./manuscript/supplementary.tex](./manuscript/supplementary.tex) TEX format of the supplementary figures and information. 
 
 --- [./manuscript/supp-references.bib](./manuscript/supp-references.bib) Supplementary references, in latex "bib" format. 
+
+--- [./manuscript/supplementary-tables-S1-S7.xlsx](./manuscript/supplementary-tables-S1-S7.xlsx) An excel spreadsheet, supplementary tables S1 to S7
+
+----Table S1: rows for each benchmark, contain accuracy and speed ranks for each tool, as well as the source Figure/Table/Supplement the data was sourced from.
+
+----Table S2: tool information. For each tool we collected the date(s) published, journal(s), impact factors, H5 index, citations, corresponding author(s) H & M index, most recent version, github commits, github contributers, github open issues, github closed issues, github pull requests, github forks, github URL, published reference
+
+----Table S3: journal information: number tools, H5 index from Google Scholar Metrics (2020)
+
+----Table S4: journal articles (2000-2015) ranked by the log-odds score of meeting our inclusion criteria. Classified by whether they are in our training set, have been checked and rejected, or are an unchecked candidate. Just the results for the top 700 articles are shown. 
+
+----Table S5: further journal information: journal name, abbreviated title, number of tools, 2014 impact factor.
+
+----Table S6:  journal articles (2016-2020). Same as Table S4, but restricted to articles published between 2016 and 2020.
+
+----Table S7:  a small sample of manually collected recent candidate articles, along with notes for those that were excluded.
+
 
 
 

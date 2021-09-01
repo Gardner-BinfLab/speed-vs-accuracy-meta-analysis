@@ -56,7 +56,7 @@ for(i in 1:N){
 	    pvalMatrix[i,j] <- p.adjust(spear$p.value,"BH", n=N*(N-1)/2-N)
 	    rhoMatrix[i,j]  <- spear$estimate
 	    #print(paste(c("P:", round(spear$p.value,3), "P.adj:", round(p.adjust(spear$p.value,"BH", n=N*(N-1)/2-N),3)), sep=""))
-	    if(p.adjust(spear$p.value,"BH", n=N*(N-1)/2-N) <= 0.05){ #spear$p.value < 0.05){
+	    if(p.adjust(spear$p.value,"BH", n=N*(N-1)/2-N) <= 0.05){ #spear$p.value < 0.05){#n is N choose 2, less the main diagonal (no double counting)
 		sigMatrix[i,j]  <- "X"
                 sigCount <- sigCount + 1
 	    }

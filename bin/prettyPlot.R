@@ -175,7 +175,6 @@ dev.off()
 
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#FIGURE 1B
 #GENERATE PLOTS FOR THE PERMUTATION TESTS!:
 
 accPerms <-read.table("meanRankAccuracyPerms.tsv", header=T)
@@ -282,6 +281,7 @@ for (i in 1:length(spearmansA)){
 #correct for multiple testing:
 spearmansA.emp.pvals <- p.adjust(spearmansA.emp.pvals,"BH")
 
+#FIGURE 1B
 pdf(file=    "../figures/spearmanBarplot-withPerms-violin.pdf", width = 10,  height = 10)
 op<-par(mfrow=c(1,1),cex=1.5,las=2, mar = c(7,4,4,4) + .1)
 vioplot(rhoAccMatrix,ylim=c(-0.25,0.25), col="wheat",ylab="Spearman's rho", main="Correlation with accuracy")
@@ -352,6 +352,7 @@ heatmap.2(zScores[nrow(zScores):1,],
           col=rev(brewer.pal(n = colScale, name = "RdBu")), density.info="none", trace="none", dendrogram="none", symm=F,symkey=T,symbreaks=T, breaks=seq(-3.5,3.5,length=colScale+1), scale="none", cexRow=1.5, cexCol=1.5, margins = c(2, 2), key.title = "Z", Colv=FALSE, Rowv=FALSE, xlab="Speed",ylab="Accuracy", cex=2.0)
 dev.off()
 
+#FIGURE 2B
 pdf(file=    "../figures/zscores-withPerms-violin.pdf", width = 5,  height = 5)
 op<-par(mfrow=c(1,1),cex=1.0,las=2, mar = c(7,4,1,1) + .1)
 vioplot(
@@ -892,7 +893,7 @@ dev.off()
 # dev.off()
 
 ######################################################################
-#Figure 2: histogram inserts gridRes <- 10
+#histogram inserts gridRes <- 10
 # pdf(file=    "../figures/zscores-SpeedVsAccuracyH.pdf", width = 8,  height = 10)
 # par(mfrow=c(3,3),cex=1.4,las=1)
 # mx <- max(c(slowAcc,fastAcc,slowInacc,fastInacc))

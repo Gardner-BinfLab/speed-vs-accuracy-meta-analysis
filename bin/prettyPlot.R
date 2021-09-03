@@ -581,17 +581,17 @@ dev.off()
 
 pdf(file=    "../figures/selected-scatter-plots.pdf", width = 10,  height = 15)
 op<-par(mfrow=c(3,2),cex=1.5,las=2)
-plot(d2005$relAge,log10(d2005$citations+1),yaxt = "n",xlab="Relative age", ylab="Number of Citations", pch=20, col="red")
+plot(d2005$yearPublished,log10(d2005$citations+1),yaxt = "n",xlab="Year Published", ylab="Number of Citations", pch=20, col="red", xlim=c(1980,2020))
 axis(2,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
-abline(lm(log10(d2005$citations+1) ~ d2005$relAge, data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
-cit.yr.cor <- cor.test(d2005$relAge, d2005$citations, method = "spearman")
-text(0.01, 0.25, paste("Spearman's Rho: ", signif(cit.yr.cor$estimate, digits=3), "\nP.value: ", signif(cit.yr.cor$p.value, digits=3)),pos=4)
+abline(lm(log10(d2005$citations+1) ~ d2005$yearPublished, data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+cit.yr.cor <- cor.test(d2005$yearPublished, d2005$citations, method = "spearman")
+text(1980, 0.25, paste("Spearman's Rho: ", signif(cit.yr.cor$estimate, digits=3), "\nP.value: ", signif(cit.yr.cor$p.value, digits=3)),pos=4)
 #############
-plot(d2005$relAge,log10(d2005$commits+1),yaxt = "n", ylab="Number of Commits", xlab="Relative age", pch=20, col="red")
+plot(d2005$yearPublished,log10(d2005$commits+1),yaxt = "n", ylab="Number of Commits", xlab="Year Published", pch=20, col="red", xlim=c(1980,2020))
 axis(2,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))
-abline(lm(log10(d2005$commits+1) ~ d2005$relAge, data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
-cit.com.cor <- cor.test(d2005$relAge, d2005$commits, method = "spearman")
-text(0.01, 0.5, paste("Spearman's Rho: ", signif(cit.com.cor$estimate, digits=3), "\nP.value: ", signif(cit.com.cor$p.value, digits=3)),pos=4)
+abline(lm(log10(d2005$commits+1) ~ d2005$yearPublished, data=d2005, na.action=na.roughfix), lwd=2, col="red" )  #, na.action=na.omit
+cit.com.cor <- cor.test(d2005$yearPublished, d2005$commits, method = "spearman")
+text(1980, 0.5, paste("Spearman's Rho: ", signif(cit.com.cor$estimate, digits=3), "\nP.value: ", signif(cit.com.cor$p.value, digits=3)),pos=4)
 #############
 plot(log10(d2005$citations+1),log10(d2005$commits+1),xaxt = "n",yaxt = "n", ylab="Number of Commits", xlab="Number of Citations", pch=20, col="red")
 axis(1,at=c(0,log10(2), 1:4), c(0, 10^(0:4)))

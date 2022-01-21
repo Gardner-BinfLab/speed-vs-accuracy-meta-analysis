@@ -38,7 +38,7 @@ printResults("meanRankSpeedData.tsv", "meanRankAccuracyPerms.tsv", "meanRankSpee
 
 ###################################
 #Make all the figures, do some statistics: 
-#system("R CMD BATCH --no-save ../bin/prettyPlot.R");
+system("R CMD BATCH --no-save ../bin/prettyPlot.R");
 
 exit(0);
 

@@ -218,15 +218,6 @@ testId	accuracyRank	speedRank	method
 25198770:Fig2BMtuberculosisH37PGM400bp:Misassemblies:Fig3A	0.750	0.500	newbler
 25198770:Fig2BMtuberculosisH37PGM400bp:Misassemblies:Fig3A	0.125	0.125	seqman
 25198770:Fig2BMtuberculosisH37PGM400bp:Misassemblies:Fig3A	0.000	0.000	mira
-21483869:Figure3:ColumnScoreCS:Figure3	0.000	0.375	clustalw
-21483869:Figure3:ColumnScoreCS:Figure3	0.125	0.500	muscle
-21483869:Figure3:ColumnScoreCS:Figure3	0.250	0.750	musclemaxiters
-21483869:Figure3:ColumnScoreCS:Figure3	0.375	0.250	dialigntx
-21483869:Figure3:ColumnScoreCS:Figure3	0.500	1.000	kalign
-21483869:Figure3:ColumnScoreCS:Figure3	0.625	0.875	mafftfftns
-21483869:Figure3:ColumnScoreCS:Figure3	0.750	0.000	probcons
-21483869:Figure3:ColumnScoreCS:Figure3	0.875	0.125	tcoffee
-21483869:Figure3:ColumnScoreCS:Figure3	1.000	0.625	mafftlinsi
 24526711:SupplementaryTable1FinalRanking:FinalCombinedC2DLMSC:SupplementaryTable1RANKINGSRealvideos	0.000	1.000	comus
 24526711:SupplementaryTable1FinalRanking:FinalCombinedC2DLMSC:SupplementaryTable1RANKINGSRealvideos	0.750	0.250	heidge
 24526711:SupplementaryTable1FinalRanking:FinalCombinedC2DLMSC:SupplementaryTable1RANKINGSRealvideos	1.000	0.750	kthse

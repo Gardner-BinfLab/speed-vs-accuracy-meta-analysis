@@ -5,11 +5,12 @@
 \usepackage{caption}
 \graphicspath{{../figures/}}
 
-\def\numTools{499}
+
+\def\numTools{498}
 %cat meanRankSpeedData.tsv | cut -f 4 | grep -v ^method$ | wc -l
-\def\numBenchmarkPubs{69}
+\def\numBenchmarkPubs{68}
 %cat speed-vs-accuracy-toolRanks2005-2020.tsv | cut -f 1 | sort  | uniq | grep -E '[0-9]'  | wc -l
-\def\numBenchmarks{134}
+\def\numBenchmarks{133}
 %cat rawRankSpeedData2005-2020.tsv | cut -f 1 | grep -v ^testId$ | uniq -c | wc -l
 
 
@@ -52,7 +53,8 @@ Alex Gavryushkin\textsuperscript{8}, Michael A Black\textsuperscript{1}
 %	ABSTRACT
 %----------------------------------------------------------------------------------------
 
-\Abstract{In the below we provide additional results for our investigation of computational biology benchmarks.}
+\Abstract{In the below we provide additional results for our
+  investigation of computational biology benchmarks.}
 
 \begin{document}
 
@@ -274,10 +276,13 @@ Contributors -- the number of contributors to a Github repository;
 \includegraphics[width=0.99\textwidth]{numberRealValueFeaturesBarplot.pdf}\\
 \includegraphics[width=0.95\textwidth]{powerCurves.pdf}
 
-\caption{ {\bf Top:} The number of benchmarks each software tool has appeared in. {\bf Middle:}
-  Plot of the amount missing/known data for each of the software features used in this analysis. 
-{\bf Bottom:} a power curve analysis shows the sample sizes for each set of features is sufficient to detect correlations $r\ge0.2$ between our features of interest with $power \ge 0.8$. For example, for speed vs accuracy $N=\numTools$, which is indicated with a vertical line.    
-}
+\caption{ {\bf Top:} The number of benchmarks each software tool has
+  appeared in. {\bf Middle:} Plot of the amount missing/known data for
+  each of the software features used in this analysis.  {\bf Bottom:}
+  a power curve analysis shows the sample sizes for each set of
+  features is sufficient to detect correlations $r\ge0.2$ between our
+  features of interest with $power \ge 0.8$. For example, for speed vs
+  accuracy $N=\numTools$, which is indicated with a vertical line.  }
 \label{fig:numBenchmarks}
 \end{figure}
 

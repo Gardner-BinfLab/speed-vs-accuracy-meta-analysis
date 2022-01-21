@@ -105,6 +105,11 @@ namesA     <-  namesA[ixA]
 dNamesA    <- dNamesA[ixA]
 pNamesA    <- pNamesA[ixA]
 
+#Print correlations and P-values mentioned in the text: "version number, and numbers of contributors, commits, forks and issues"  
+print(spearmansA )
+print(spearmansAP)
+
+
 
 #Figure S4A
 pdf(file=    "../figures/spearmanBarplot.pdf", width = 5,  height = 5)
@@ -281,6 +286,9 @@ for (i in 1:length(spearmansA)){
 #correct for multiple testing:
 spearmansA.emp.pvals <- p.adjust(spearmansA.emp.pvals,"BH")
 
+
+
+
 #FIGURE 1B
 pdf(file=    "../figures/spearmanBarplot-withPerms-violin.pdf", width = 10,  height = 10)
 op<-par(mfrow=c(1,1),cex=1.5,las=2, mar = c(7,4,4,4) + .1)
@@ -337,6 +345,12 @@ for(i in 1:gridRes){
 
 rownames(zScores)<-character(gridRes)
 colnames(zScores)<-character(gridRes)
+
+#For example, there was an excess of ``slow and inaccurate'' software
+#Z=
+print(zScores[1,1])
+#P=
+pnorm(zScores[1,1], mean = 0, sd = 1, lower.tail = F)
 
 binom.test(sigCount,    gridRes^2, p = 0.05)
 

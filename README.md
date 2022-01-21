@@ -150,16 +150,16 @@ pdflatex   manuscript-speed-accuracy.tex && bibtex ./manuscript-speed-accuracy &
 ```
      1	PubMed ID
      2	Title
-     3	accuracySource
-     4	accuracyMetric
-     5	speedSource
-     6	Method
-     7	accuracyRank
-     8	speedRank
-     9	numMethods
-    10	Data set (if applicable)
-    11	Bias
-    12	Acc comment
+     3	accuracySource (the figure, table or supplement that accuracy ranks are derived from) 
+     4	accuracyMetric (which accuracy metric is used for ranks e.g. MCC, accuracy, F1-score, ...) 
+     5	speedSource    (the figure, table or supplement that speed ranks are derived from) 
+     6	Method         (the name of the method)  
+     7	accuracyRank   (the accuracy rank) 
+     8	speedRank      (the speed rank)
+     9	numMethods     (the number of methods evaluated in the benchmark)
+    10	Data set       (if multiple datasets are provided, which was used here)
+    11	Bias           
+    12	Acc comment    
     13	Speed comment
 ```
 

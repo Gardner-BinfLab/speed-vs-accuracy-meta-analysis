@@ -15,6 +15,8 @@
 %\graphicspath{{../figures/}}
 \usepackage{xr}
 %\externaldocument{supplementary}
+\usepackage{url}
+\usepackage{hyperref}
 
 %Māori characters:
 \DeclareUnicodeCharacter{0100}{\=A}
@@ -39,11 +41,11 @@
 
 %%% Put your definitions there:
 \startlocaldefs
-\def\numTools{499}
+\def\numTools{498}
 %cat meanRankSpeedData.tsv | cut -f 4 | grep -v ^method$ | wc -l
-\def\numBenchmarkPubs{69}
+\def\numBenchmarkPubs{68}
 %cat speed-vs-accuracy-toolRanks2005-2020.tsv | cut -f 1 | sort  | uniq | grep -E '[0-9]'  | wc -l
-\def\numBenchmarks{134}
+\def\numBenchmarks{133}
 %cat rawRankSpeedData2005-2020.tsv | cut -f 1 | grep -v ^testId$ | uniq -c | wc -l
 \endlocaldefs
 
@@ -179,42 +181,41 @@
 %\Abstract{
 \begin{abstractbox}
   \begin{abstract} % abstract
-    \parttitle{Background} Computational biology provides widely used and
-    powerful software tools for testing and making inferences about
-    biological data. In the face of rapidly increasing volumes of
-    data, heuristic methods that trade software speed for accuracy may
-    be employed.  We are have studied these trade-offs using the
-    results of a large number of independent software benchmarks, and
-    evaluated whether external factors are indicative of accurate
+
+    \parttitle{Background:} Computational biology provides software
+    tools for testing and making inferences about biological data. In
+    the face of increasing volumes of data, heuristic methods
+    that trade software speed for accuracy may be employed. We
+    have studied these trade-offs using the results of a large number
+    of independent software benchmarks, and evaluated whether external
+    factors, including speed, author reputation, journal impact,
+    recency and developer efforts, are indicative of accurate
     software.
 
-    \parttitle{Method} We have extracted accuracy and speed ranks from
-    independent benchmarks of different bioinformatic software tools,
-    and evaluated whether the speed, author reputation, journal
-    impact, recency and developer efforts are indicative of accuracy.
-
-    \parttitle{Results} We found that software speed, author reputation,
-    journal impact, number of citations and age are all unreliable
-    predictors of software accuracy. This is unfortunate because
-    citations, author and journal reputation are frequently cited
-    reasons for selecting software tools. However, GitHub-derived
-    records and high version numbers show that the accurate
+    \parttitle{Results:} We find that software speed, author
+    reputation, journal impact, number of citations and age are
+    unreliable predictors of software accuracy. This is unfortunate
+    because these are frequently
+    cited reasons for selecting software tools. However,
+    GitHub-derived statistics and high version numbers show that accurate
     bioinformatic software tools are generally the product of many
-    improvements over time, often from multiple developers.
+    improvements over time. We also
+    find an excess of slow and inaccurate bioinformatic software
+    tools, and this is consistent across many
+    sub-disciplines. Meanwhile, there are few tools that are
+    middle-of-road in terms of accuracy and speed trade-offs.
+    
+    \parttitle{Conclusions:} Our findings indicate that accurate
+    bioinformatic software is primarily the product of long-term
+    commitments to software-development. In addition, we hypothesise that
+    bioinformatics software suffers from publication bias. Software
+    that is intermediate in terms of both speed and accuracy may be
+    difficult to publish - possibly due to author, editor and reviewer
+    practises. This leaves an unfortunate hole in the literature, as
+    ideal tools may fall into this gap. High accuracy tools are
+    not always useful if they are slow, while high speed is not useful
+    if the results are also inaccurate.
 
-    \parttitle{Discussion} We also find that the field of bioinformatics has a
-    large excess of slow and inaccurate software tools, and this is
-    consistent across many sub-disciplines. Meanwhile, there are few
-    tools that are middle-of-road in terms of accuracy and speed
-    trade-offs. We hypothesise that a form of publication-bias
-    influences the publication and development of bioinformatic
-    software. In other words, software that is intermediate in terms
-    of both speed and accuracy may be difficult to publish - possibly
-    due to author, editor and reviewer practices. This leaves an
-    unfortunate hole in the literature as the ideal tools may fall
-    into this gap. For example, high accuracy tools are not always
-    useful if years of CPU time are required, while high speed is not
-    useful if the results are also inaccurate.
 %}
 \end{abstract}
 
@@ -442,7 +443,7 @@ Data on the number of updates to software tools from GitHub such as
 the version number, {\color{black}and numbers of contributors, commits, forks and issues } was significantly
 correlated with software accuracy (respective Spearman’s rhos =
 {\color{black}0.15, 0.21, 0.22, 0.23, 0.23 and respective Benjamini \& Hochberg
-  corrected P-values = $5.4\times 10^{-4}$, $1.1\times 10^{-3}$, $7.9\times 10^{-4}$, $3.4\times 10^{-4}$, $3.2\times 10^{-4}$, Additional file 1: Figures S6}). %See arrays "spearmansA" and "spearmansAP" in prettyPlot.R
+  corrected P-values = $6.7\times 10^{-4}$, $1.1\times 10^{-3}$, $8.4\times 10^{-4}$, $3.4\times 10^{-4}$, $3.1\times 10^{-4}$, Additional file 1: Figures S6}). %See arrays "spearmansA" and "spearmansAP" in prettyPlot.R
 The significance of these features was
 further confirmed with a permutation test
 (Figure~\ref{fig:allfactors}B).  These features were not correlated
@@ -473,9 +474,14 @@ Z-score for the observed number of tools in a cell, compared to the
 expected distributions generated by 1,000 randomized ranks. The results
 of this are shown in Figure~\ref{fig:speedaccuracy}. We identified 4
 of 9 bins where there was a significant excess or dearth of tools. For
-example, there was an excess of ``slow and inaccurate'' software (Z=3.39,
-P-value=$3.5\times 10^{-4}$), with more moderate excess of ``slow and accurate'' and ``fast and accurate'' software (Z=2.49 \& 1.7, P=$6.3\times 10^{-3}$ \& 0.04 respectively). We find that only the ``fast and inaccurate'' extreme class is at approximately the
+example, there was an excess of ``slow and inaccurate'' software ({\color{black}Z=3.40,
+P-value=$3.3\times 10^{-4}$}), with more moderate excess of ``slow and accurate'' and ``fast and accurate'' software (Z=2.49 \& 1.7, P=$6.3\times 10^{-3}$ \& 0.04 respectively). We find that only the ``fast and inaccurate'' extreme class is at approximately the
 expected proportions based upon the permutation test (Figure~\ref{fig:speedaccuracy}B).
+
+%#Z=
+%print(zScores[1,1])
+%#P=
+%pnorm(zScores[1,1], mean = 0, sd = 1, lower.tail = F)
 
 % binom.test(sigCount,gridRes^2, p = 0.05)
 
@@ -866,7 +872,7 @@ PPG, AG and MAB acknowledge support from a Data Science Programmes grant
 
 \section*{Availability of data and materials}
 %\section*{Data availability}
-Raw datasets, software and documents are available under a CC-BY license:\\
+Raw datasets, software and documents are available under a CC-BY license at Github \cite{Gardner2022a} and FigShare \cite{Gardner2022b}.
 %\fussy
 %\url{https://docs.google.com/spreadsheets/d/14xIY2PHNvxmV9MQLpbzSfFkuy1RlzDHbBOCZLJKcGu8/edit?usp=sharing}\\
 %and here:\\
@@ -874,8 +880,12 @@ Raw datasets, software and documents are available under a CC-BY license:\\
 %\url{https://dx.doi.org/10.6084/m9.figshare.4299320.v1}\\
 %\sloppy
 %Additional documentation, code, figures and raw data is available here:\\
-\fussy
-\url{https://github.com/Gardner-BinfLab/speed-vs-accuracy-meta-analysis}
+%\fussy
+%Github: \url{https://github.com/Gardner-BinfLab/speed-vs-accuracy-meta-analysis}\\
+%FigShare: \url{https://doi.org/10.6084/m9.figshare.15121818.v2} 
+
+
+
 \sloppy
 
 \section*{Competing interests}

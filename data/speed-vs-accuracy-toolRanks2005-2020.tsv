@@ -1,4 +1,4 @@
-PubMed ID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	speedRank	numMethods	Data set (if applicable)	Bias	Acc comment	Speed comment
+PubMed ID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	speedRank	numMethods	Data set (if applicable)	Bias	Acc comment (ranks independently checked)	Speed comment  (ranks independently checked)
 17151342	Freyhult, E. K., Bollback, J. P., & Gardner, P. P. (2007). Exploring genomic dark matter: a critical assessment of the performance of homology search methods on noncoding RNA. Genome research, 17(1), 117-125.	Fig. 2A	median rank(MCC)	Fig. 2C	Rsearch	1	11	12			Verified	Verified
 					Infernal	2	12				Verified	Verified
 					Ravenna	3	9				Verified	Verified
@@ -218,15 +218,6 @@ PubMed ID	Title	accuracySource	accuracyMetric	speedSource	Method	accuracyRank	sp
 					newbler	3	5				Verified	Verified
 					seqman	8	8				Verified	Verified
 					mira	9	9				Verified	Verified
-21483869	Thompson JD, Linard B, Lecompte O, Poch O. A comprehensive benchmark study of multiple sequence alignment methods: current challenges and future perspectives. PloS one. 2011 Mar 31;6(3):e18093.	Figure 3	Column Score (CS)	Figure 3	ClustalW	9	6	9		Yes	Verified	Verified
-					Muscle	8	5				Verified	Verified
-					Muscle(maxiters=2)	7	3				Verified	Verified
-					dialign-tx	6	7				Verified	Verified
-					kalign	5	1				Verified	Verified
-					mafft(fftns2)	4	2				Verified	Fixed
-					probcons	3	9				Verified	Verified
-					tcoffee	2	8				Verified	Verified
-					mafft(linsi)	1	4				Verified	Verified
 24526711	Maška M, Ulman V, Svoboda D, Matula P, Matula P, Ederra C, Urbiola A, España T, Venkatesan S, Balak DM, Karas P. A benchmark for comparison of cell tracking algorithms. Bioinformatics. 2014 Jun 1;30(11):1609-17.	Supplementary-Table 1 Final Ranking	Final/Combined C2DL-MSC	Supplementary-Table 1 RANKINGS (Real videos)	COM-US	5	1	5	C2DL-MSC	yes	Verified	Verified
 					HEID-GE	2	4				Verified	Verified
 					KTH-SE	1	2				Verified	Verified
